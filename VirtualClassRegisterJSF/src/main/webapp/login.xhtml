@@ -1,0 +1,44 @@
+<ui:composition template="/templates/page-template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="title">Virtual Class Register - Login</ui:define>
+	
+	<ui:define name="content">
+	
+		<p:linkButton outcome="index" value="Main Page" />
+		
+		<p:panel styleClass="mb-4">
+			<h:form id="form">
+			
+				<p:panelGrid columns="2" layout="grid">
+			        
+			        <p:outputLabel for="email">Email</p:outputLabel>
+			        <p:inputText id="email" value="#{userBB.user.email}" required="true"
+			        	requiredMessage="Email is required!" validatorMessage="Invalid email format!">
+			        	<f:validateRegex
+							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+						<f:validateLength maximum="120"/>
+			        </p:inputText>
+			        
+			        <p:outputLabel for="password">Password</p:outputLabel>
+			        <p:password id="password" value="#{userBB.user.password}" required="true"
+			        	requiredMessage="Password is required!" validatorMessage="Invalid password format!">
+				        <f:validateRegex
+								pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"/>
+			        </p:password>
+			        
+			    </p:panelGrid>
+			    
+		     	<p:commandButton value="Login" update="@form"/>
+		     	
+			    <p:messages id="messages"/>
+		    </h:form>
+		</p:panel>
+		
+	</ui:define>
+	
+</ui:composition>

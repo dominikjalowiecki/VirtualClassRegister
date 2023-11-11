@@ -1,0 +1,76 @@
+<ui:composition template="/templates/page-template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+	
+	<ui:define name="title">Virtual Class Register - Add User</ui:define>
+	
+	<ui:define name="content">
+	
+		<p:linkButton outcome="index" value="Main Page" />
+		
+		<p:panel styleClass="mb-4">
+			<h:form id="form">
+			
+				<p:panelGrid columns="2" layout="grid">
+			        
+			        <p:outputLabel for="forename">Forename</p:outputLabel>
+			        <p:inputText id="forename" value="#{userBB.user.forename}" required="true"
+			        	requiredMessage="Forename is required!" validatorMessage="Forename has to be between 2 to 65 characters!">
+			        	<f:validateLength minimum="2" maximum="65"/>
+			        </p:inputText>
+			        
+			        <p:outputLabel for="surname">Surname</p:outputLabel>
+			        <p:inputText id="surname" value="#{userBB.user.surname}" required="true"
+			        	requiredMessage="Surname is required!" validatorMessage="Surname has to be between 2 to 85 characters!">
+			        	<f:validateLength minimum="2" maximum="85"/>
+			        </p:inputText>
+			        
+			        <p:outputLabel for="email">Email</p:outputLabel>
+			        <p:inputText id="email" value="#{userBB.user.email}" required="true"
+			        	requiredMessage="Email is required!" validatorMessage="Invalid email format!">
+			        	<f:validateRegex
+							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+						<f:validateLength maximum="120"/>
+			        </p:inputText>
+			        
+			        <p:outputLabel for="class">Class</p:outputLabel>
+	                <p:selectOneMenu id="class" value="#{userBB.idClass}">
+	                    <f:selectItem itemLabel="Select Class" itemValue=""/>
+	                    <c:forEach items="#{classBB.list}" var="c">
+	                    	<f:selectItem itemLabel="#{c.name}" itemValue="#{c.idClass}"/>
+	                    </c:forEach>
+	                </p:selectOneMenu>
+			        
+			        <p:outputLabel for="password">Password<small class="block">Minimum eight characters, at least one uppercase letter, one lowercase letter and one number</small></p:outputLabel>
+			        <p:password id="password" value="#{userBB.user.password}" match="repeatPassword" required="true"
+			        	requiredMessage="Password is required!" validatorMessage="Invalid password format!">
+				        <f:validateRegex
+								pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"/>
+			        </p:password>
+			        
+			        <p:outputLabel for="repeatPassword">Repeat Password</p:outputLabel>
+			        <p:password id="repeatPassword" value="#{userBB.user.password}" required="true" requiredMessage="Repeat Password is required!"/>
+			        
+			        <p:outputLabel for="role">Role</p:outputLabel>
+	                <p:selectOneMenu id="role" value="#{userBB.user.role}" required="true" requiredMessage="Role is required!">
+	                    <f:selectItem itemLabel="Select Role" itemValue=""/>
+	                    <f:selectItem itemLabel="Student" itemValue="STUDENT"/>
+	                    <f:selectItem itemLabel="Teacher" itemValue="TEACHER"/>
+	                    <f:selectItem itemLabel="Administrator" itemValue="ADMINISTRATOR"/>
+	                </p:selectOneMenu>
+			        
+			    </p:panelGrid>
+			    
+		     	<p:commandButton value="Add User" action="#{userBB.addUser()}" update="@form"/>
+		     	
+			    <p:messages id="messages"/>
+		    </h:form>
+		</p:panel>
+		
+	</ui:define>
+	
+</ui:composition>

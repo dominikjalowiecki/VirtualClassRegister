@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application id="Application_ID" version="10" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/application_10.xsd">
+ <display-name>VirtualClassRegisterEAR</display-name>
+ <display-name>VirtualClassRegisterJSF</display-name>
+	<module>
+    <web>
+      <web-uri>VirtualClassRegisterJSF.war</web-uri>
+      <context-root>virtualclassregister</context-root>
+    </web>
+  </module>
+  <module>
+    <ejb>VirtualClassRegisterEJB.jar</ejb>
+  </module> 
+ </application> 
