@@ -5,11 +5,15 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 	
-	<ui:define name="title">Virtual Class Register - Student</ui:define>
+	<ui:define name="title">Virtual Class Register - Profile</ui:define>
 	
 	<ui:define name="content">
 	
 		<p:linkButton outcome="index" value="Main Page" />
+		
+		<p:messages id="messages" closable="true">
+			<p:autoUpdate/>
+		</p:messages>
 		
 		<p:panel header="Change Password" styleClass="mb-4" toggleable="true" collapsed="true">
 			<h:form id="form">
@@ -17,16 +21,15 @@
 				<p:panelGrid columns="2" layout="grid">
 			        
 			        <p:outputLabel for="currentPassword">Current Password</p:outputLabel>
-			        <p:password id="currentPassword" value="" match="currentPassword" required="true" requiredMessage="Current Password is required!"/>
+			        <p:password id="currentPassword" value="#{userBB.currentPassword}" required="true" requiredMessage="Current Password is required!"/>
 			        
 			        <p:outputLabel for="newPassword">New Password<small class="block">Minimum eight characters, at least one uppercase letter, one lowercase letter and one number</small></p:outputLabel>
-			        <p:password id="newPassword" value="userBB.user.password" required="true" requiredMessage="New Password is required!"/>
+			        <p:password id="newPassword" value="#{userBB.user.password}" required="true" requiredMessage="New Password is required!"/>
 			        
 			    </p:panelGrid>
 			    
-		     	<p:commandButton value="Change Password" action="userBB.changePassword" update="@form"/>
+		     	<p:commandButton value="Change Password" action="#{userBB.changePassword()}" update="@form"/>
 		     	
-			    <p:messages id="messages"/>
 		    </h:form>
 	    </p:panel>
 		

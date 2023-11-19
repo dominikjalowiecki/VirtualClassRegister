@@ -21,7 +21,7 @@ public class Subject implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to Teacherteachessubject
-	@OneToMany(mappedBy="subject")
+	@OneToMany(mappedBy="subject", fetch=FetchType.EAGER)
 	private List<Teacherteachessubject> teacherteachessubjects;
 
 	public Subject() {

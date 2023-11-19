@@ -38,7 +38,7 @@
 			        </p:inputText>
 			        
 			        <p:outputLabel for="class">Class</p:outputLabel>
-	                <p:selectOneMenu id="class" value="#{userBB.idClass}">
+	                <p:selectOneMenu id="class" value="#{userBB.user.clazz.idClass}">
 	                    <f:selectItem itemLabel="Select Class" itemValue=""/>
 	                    <c:forEach items="#{classBB.list}" var="c">
 	                    	<f:selectItem itemLabel="#{c.name}" itemValue="#{c.idClass}"/>

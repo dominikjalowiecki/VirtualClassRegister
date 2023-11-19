@@ -1,6 +1,8 @@
 package com.virtualclassregister;
 
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,17 +14,19 @@ import com.virtualclassregister.entities.Teacherteachessubject;
 import com.virtualclassregister.entities.User;
 
 import jakarta.ejb.EJB;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.Flash;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 @Named
-@RequestScoped
-public class SubjectBB {
-	
+@ViewScoped
+public class EditSubjectBB implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	@EJB
 	SubjectDAO subjectDAO;
 	
@@ -35,22 +39,14 @@ public class SubjectBB {
 	@Inject
 	Flash flash;
 	
-	private Map<String, String> searchParams;
+	private Subject loaded;
 	
 	private Subject subject;
-	
-    private List<Integer> teachers;
+		
+	private List<Integer> teachers;
 
 	public Subject getSubject() {
 		return subject;
-	}
-
-	public void setSubject(Subject subject) {
-		this.subject = subject;
-	}
-	
-	public List<Subject> getSubjects(){
-		return subjectDAO.getList(searchParams);
 	}
 	
 	public List<Integer> getTeachers() {
@@ -61,13 +57,31 @@ public class SubjectBB {
 		this.teachers = teachers;
 	}
 	
-	
-	public SubjectBB() {
-		subject = new Subject();
-		searchParams = new HashMap<>();
+	public void onLoad() throws IOException {
+		loaded = (Subject) flash.get("subject");
+
+		if (loaded != null) {
+			subject = loaded;
+			List<Teacherteachessubject> teacherteachessubjects = subject.getTeacherteachessubjects();
+			for(Teacherteachessubject teacherteachessubject : teacherteachessubjects) {
+				teachers.add(teacherteachessubject.getUser().getIdUser());
+			}
+		} else {
+			ctx.getExternalContext().getFlash().setKeepMessages(true);
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid operation!", null));
+			if (!ctx.isPostback()) {
+				ctx.getExternalContext().redirect("subject.jsf");
+				ctx.responseComplete();
+			}
+		}
+
 	}
 	
-	public void addSubject() {
+	public EditSubjectBB() {
+		teachers = new ArrayList<>();
+	}
+	
+	public void editSubject() {
 		Map<String, String> searchParams = new HashMap<>();
 		searchParams.put("name", subject.getName());
 		List<Subject> subjects = subjectDAO.getList(searchParams);
@@ -77,7 +91,7 @@ public class SubjectBB {
 			return;
 		}
 		
-		subjectDAO.create(subject);
+		subjectDAO.merge(subject);
 		
 		for(Integer idTeacher : teachers) {
 			Teacherteachessubject teacherteachessubject = new Teacherteachessubject();
@@ -88,29 +102,7 @@ public class SubjectBB {
 			teacherteachessubjectDAO.create(teacherteachessubject);
 		}
 		
-		subject = new Subject();
-		teachers = null;
-		
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully added new subject", null));
-	}
-	
-	public String editSubject(Subject subject) {
-		flash.put("subject", subject);
-		
-		return "editSubject?faces-redirect=true";
-	}
-	
-	public void removeSubject(Subject subject) {
-		subjectDAO.remove(subject);
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully removed subject", null));
-	}
-	
-	public void search() {
-		Map<String, String> searchParams = new HashMap<>();
-		if(!subject.getName().isEmpty()) {
-			searchParams.put("name", subject.getName());
-		}
-		this.searchParams = searchParams;
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully updated subject", null));
 	}
 	
 }

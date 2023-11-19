@@ -1,0 +1,79 @@
+<ui:composition template="/templates/page-template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+	
+	<ui:define name="title">Virtual Class Register - Subject</ui:define>
+	
+	<ui:define name="content">
+	
+		<p:linkButton outcome="index" value="Main Page" />
+		
+		<p:panel styleClass="mb-4">
+			<h:form id="form">
+			
+				<p:panelGrid columns="2" layout="grid">
+			        
+			        <p:outputLabel for="name">Name</p:outputLabel>
+			        <p:inputText id="name" value="#{subjectBB.subject.name}" required="true"
+			        	requiredMessage="Name is required!" validatorMessage="Name has to be between 2 to 65 characters!">
+			        	<f:validateLength minimum="2" maximum="85"/>
+			        </p:inputText>
+			        
+			        <p:outputLabel for="teachers">Teacher</p:outputLabel>
+			        <p:selectManyMenu id="teachers" value="#{subjectBB.teachers}" showCheckbox="true" filter="true" filterMatchMode="contains" filterNormalize="true"
+			        	required="true" requiredMessage="Teachers are required!">
+			            <c:forEach items="#{userBB.tutors}" var="t"> 
+	                    	<f:selectItem itemLabel="#{t.forename} #{t.surname} #{t.email}" itemValue="#{t.idUser}"/>
+	                    </c:forEach>
+			        </p:selectManyMenu>
+			        
+			    </p:panelGrid>
+			    
+		     	<p:commandButton value="Add Subject" action="#{subjectBB.addSubject()}" update="@form subjects"/>
+		     	
+			    <p:messages id="messages" closable="true"/>
+		    </h:form>
+		</p:panel>
+		
+		<p:panel id="subjects">
+			<h:form>
+			
+				<p:panelGrid columns="2" layout="grid">
+			        
+			        <p:outputLabel for="name">Name</p:outputLabel>
+			        <p:inputText id="name" value="#{subjectBB.subject.name}"/>
+			        
+			    </p:panelGrid>
+			    
+   		     	<p:commandButton value="Search" action="#{subjectBB.search()}" update="@form"/>
+			
+				<p:dataTable value="#{subjectBB.subjects}" var="s">
+				
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Name" />
+						</f:facet>
+						<h:outputText value="#{s.name}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Options" />
+						</f:facet>
+						<p:commandButton value="Edit" ajax="false"
+							action="#{subjectBB.editSubject(s)}" />
+						<p:commandButton value="Remove"
+							action="#{subjectBB.removeSubject(s)}" update="@form" />
+					</p:column>
+		
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+		
+	</ui:define>
+	
+</ui:composition>

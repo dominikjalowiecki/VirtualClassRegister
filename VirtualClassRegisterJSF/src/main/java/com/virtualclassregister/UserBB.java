@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.simplesecurity.RemoteClient;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.virtualclassregister.dao.ClassDAO;
 import com.virtualclassregister.dao.UserDAO;
-import com.virtualclassregister.entities.User;
 import com.virtualclassregister.entities.Class;
+import com.virtualclassregister.entities.User;
 
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
@@ -17,6 +19,8 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Named
 @RequestScoped
@@ -31,9 +35,8 @@ public class UserBB {
 	@Inject
 	FacesContext ctx;
 	
-	private User user = new User();
+	private User user;
 	private String currentPassword;
-	private int idClass;
 	
 	public User getUser() {
 		return user;
@@ -47,18 +50,16 @@ public class UserBB {
 		this.currentPassword = currentPassword; 
 	}
 	
-	public int getIdClass() {
-		return idClass;
-	}
 
-	public void setIdClass(int idClass) {
-		this.idClass = idClass;
-	}
-	
 	public List<User> getTutors() {
 		Map<String, String> searchParams = new HashMap<>();
 		searchParams.put("role", "TEACHER");		
 		return userDAO.getList(searchParams);
+	}
+	
+	public UserBB() {
+		user = new User();
+		user.setClazz(new Class());
 	}
 	
 	public void addUser() {
@@ -71,20 +72,65 @@ public class UserBB {
 			user.setEmail(null);
 			return;
 		}
+
+		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12)));
 		
-		Class clazz = classDAO.find(idClass);
-		user.setClazz(clazz);
-		user.setPassword( BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12)) );
+		if(user.getClazz().getIdClass() == 0) {
+			user.setClazz(null);
+		}
 		userDAO.create(user);
 		
-		idClass = 0;
 		user = new User();
+		user.setClazz(new Class());
 		
 		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully added new user", null));
 	}
 	
 	public void changePassword() {
-//		BCrypt.checkpw(password, hash);
+		HttpSession session = (HttpSession) ctx.getExternalContext().getSession(true);
+		RemoteClient<User> remoteClient = RemoteClient.load(session);
+		User requestedUser = remoteClient.getDetails();
+		
+		if(!BCrypt.checkpw(currentPassword, requestedUser.getPassword())) {
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Entered password doesn't match current password", null));
+			return;
+		}
+		
+		requestedUser.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12)));
+		userDAO.merge(requestedUser);
+		
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Password has been successfully changed", null));
+	}
+	
+	public String login() {
+		Map<String, String> searchParams = new HashMap<>();
+		searchParams.put("email", user.getEmail());		
+		List<User> users = userDAO.getList(searchParams);
+		
+		if(users.isEmpty() || !BCrypt.checkpw(user.getPassword(), users.get(0).getPassword())) {
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Provided invalid credentials", null));
+			return null;
+		}
+		
+		User requestedUser = users.get(0);
+			
+		RemoteClient<User> client = new RemoteClient<User>();
+		client.setDetails(requestedUser);
+		
+		client.getRoles().add(requestedUser.getRole());
+	
+		HttpServletRequest request = (HttpServletRequest) ctx.getExternalContext().getRequest();
+		client.store(request);
+		
+		return "profile?faces-redirect=true";
+	}
+	
+	public String logout(){
+		HttpSession session = (HttpSession) ctx.getExternalContext().getSession(true);
+		session.invalidate();
+		ctx.getExternalContext().getFlash().setKeepMessages(true);
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You have been logged out", null));
+		return "login?faces-redirect=true";
 	}
 	
 }

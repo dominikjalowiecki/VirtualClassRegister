@@ -9,21 +9,14 @@
 	
 	<ui:define name="content">
 	
-		<p:linkButton outcome="addUser" value="Add User" />
+		<p:linkButton outcome="addUser" value="Add User" rendered="#{remoteClient.details.role == 'ADMINISTRATOR' ? 'true' : 'false'}" />
 		<p:linkButton outcome="addClass" value="Add Class" />
 		<p:linkButton outcome="login" value="Login" />
 		<p:linkButton outcome="profile" value="Profile" />
-		
-		<p:dataTable value="#{subjectBB.list}" var="s">
-		
-			<p:column>
-				<f:facet name="header">
-					<h:outputText value="Name" />
-				</f:facet>
-				<h:outputText value="#{s.name}" />
-			</p:column>
-
-		</p:dataTable>
+		<p:linkButton outcome="subject" value="Subject" />
+		<h:form styleClass="inline">
+			<p:commandButton value="Logout" action="#{userBB.logout()}" />
+		</h:form>
 		
 	</ui:define>
 	

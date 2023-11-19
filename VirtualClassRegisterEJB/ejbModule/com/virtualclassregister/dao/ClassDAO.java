@@ -37,7 +37,7 @@ public class ClassDAO {
 	public List<Class> getFullList() {
 		List<Class> list = null;
 
-		Query query = em.createQuery("SELECT c FROM Class c");
+		Query query = em.createQuery("SELECT c FROM Class c ORDER BY name ASC");
 
 		list = query.getResultList();
 
@@ -66,7 +66,6 @@ public class ClassDAO {
 		for (Map.Entry<String, String> set : searchParams.entrySet()) {
 			query.setParameter(set.getKey(), set.getValue());
 		}
-
 
 		list = query.getResultList();
 

@@ -32,8 +32,8 @@
 			        </p:password>
 			        
 			    </p:panelGrid>
-			    
-		     	<p:commandButton value="Login" update="@form"/>
+			     
+		     	<p:commandButton value="Login" ajax="false" action="#{userBB.login()}"/>
 		     	
 			    <p:messages id="messages"/>
 		    </h:form>

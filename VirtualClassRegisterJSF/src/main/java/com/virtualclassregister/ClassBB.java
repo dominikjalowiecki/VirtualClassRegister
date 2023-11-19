@@ -29,8 +29,7 @@ public class ClassBB {
 	@Inject
 	FacesContext ctx;
 	
-	private Class clazz = new Class();
-	private int idUser;
+	private Class clazz;
 	
 	public Class getClazz() {
 		return clazz;
@@ -40,12 +39,9 @@ public class ClassBB {
 		return classDAO.getFullList();
 	}
 	
-	public int getIdUser() {
-		return idUser;
-	}
-
-	public void setIdUser(int idUser) {
-		this.idUser = idUser;
+	public ClassBB() {
+		clazz = new Class();
+		clazz.setUser(new User());
 	}
 	
 	public void addClass() {
@@ -59,12 +55,10 @@ public class ClassBB {
 			return;
 		}
 		
-		User user = userDAO.find(idUser);
-		clazz.setUser(user);
 		classDAO.create(clazz);
 		
-		idUser = 0;
 		clazz = new Class();
+		clazz.setUser(new User());
 		
 		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully added new class", null));
 	}

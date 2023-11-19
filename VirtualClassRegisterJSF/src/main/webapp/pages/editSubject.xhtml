@@ -6,7 +6,11 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 	
-	<ui:define name="title">Virtual Class Register - Add Class</ui:define>
+	<f:metadata>
+	    <f:viewAction action="#{editSubjectBB.onLoad()}" />
+	</f:metadata>
+	
+	<ui:define name="title">Virtual Class Register - Subject</ui:define>
 	
 	<ui:define name="content">
 	
@@ -18,22 +22,23 @@
 				<p:panelGrid columns="2" layout="grid">
 			        
 			        <p:outputLabel for="name">Name</p:outputLabel>
-			        <p:inputText id="name" value="#{classBB.clazz.name}" required="true"
+			        <p:inputText id="name" value="#{editSubjectBB.subject.name}" required="true"
 			        	requiredMessage="Name is required!" validatorMessage="Name has to be between 2 to 65 characters!">
-			        	<f:validateLength minimum="2" maximum="65"/>
+			        	<f:validateLength minimum="2" maximum="85"/>
 			        </p:inputText>
 			        
-			        <p:outputLabel for="tutor">Tutor</p:outputLabel>
-	                <p:selectOneMenu id="tutor" value="#{classBB.idUser}" required="true" requiredMessage="Tutor is required!">
-	                    <f:selectItem itemLabel="Select Tutor" itemValue=""/>
-	                    <c:forEach items="#{userBB.tutors}" var="t"> 
+			        <p:outputLabel for="teachers">Teacher</p:outputLabel>
+			        <p:selectManyMenu id="teachers" value="#{editSubjectBB.teachers}" showCheckbox="true" filter="true" filterMatchMode="contains" filterNormalize="true"
+			        	required="true" requiredMessage="Teachers are required!">
+			            <c:forEach items="#{userBB.tutors}" var="t"> 
 	                    	<f:selectItem itemLabel="#{t.forename} #{t.surname} #{t.email}" itemValue="#{t.idUser}"/>
 	                    </c:forEach>
-	                </p:selectOneMenu>
+			        </p:selectManyMenu>
 			        
 			    </p:panelGrid>
 			    
-		     	<p:commandButton value="Add Class" action="#{classBB.addClass()}" update="@form"/>
+		     	<p:commandButton value="Edit Subject" action="#{editSubjectBB.editSubject()}" update="@form"/>
+		     	<p:button value="Back" outcome="subject"/>
 		     	
 			    <p:messages id="messages"/>
 		    </h:form>

@@ -36,7 +36,7 @@ public class UserDAO {
 	public List<User> getFullList() {
 		List<User> list = null;
 
-		Query query = em.createQuery("SELECT u FROM User u");
+		Query query = em.createQuery("SELECT u FROM User u ORDER BY u.forename, u.surname ASC");
 
 		list = query.getResultList();
 
@@ -65,7 +65,6 @@ public class UserDAO {
 		for (Map.Entry<String, String> set : searchParams.entrySet()) {
 			query.setParameter(set.getKey(), set.getValue());
 		}
-
 
 		list = query.getResultList();
 
