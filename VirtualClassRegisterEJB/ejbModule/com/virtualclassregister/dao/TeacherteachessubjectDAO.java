@@ -43,5 +43,61 @@ public class TeacherteachessubjectDAO {
 
 		return list;
 	}
+	
+	public List<Teacherteachessubject> getList(Map<String, Object> searchParams) {
+		List<Teacherteachessubject> list = null;
+		
+		Query query = prepareQuery(searchParams);
+
+		list = query.getResultList();
+
+		return list;
+	}
+	
+	private Query prepareQuery(Map<String, Object> searchParams) {
+		String select = "SELECT t ";
+		String from = "FROM Teacherteachessubject t ";
+		String where = "";
+		String orderby = "ORDER BY t.idTeacherTeachesSubject ASC";
+
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				if (where.isEmpty()) {
+					where = "WHERE ";
+				} else {
+					where += "AND ";
+				}
+				
+				String key = set.getKey();
+				
+				where += "t.";
+				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					where += words[1] + " LIKE :" + words[1] + " ";
+				} else {
+					where += key + " = :" + key + " ";
+				}
+			}
+		}
+		
+		Query query = em.createQuery(select + from + where + orderby);
+		
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				String key = set.getKey();				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					query.setParameter(words[1], "%" + set.getValue() + "%");
+				} else {
+					query.setParameter(key, set.getValue());
+				}
+			}
+		}
+		
+		return query;
+	}
 
 }

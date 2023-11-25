@@ -1,16 +1,19 @@
 package com.virtualclassregister;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.primefaces.model.LazyDataModel;
 
 import com.virtualclassregister.dao.SubjectDAO;
 import com.virtualclassregister.dao.TeacherteachessubjectDAO;
 import com.virtualclassregister.entities.Subject;
 import com.virtualclassregister.entities.Teacherteachessubject;
 import com.virtualclassregister.entities.User;
+import com.virtualclassregister.lazyModels.LazySubject;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
@@ -18,6 +21,8 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.Flash;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.Getter;
+import lombok.Setter;
 
 @Named
 @RequestScoped
@@ -34,41 +39,22 @@ public class SubjectBB {
 	
 	@Inject
 	Flash flash;
+		
+	@Getter @Setter private Subject subject;
 	
-	private Map<String, String> searchParams;
+	@Getter @Setter private List<Integer> teachers;
 	
-	private Subject subject;
+	@Inject
+	@Getter private LazySubject lazySubject;
 	
-    private List<Integer> teachers;
-
-	public Subject getSubject() {
-		return subject;
-	}
-
-	public void setSubject(Subject subject) {
-		this.subject = subject;
-	}
-	
-	public List<Subject> getSubjects(){
-		return subjectDAO.getList(searchParams);
-	}
-	
-	public List<Integer> getTeachers() {
-		return teachers;
-	}
-	
-	public void setTeachers(List<Integer> teachers) {
-		this.teachers = teachers;
-	}
-	
+	@Getter @Setter private String searchName;
 	
 	public SubjectBB() {
 		subject = new Subject();
-		searchParams = new HashMap<>();
 	}
 	
 	public void addSubject() {
-		Map<String, String> searchParams = new HashMap<>();
+		Map<String, Object> searchParams = new HashMap<>();
 		searchParams.put("name", subject.getName());
 		List<Subject> subjects = subjectDAO.getList(searchParams);
 		
@@ -106,11 +92,16 @@ public class SubjectBB {
 	}
 	
 	public void search() {
-		Map<String, String> searchParams = new HashMap<>();
-		if(!subject.getName().isEmpty()) {
-			searchParams.put("name", subject.getName());
+		Map<String, Object> searchParams = new HashMap<>();
+		if(!searchName.isEmpty()) {
+			searchParams.put("like name", searchName);
 		}
-		this.searchParams = searchParams;
+		lazySubject.setSearchParams(searchParams);
+	}
+	
+	public void clear() {
+		searchName = "";
+		lazySubject.setSearchParams(null);
 	}
 	
 }

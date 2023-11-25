@@ -1,17 +1,14 @@
 <ui:composition template="/templates/page-template.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+	xmlns:ui="jakarta.faces.facelets"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="http://primefaces.org/ui">
 	
 	<ui:define name="title">Virtual Class Register - Add Class</ui:define>
 	
 	<ui:define name="content">
-	
-		<p:linkButton outcome="index" value="Main Page" />
-		
+			
 		<p:panel styleClass="mb-4">
 			<h:form id="form">
 			
@@ -19,16 +16,14 @@
 			        
 			        <p:outputLabel for="name">Name</p:outputLabel>
 			        <p:inputText id="name" value="#{classBB.clazz.name}" required="true"
-			        	requiredMessage="Name is required!" validatorMessage="Name has to be between 2 to 65 characters!">
+			        	requiredMessage="#{textValidation.name_is_required}" validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}">
 			        	<f:validateLength minimum="2" maximum="65"/>
 			        </p:inputText>
 			        
 			        <p:outputLabel for="tutor">Tutor</p:outputLabel>
-	                <p:selectOneMenu id="tutor" value="#{classBB.clazz.user.idUser}" required="true" requiredMessage="Tutor is required!">
+	                <p:selectOneMenu id="tutor" value="#{classBB.clazz.user.idUser}" required="true" requiredMessage="#{textValidation.tutor_is_required}">
 	                    <f:selectItem itemLabel="Select Tutor" itemValue=""/>
-	                    <c:forEach items="#{userBB.tutors}" var="t"> 
-	                    	<f:selectItem itemLabel="#{t.forename} #{t.surname} #{t.email}" itemValue="#{t.idUser}"/>
-	                    </c:forEach>
+                    	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname} #{t.email}" itemValue="#{t.idUser}"/>
 	                </p:selectOneMenu>
 			        
 			    </p:panelGrid>

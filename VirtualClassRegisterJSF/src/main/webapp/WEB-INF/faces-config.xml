@@ -3,5 +3,21 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd">
-
+	<application>
+		<resource-bundle>
+			<base-name>resources.textMain</base-name>
+			<var>textMain</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>resources.textMessage</base-name>
+			<var>textMessage</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>resources.textValidation</base-name>
+			<var>textValidation</var>
+		</resource-bundle>
+		<locale-config>
+			<default-locale>en</default-locale>
+		</locale-config>
+	</application>
 </faces-config>

@@ -21,6 +21,8 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.Getter;
+import lombok.Setter;
 
 @Named
 @RequestScoped
@@ -35,31 +37,18 @@ public class UserBB {
 	@Inject
 	FacesContext ctx;
 	
-	private User user;
-	private String currentPassword;
-	
-	public User getUser() {
-		return user;
-	}
-	
-	public String getCurrentPassword() {
-		return currentPassword;
-	}
-	
-	public void setCurrentPassword(String currentPassword) {
-		this.currentPassword = currentPassword; 
-	}
-	
-
-	public List<User> getTutors() {
-		Map<String, String> searchParams = new HashMap<>();
-		searchParams.put("role", "TEACHER");		
-		return userDAO.getList(searchParams);
-	}
+	@Getter private User user;
+	@Getter @Setter private String currentPassword;
 	
 	public UserBB() {
 		user = new User();
 		user.setClazz(new Class());
+	}
+	
+	public List<User> getTutors() {
+		Map<String, String> searchParams = new HashMap<>();
+		searchParams.put("role", "TEACHER");		
+		return userDAO.getList(searchParams);
 	}
 	
 	public void addUser() {

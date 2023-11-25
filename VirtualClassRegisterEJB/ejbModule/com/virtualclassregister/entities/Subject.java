@@ -24,6 +24,12 @@ public class Subject implements Serializable {
 	@OneToMany(mappedBy="subject", fetch=FetchType.EAGER)
 	private List<Teacherteachessubject> teacherteachessubjects;
 
+	public Subject(Subject subject) {
+		this.idSubject = subject.idSubject;
+		this.name = subject.name;
+		this.teacherteachessubjects = subject.teacherteachessubjects;
+	}
+	
 	public Subject() {
 	}
 

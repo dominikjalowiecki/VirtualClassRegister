@@ -20,6 +20,8 @@ import jakarta.faces.context.Flash;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.Getter;
+import lombok.Setter;
 
 @Named
 @ViewScoped
@@ -41,27 +43,19 @@ public class EditSubjectBB implements Serializable {
 	
 	private Subject loaded;
 	
-	private Subject subject;
+	@Getter private Subject subject;
 		
-	private List<Integer> teachers;
-
-	public Subject getSubject() {
-		return subject;
-	}
+	@Getter @Setter private List<Integer> teachers;
 	
-	public List<Integer> getTeachers() {
-		return teachers;
-	}
-	
-	public void setTeachers(List<Integer> teachers) {
-		this.teachers = teachers;
+	public EditSubjectBB() {
+		teachers = new ArrayList<>();
 	}
 	
 	public void onLoad() throws IOException {
 		loaded = (Subject) flash.get("subject");
 
 		if (loaded != null) {
-			subject = loaded;
+			subject = new Subject(loaded);
 			List<Teacherteachessubject> teacherteachessubjects = subject.getTeacherteachessubjects();
 			for(Teacherteachessubject teacherteachessubject : teacherteachessubjects) {
 				teachers.add(teacherteachessubject.getUser().getIdUser());
@@ -77,29 +71,36 @@ public class EditSubjectBB implements Serializable {
 
 	}
 	
-	public EditSubjectBB() {
-		teachers = new ArrayList<>();
-	}
-	
 	public void editSubject() {
-		Map<String, String> searchParams = new HashMap<>();
-		searchParams.put("name", subject.getName());
-		List<Subject> subjects = subjectDAO.getList(searchParams);
-		
-		if(!subjects.isEmpty()) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Name is already used!", null));
-			return;
+		if(!subject.getName().equals(loaded.getName())) {
+			Map<String, Object> searchParams = new HashMap<>();
+			searchParams.put("name", subject.getName());
+			List<Subject> subjects = subjectDAO.getList(searchParams);
+			
+			if(!subjects.isEmpty()) {
+				ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Name is already used!", null));
+				return;
+			}
 		}
 		
 		subjectDAO.merge(subject);
 		
 		for(Integer idTeacher : teachers) {
-			Teacherteachessubject teacherteachessubject = new Teacherteachessubject();
-			teacherteachessubject.setSubject(subject);
 			User teacher = new User();
 			teacher.setIdUser(idTeacher);
-			teacherteachessubject.setUser(teacher);
-			teacherteachessubjectDAO.create(teacherteachessubject);
+			
+			Map<String, Object> searchParams = new HashMap<>();
+			searchParams.put("subject", subject);
+			searchParams.put("user", teacher);
+			List<Teacherteachessubject> teacherteachessubjects = teacherteachessubjectDAO.getList(searchParams);
+			
+			if(teacherteachessubjects.isEmpty()) {
+				Teacherteachessubject teacherteachessubject = new Teacherteachessubject();
+				teacherteachessubject.setSubject(subject);
+				teacherteachessubject.setUser(teacher);
+				
+				teacherteachessubjectDAO.create(teacherteachessubject);
+			}
 		}
 		
 		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully updated subject", null));

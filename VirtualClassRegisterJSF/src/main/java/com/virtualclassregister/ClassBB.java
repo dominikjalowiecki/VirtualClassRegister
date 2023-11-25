@@ -3,6 +3,7 @@ package com.virtualclassregister;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import com.virtualclassregister.dao.ClassDAO;
 import com.virtualclassregister.dao.UserDAO;
@@ -11,14 +12,20 @@ import com.virtualclassregister.entities.User;
 
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.annotation.ManagedProperty;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.Getter;
 
 @Named
 @RequestScoped
 public class ClassBB {
+	
+	@Inject
+	@ManagedProperty("#{textMessage}")
+	private ResourceBundle textMessage;
 	
 	@EJB
 	ClassDAO classDAO;
@@ -29,19 +36,15 @@ public class ClassBB {
 	@Inject
 	FacesContext ctx;
 	
-	private Class clazz;
-	
-	public Class getClazz() {
-		return clazz;
-	}
-	
-	public List<Class> getList(){		
-		return classDAO.getFullList();
-	}
+	@Getter private Class clazz;
 	
 	public ClassBB() {
 		clazz = new Class();
 		clazz.setUser(new User());
+	}
+	
+	public List<Class> getList(){		
+		return classDAO.getFullList();
 	}
 	
 	public void addClass() {
@@ -50,7 +53,7 @@ public class ClassBB {
 		List<Class> clazzs = classDAO.getList(searchParams);
 		
 		if(!clazzs.isEmpty()) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Name is already used!", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("name_is_already_user"), null));
 			clazz.setName(null);
 			return;
 		}
@@ -60,7 +63,7 @@ public class ClassBB {
 		clazz = new Class();
 		clazz.setUser(new User());
 		
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully added new class", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_added_new_class"), null));
 	}
 	
 }

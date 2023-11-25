@@ -1,11 +1,39 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	xmlns:ui="jakarta.faces.facelets"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="http://primefaces.org/ui">
 
 	<p:panel styleClass="text-center mb-4">
 		<h1>
 			<ui:insert name="title">Page header</ui:insert>
 		</h1>
+		<h:form id="languageForm">
+			<p:outputLabel for="language">#{textMain.select_language}: </p:outputLabel>
+			<p:selectOneMenu id="language" value="#{langBB.selectedLanguage}" var="l" panelStyle="width:180px" converter="languageConverter">
+				<f:selectItems value="#{langBB.availableLanguages}" var="language" itemLabel="#{language.name}" itemValue="#{language}" />
+				<p:column style="width:10%">
+                    <span class="flag flag-#{l.code}" style="width: 30px; height: 20px"/>
+                </p:column>
+
+                <p:column>
+                    <h:outputText value="#{l.name}"/>
+                </p:column>
+               	<f:ajax render="@all"/>
+            </p:selectOneMenu>
+		</h:form>
+		<p:linkButton outcome="index" value="#{textMain.main_page}" />
+		<p:linkButton outcome="login" value="#{textMain.login}" rendered="#{remoteClient == null ? 'true' : 'false' }" />
+		<h:panelGroup rendered="#{remoteClient != null ? 'true' : 'false' }">
+			<p:linkButton outcome="addUser" value="#{textMain.add_user}" rendered="#{remoteClient.details.role == 'ADMINISTRATOR' ? 'true' : 'false'}" />
+			<p:linkButton outcome="addClass" value="#{textMain.add_class}" />
+			<p:linkButton outcome="profile" value="#{textMain.profile}" />
+			<p:linkButton outcome="subject" value="#{textMain.subject}" />
+			<h:form styleClass="inline">
+				<p:commandButton value="#{textMain.logout}" action="#{userBB.logout()}" />
+			</h:form>
+		</h:panelGroup>
+		
 	</p:panel>
 
 </ui:composition>

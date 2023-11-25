@@ -31,7 +31,7 @@
 		<param-name>permissions</param-name>
 		<param-value>
 /jakarta.faces.resource : PUBLIC;
-/pages : TEACHER;
+/pages : ADMINISTRATOR;
 /pages/login.jsf : PUBLIC;
 /pages/addUser.jsf : ADMINISTRATOR;
 /pages/profile.jsf : STUDENT, TEACHER, ADMINISTRATOR;

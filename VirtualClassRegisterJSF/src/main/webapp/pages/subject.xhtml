@@ -1,18 +1,19 @@
 <ui:composition template="/templates/page-template.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+	xmlns:ui="jakarta.faces.facelets"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="http://primefaces.org/ui">
 	
 	<ui:define name="title">Virtual Class Register - Subject</ui:define>
 	
 	<ui:define name="content">
 	
-		<p:linkButton outcome="index" value="Main Page" />
-		
-		<p:panel styleClass="mb-4">
+		<p:messages id="messages" closable="true">
+			<p:autoUpdate/>
+		</p:messages>
+			
+		<p:panel header="Add Subject" styleClass="mb-4" toggleable="true" collapsed="true">
 			<h:form id="form">
 			
 				<p:panelGrid columns="2" layout="grid">
@@ -26,16 +27,12 @@
 			        <p:outputLabel for="teachers">Teacher</p:outputLabel>
 			        <p:selectManyMenu id="teachers" value="#{subjectBB.teachers}" showCheckbox="true" filter="true" filterMatchMode="contains" filterNormalize="true"
 			        	required="true" requiredMessage="Teachers are required!">
-			            <c:forEach items="#{userBB.tutors}" var="t"> 
-	                    	<f:selectItem itemLabel="#{t.forename} #{t.surname} #{t.email}" itemValue="#{t.idUser}"/>
-	                    </c:forEach>
+                    	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname} #{t.email}" itemValue="#{t.idUser}"/>
 			        </p:selectManyMenu>
 			        
 			    </p:panelGrid>
 			    
-		     	<p:commandButton value="Add Subject" action="#{subjectBB.addSubject()}" update="@form subjects"/>
-		     	
-			    <p:messages id="messages" closable="true"/>
+		     	<p:commandButton value="Add Subject" action="#{subjectBB.addSubject()}" update="@form subjects"/>		     	
 		    </h:form>
 		</p:panel>
 		
@@ -45,13 +42,18 @@
 				<p:panelGrid columns="2" layout="grid">
 			        
 			        <p:outputLabel for="name">Name</p:outputLabel>
-			        <p:inputText id="name" value="#{subjectBB.subject.name}"/>
+			        <p:inputText id="name" value="#{subjectBB.searchName}"/>
 			        
 			    </p:panelGrid>
 			    
    		     	<p:commandButton value="Search" action="#{subjectBB.search()}" update="@form"/>
+   		     	<p:commandButton value="Clear" action="#{subjectBB.clear()}" update="@form"/>
 			
-				<p:dataTable value="#{subjectBB.subjects}" var="s">
+				<p:commandButton value="CSV" styleClass="mr-2 mb-2">
+                    <p:dataExporter type="csv" target="subjects" fileName="subjects" />
+                </p:commandButton>
+			
+				<p:dataTable id="subjects" value="#{subjectBB.lazySubject}" var="s" paginator="true" rows="10" rowsPerPageTemplate="5,10,15">
 				
 					<p:column>
 						<f:facet name="header">
@@ -60,7 +62,7 @@
 						<h:outputText value="#{s.name}" />
 					</p:column>
 					
-					<p:column>
+					<p:column exportable="false">
 						<f:facet name="header">
 							<h:outputText value="Options" />
 						</f:facet>

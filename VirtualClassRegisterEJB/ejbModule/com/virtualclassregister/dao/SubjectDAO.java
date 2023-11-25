@@ -1,5 +1,6 @@
 package com.virtualclassregister.dao;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Map;
 
@@ -44,32 +45,118 @@ public class SubjectDAO {
 		return list;
 	}
 	
-	public List<Subject> getList(Map<String, String> searchParams) {
+	public List<Subject> getList(Map<String, Object> searchParams) {
+		List<Subject> list = null;
+		
+		Query query = prepareQuery(searchParams);
+
+		list = query.getResultList();
+
+		return list;
+	}
+	
+	public int getCount(Map<String, Object> searchParams) {
+		String select = "SELECT COUNT(s) FROM Subject s ";
+		String where = "";
+		
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				if (where.isEmpty()) {
+					where = "WHERE ";
+				} else {
+					where += "AND ";
+				}
+				
+				String key = set.getKey();
+				
+				where += "s.";
+				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					where += words[1] + " LIKE :" + words[1] + " ";
+				} else {
+					where += key + " = :" + key + " ";
+				}
+			}
+		}
+		
+		Query query = em.createQuery(select + where);
+		
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				String key = set.getKey();				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					query.setParameter(words[1], "%" + set.getValue() + "%");
+				} else {
+					query.setParameter(key, set.getValue());
+				}
+			}
+		}
+		
+		int count = ((Long) query.getSingleResult()).intValue();
+		return count;
+	}
+	
+	public List<Subject> getList(Map<String, Object> searchParams, int offset, int pageSize) {		
 		List<Subject> list = null;
 
+		Query query = prepareQuery(searchParams);
+
+		list = query
+				.setMaxResults(pageSize)
+				.setFirstResult(offset)
+				.getResultList();
+
+		return list;
+	}
+	
+	private Query prepareQuery(Map<String, Object> searchParams) {
 		String select = "SELECT s ";
 		String from = "FROM Subject s ";
 		String where = "";
 		String orderby = "ORDER BY s.name ASC";
 
-		for (Map.Entry<String, String> set : searchParams.entrySet()) {
-			if (where.isEmpty()) {
-				where = "WHERE ";
-			} else {
-				where += "AND ";
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				if (where.isEmpty()) {
+					where = "WHERE ";
+				} else {
+					where += "AND ";
+				}
+				
+				String key = set.getKey();
+				
+				where += "s.";
+				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					where += words[1] + " LIKE :" + words[1] + " ";
+				} else {
+					where += key + " = :" + key + " ";
+				}
 			}
-			where += "s." + set.getKey() + " = :" + set.getKey() + " ";
 		}
 		
 		Query query = em.createQuery(select + from + where + orderby);
 		
-		for (Map.Entry<String, String> set : searchParams.entrySet()) {
-			query.setParameter(set.getKey(), set.getValue());
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				String key = set.getKey();				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					query.setParameter(words[1], "%" + set.getValue() + "%");
+				} else {
+					query.setParameter(key, set.getValue());
+				}
+			}
 		}
-
-		list = query.getResultList();
-
-		return list;
+		
+		return query;
 	}
 
 }
