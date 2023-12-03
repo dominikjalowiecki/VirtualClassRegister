@@ -30,12 +30,21 @@ public class Class implements Serializable {
 	private User user;
 
 	//bi-directional many-to-one association to Lesson
-	@OneToMany(mappedBy="clazz")
+	@OneToMany(mappedBy="clazz", fetch=FetchType.EAGER)
 	private List<Lesson> lessons;
 
 	//bi-directional many-to-one association to User
 	@OneToMany(mappedBy="clazz")
 	private List<User> users;
+	
+	public Class(Class clazz) {
+		this.idClass = clazz.idClass;
+		this.name = clazz.name;
+		this.behaviourpoints = clazz.behaviourpoints;
+		this.user = clazz.user;
+		this.lessons = clazz.lessons;
+		this.users = clazz.users;
+	}
 
 	public Class() {
 	}

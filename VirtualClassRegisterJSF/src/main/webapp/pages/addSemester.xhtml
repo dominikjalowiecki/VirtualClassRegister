@@ -1,0 +1,37 @@
+<ui:composition template="/templates/page-template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="jakarta.faces.facelets"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="title">Virtual Class Register - Add Semester</ui:define>
+	
+	<ui:define name="content">
+			
+		<p:panel styleClass="mb-4">
+			<h:form id="form">
+			
+				<p:panelGrid columns="2" layout="grid">
+			        
+			        <p:outputLabel for="name">Name</p:outputLabel>
+			        <p:inputText id="name" value="#{semesterBB.semester.name}" required="true"
+			        	requiredMessage="#{textValidation.name_is_required}" validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}">
+			        	<f:validateLength minimum="2" maximum="65"/>
+			        </p:inputText>
+			        
+			        <p:outputLabel for="range" value="Range Selection" />
+					<p:datePicker id="range" selectionMode="range" value="#{semesterBB.range}"  readonlyInput="true" mindate="#{semesterBB.currentDate}" required="true"
+						requiredMessage="#{textValidation.range_is_required}" />
+			        
+			    </p:panelGrid>
+			    
+		     	<p:commandButton value="Add semester" action="#{semesterBB.addSemester()}" update="@form"/>
+		     	
+			    <p:messages id="messages"/>
+		    </h:form>
+		</p:panel>
+		
+	</ui:define>
+	
+</ui:composition>

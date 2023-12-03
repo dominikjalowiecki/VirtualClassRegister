@@ -8,31 +8,41 @@
 		<h1>
 			<ui:insert name="title">Page header</ui:insert>
 		</h1>
-		<h:form id="languageForm">
-			<p:outputLabel for="language">#{textMain.select_language}: </p:outputLabel>
-			<p:selectOneMenu id="language" value="#{langBB.selectedLanguage}" var="l" panelStyle="width:180px" converter="languageConverter">
-				<f:selectItems value="#{langBB.availableLanguages}" var="language" itemLabel="#{language.name}" itemValue="#{language}" />
-				<p:column style="width:10%">
-                    <span class="flag flag-#{l.code}" style="width: 30px; height: 20px"/>
-                </p:column>
-
-                <p:column>
-                    <h:outputText value="#{l.name}"/>
-                </p:column>
-               	<f:ajax render="@all"/>
-            </p:selectOneMenu>
-		</h:form>
-		<p:linkButton outcome="index" value="#{textMain.main_page}" />
-		<p:linkButton outcome="login" value="#{textMain.login}" rendered="#{remoteClient == null ? 'true' : 'false' }" />
-		<h:panelGroup rendered="#{remoteClient != null ? 'true' : 'false' }">
-			<p:linkButton outcome="addUser" value="#{textMain.add_user}" rendered="#{remoteClient.details.role == 'ADMINISTRATOR' ? 'true' : 'false'}" />
-			<p:linkButton outcome="addClass" value="#{textMain.add_class}" />
-			<p:linkButton outcome="profile" value="#{textMain.profile}" />
-			<p:linkButton outcome="subject" value="#{textMain.subject}" />
-			<h:form styleClass="inline">
-				<p:commandButton value="#{textMain.logout}" action="#{userBB.logout()}" />
-			</h:form>
-		</h:panelGroup>
+		<div class="grid">
+			<div class="col-12 md:col-8 flex align-items-center justify-content-start">
+				<p:linkButton outcome="index" value="#{textMain.main_page}" />
+				<p:linkButton outcome="login" value="#{textMain.login}" rendered="#{remoteClient == null ? 'true' : 'false' }" />
+				<h:panelGroup rendered="#{remoteClient != null ? 'true' : 'false' }">
+					<p:linkButton outcome="addUser" value="#{textMain.add_user}" rendered="#{remoteClient.details.role == 'ADMINISTRATOR' ? 'true' : 'false'}" />
+					<p:linkButton outcome="class" value="#{textMain.class}" />
+					<p:linkButton outcome="addSemester" value="#{textMain.add_semester}" />
+					<p:linkButton outcome="addLesson" value="#{textMain.add_lesson}" />
+					<p:linkButton outcome="profile" value="#{textMain.profile}" />
+					<p:linkButton outcome="subject" value="#{textMain.subject}" />
+					<p:linkButton outcome="timetable" value="#{textMain.timetable}" />
+					<h:form styleClass="inline">
+						<p:commandButton value="#{textMain.logout}" action="#{userBB.logout()}" />
+					</h:form>
+				</h:panelGroup>
+			</div>
+			
+			<div class="col-12 md:col-4 flex align-items-center justify-content-end">
+				<h:form id="languageForm">
+					<p:outputLabel for="language">#{textMain.select_language}: </p:outputLabel>
+					<p:selectOneMenu id="language" value="#{langBB.selectedLanguage}" var="l" panelStyle="width:180px" converter="languageConverter">
+						<f:selectItems value="#{langBB.availableLanguages}" var="language" itemLabel="#{language.name}" itemValue="#{language}" />
+						<p:column style="width:10%">
+		                    <span class="flag flag-#{l.code}" style="width: 30px; height: 20px"/>
+		                </p:column>
+		
+		                <p:column>
+		                    <h:outputText value="#{l.name}"/>
+		                </p:column>
+		               	<f:ajax render="@all"/>
+		            </p:selectOneMenu>
+				</h:form>
+			</div>
+		</div>
 		
 	</p:panel>
 

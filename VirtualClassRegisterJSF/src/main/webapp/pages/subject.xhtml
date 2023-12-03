@@ -32,11 +32,11 @@
 			        
 			    </p:panelGrid>
 			    
-		     	<p:commandButton value="Add Subject" action="#{subjectBB.addSubject()}" update="@form subjects"/>		     	
+		     	<p:commandButton value="Add Subject" action="#{subjectBB.addSubject()}" update="@form subjects-panel"/>		     	
 		    </h:form>
 		</p:panel>
 		
-		<p:panel id="subjects">
+		<p:panel id="subjects-panel">
 			<h:form>
 			
 				<p:panelGrid columns="2" layout="grid">
@@ -66,7 +66,7 @@
 						<f:facet name="header">
 							<h:outputText value="Options" />
 						</f:facet>
-						<p:commandButton value="Edit" ajax="false"
+						<p:commandButton value="Details" ajax="false"
 							action="#{subjectBB.editSubject(s)}" />
 						<p:commandButton value="Remove"
 							action="#{subjectBB.removeSubject(s)}" update="@form" />

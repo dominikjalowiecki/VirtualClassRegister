@@ -1,16 +1,14 @@
 package com.virtualclassregister.dao;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Map;
+
+import com.virtualclassregister.entities.Subject;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-
-import com.virtualclassregister.entities.Class;
-import com.virtualclassregister.entities.Subject;
 
 @Stateless
 public class SubjectDAO {

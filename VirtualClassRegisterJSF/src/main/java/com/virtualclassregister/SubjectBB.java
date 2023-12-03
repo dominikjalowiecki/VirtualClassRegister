@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.primefaces.model.LazyDataModel;
-
 import com.virtualclassregister.dao.SubjectDAO;
 import com.virtualclassregister.dao.TeacherteachessubjectDAO;
 import com.virtualclassregister.entities.Subject;
@@ -13,7 +11,6 @@ import com.virtualclassregister.entities.Teacherteachessubject;
 import com.virtualclassregister.entities.User;
 import com.virtualclassregister.lazyModels.LazySubject;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
@@ -21,11 +18,13 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.Flash;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
 
 @Named
 @RequestScoped
+@Transactional
 public class SubjectBB {
 	
 	@EJB

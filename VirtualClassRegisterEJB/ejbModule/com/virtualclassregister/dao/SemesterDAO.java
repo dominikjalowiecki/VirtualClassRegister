@@ -2,12 +2,12 @@ package com.virtualclassregister.dao;
 
 import java.util.List;
 
+import com.virtualclassregister.entities.Semester;
+
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-
-import com.virtualclassregister.entities.Semester;
 
 @Stateless
 public class SemesterDAO {
@@ -35,7 +35,7 @@ public class SemesterDAO {
 	public List<Semester> getFullList() {
 		List<Semester> list = null;
 
-		Query query = em.createQuery("SELECT s FROM Semester s");
+		Query query = em.createQuery("SELECT s FROM Semester s ORDER BY start DESC");
 
 		list = query.getResultList();
 

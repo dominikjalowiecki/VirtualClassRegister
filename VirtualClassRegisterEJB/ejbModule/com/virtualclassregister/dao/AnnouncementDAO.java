@@ -2,12 +2,12 @@ package com.virtualclassregister.dao;
 
 import java.util.List;
 
+import com.virtualclassregister.entities.Announcement;
+
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-
-import com.virtualclassregister.entities.Announcement;
 
 @Stateless
 public class AnnouncementDAO {

@@ -1,6 +1,8 @@
 package com.virtualclassregister.entities;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +36,7 @@ public class Semester implements Serializable {
 	//bi-directional many-to-one association to Lesson
 	@OneToMany(mappedBy="semester")
 	private List<Lesson> lessons;
-
+	
 	public Semester() {
 	}
 
@@ -48,6 +50,11 @@ public class Semester implements Serializable {
 
 	public Date getEnd() {
 		return this.end;
+	}
+	
+	public String getEndDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(this.end);
 	}
 
 	public void setEnd(Date end) {
@@ -64,6 +71,11 @@ public class Semester implements Serializable {
 
 	public Date getStart() {
 		return this.start;
+	}
+	
+	public String getStartDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(this.start);
 	}
 
 	public void setStart(Date start) {

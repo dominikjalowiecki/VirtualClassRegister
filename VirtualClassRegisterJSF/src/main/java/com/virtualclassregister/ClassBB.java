@@ -9,15 +9,18 @@ import com.virtualclassregister.dao.ClassDAO;
 import com.virtualclassregister.dao.UserDAO;
 import com.virtualclassregister.entities.Class;
 import com.virtualclassregister.entities.User;
+import com.virtualclassregister.lazyModels.LazyClass;
 
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.annotation.ManagedProperty;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.Flash;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
+import lombok.Setter;
 
 @Named
 @RequestScoped
@@ -36,7 +39,16 @@ public class ClassBB {
 	@Inject
 	FacesContext ctx;
 	
+	@Inject
+	Flash flash;
+	
 	@Getter private Class clazz;
+	
+	@Inject
+	@Getter private LazyClass lazyClass;
+	
+	@Getter @Setter private String searchName;
+	@Getter @Setter private int searchIdTutor;
 	
 	public ClassBB() {
 		clazz = new Class();
@@ -48,13 +60,12 @@ public class ClassBB {
 	}
 	
 	public void addClass() {
-		Map<String, String> searchParams = new HashMap<>();
+		Map<String, Object> searchParams = new HashMap<>();
 		searchParams.put("name", clazz.getName());
 		List<Class> clazzs = classDAO.getList(searchParams);
 		
 		if(!clazzs.isEmpty()) {
 			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("name_is_already_user"), null));
-			clazz.setName(null);
 			return;
 		}
 		
@@ -64,6 +75,35 @@ public class ClassBB {
 		clazz.setUser(new User());
 		
 		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_added_new_class"), null));
+	}
+	
+	public String editClass(Class clazz) {
+		flash.put("clazz", clazz);
+		
+		return "editClass?faces-redirect=true";
+	}
+	
+	public void removeClass(Class clazz) {
+		classDAO.remove(clazz);
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully removed class", null));
+	}
+	
+	public void search() {
+		Map<String, Object> searchParams = new HashMap<>();
+		if(!searchName.isEmpty()) {
+			searchParams.put("like name", searchName);
+		}
+		if(searchIdTutor != 0) {
+			User tutor = new User();
+			tutor.setIdUser(searchIdTutor);
+			searchParams.put("user", tutor);
+		}
+		lazyClass.setSearchParams(searchParams);
+	}
+	
+	public void clear() {
+		searchName = "";
+		lazyClass.setSearchParams(null);
 	}
 	
 }

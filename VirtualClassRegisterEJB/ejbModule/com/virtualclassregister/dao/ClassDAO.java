@@ -3,13 +3,12 @@ package com.virtualclassregister.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.virtualclassregister.entities.Class;
+
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-
-import com.virtualclassregister.entities.Class;
-import com.virtualclassregister.entities.User;
 
 @Stateless
 public class ClassDAO {
@@ -44,32 +43,118 @@ public class ClassDAO {
 		return list;
 	}
 	
-	public List<Class> getList(Map<String, String> searchParams) {
+	public List<Class> getList(Map<String, Object> searchParams) {
+		List<Class> list = null;
+		
+		Query query = prepareQuery(searchParams);
+
+		list = query.getResultList();
+
+		return list;
+	}
+	
+	public int getCount(Map<String, Object> searchParams) {
+		String select = "SELECT COUNT(c) FROM Class c ";
+		String where = "";
+		
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				if (where.isEmpty()) {
+					where = "WHERE ";
+				} else {
+					where += "AND ";
+				}
+				
+				String key = set.getKey();
+				
+				where += "c.";
+				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					where += words[1] + " LIKE :" + words[1] + " ";
+				} else {
+					where += key + " = :" + key + " ";
+				}
+			}
+		}
+		
+		Query query = em.createQuery(select + where);
+		
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				String key = set.getKey();				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					query.setParameter(words[1], "%" + set.getValue() + "%");
+				} else {
+					query.setParameter(key, set.getValue());
+				}
+			}
+		}
+		
+		int count = ((Long) query.getSingleResult()).intValue();
+		return count;
+	}
+	
+	public List<Class> getList(Map<String, Object> searchParams, int offset, int pageSize) {		
 		List<Class> list = null;
 
+		Query query = prepareQuery(searchParams);
+
+		list = query
+				.setMaxResults(pageSize)
+				.setFirstResult(offset)
+				.getResultList();
+
+		return list;
+	}
+	
+	private Query prepareQuery(Map<String, Object> searchParams) {
 		String select = "SELECT c ";
 		String from = "FROM Class c ";
 		String where = "";
 		String orderby = "ORDER BY c.name ASC";
 
-		for (Map.Entry<String, String> set : searchParams.entrySet()) {
-			if (where.isEmpty()) {
-				where = "WHERE ";
-			} else {
-				where += "AND ";
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				if (where.isEmpty()) {
+					where = "WHERE ";
+				} else {
+					where += "AND ";
+				}
+				
+				String key = set.getKey();
+				
+				where += "c.";
+				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					where += words[1] + " LIKE :" + words[1] + " ";
+				} else {
+					where += key + " = :" + key + " ";
+				}
 			}
-			where += "c." + set.getKey() + " = :" + set.getKey() + " ";
 		}
 		
 		Query query = em.createQuery(select + from + where + orderby);
 		
-		for (Map.Entry<String, String> set : searchParams.entrySet()) {
-			query.setParameter(set.getKey(), set.getValue());
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				String key = set.getKey();				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					query.setParameter(words[1], "%" + set.getValue() + "%");
+				} else {
+					query.setParameter(key, set.getValue());
+				}
+			}
 		}
-
-		list = query.getResultList();
-
-		return list;
+		
+		return query;
 	}
 
 }

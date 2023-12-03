@@ -3,6 +3,7 @@ package com.virtualclassregister.entities;
 import java.io.Serializable;
 import jakarta.persistence.*;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -48,6 +49,18 @@ public class Lesson implements Serializable {
 	@JoinColumn(name="idTeacherTeachesSubject")
 	private Teacherteachessubject teacherteachessubject;
 
+	public Lesson(Lesson lesson) {
+		this.idLesson = lesson.idLesson;
+		this.day = lesson.day;
+		this.start = lesson.start;
+		this.end = lesson.end;
+		this.announcements = lesson.announcements;
+		this.grades = lesson.grades;
+		this.clazz = lesson.clazz;
+		this.semester = lesson.semester;
+		this.teacherteachessubject = lesson.teacherteachessubject;
+	}
+	
 	public Lesson() {
 	}
 
@@ -70,6 +83,11 @@ public class Lesson implements Serializable {
 	public Time getEnd() {
 		return this.end;
 	}
+	
+	public String getEndTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+		return sdf.format(this.start);
+	}
 
 	public void setEnd(Time end) {
 		this.end = end;
@@ -77,6 +95,11 @@ public class Lesson implements Serializable {
 
 	public Time getStart() {
 		return this.start;
+	}
+	
+	public String getStartTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+		return sdf.format(this.start);
 	}
 
 	public void setStart(Time start) {

@@ -20,11 +20,13 @@ import jakarta.faces.context.Flash;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
 
 @Named
 @ViewScoped
+@Transactional
 public class EditSubjectBB implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -85,16 +87,28 @@ public class EditSubjectBB implements Serializable {
 		
 		subjectDAO.merge(subject);
 		
+		Map<String, Object> searchParams = new HashMap<>();
+		searchParams.put("subject", subject);
+		List<Teacherteachessubject> teacherteachessubjects = teacherteachessubjectDAO.getList(searchParams);
+		List<Integer> idsTeachers = new ArrayList<>();
+		
+		for(Teacherteachessubject teacherteachessubject : teacherteachessubjects) {
+			Integer idTeacher = teacherteachessubject.getUser().getIdUser();
+			idsTeachers.add(idTeacher);
+			if(!teachers.contains(idTeacher)) {
+				try {
+					teacherteachessubjectDAO.remove(teacherteachessubject);
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		for(Integer idTeacher : teachers) {
-			User teacher = new User();
-			teacher.setIdUser(idTeacher);
-			
-			Map<String, Object> searchParams = new HashMap<>();
-			searchParams.put("subject", subject);
-			searchParams.put("user", teacher);
-			List<Teacherteachessubject> teacherteachessubjects = teacherteachessubjectDAO.getList(searchParams);
-			
-			if(teacherteachessubjects.isEmpty()) {
+			if(!idsTeachers.contains(idTeacher)) {
+				User teacher = new User();
+				teacher.setIdUser(idTeacher);
+				
 				Teacherteachessubject teacherteachessubject = new Teacherteachessubject();
 				teacherteachessubject.setSubject(subject);
 				teacherteachessubject.setUser(teacher);

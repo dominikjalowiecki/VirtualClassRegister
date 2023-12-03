@@ -1,0 +1,94 @@
+<ui:composition template="/templates/page-template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="jakarta.faces.facelets"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="title">Virtual Class Register - Class</ui:define>
+	
+	<ui:define name="content">
+	
+		<p:messages id="messages" closable="true">
+			<p:autoUpdate/>
+		</p:messages>
+			
+		<p:panel header="Add Class" styleClass="mb-4" toggleable="true" collapsed="true">
+		    <h:form id="form">
+			
+				<p:panelGrid columns="2" layout="grid">
+			        
+			        <p:outputLabel for="name">Name</p:outputLabel>
+			        <p:inputText id="name" value="#{classBB.clazz.name}" required="true"
+			        	requiredMessage="#{textValidation.name_is_required}" validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}">
+			        	<f:validateLength minimum="2" maximum="65"/>
+			        </p:inputText>
+			        
+			        <p:outputLabel for="tutor">Tutor</p:outputLabel>
+	                <p:selectOneMenu id="tutor" value="#{classBB.clazz.user.idUser}" required="true" requiredMessage="#{textValidation.tutor_is_required}">
+	                    <f:selectItem itemLabel="Select Tutor" itemValue=""/>
+                    	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname}" itemValue="#{t.idUser}"/>
+	                </p:selectOneMenu>
+			        
+			    </p:panelGrid>
+			    
+		     	<p:commandButton value="Add Class" action="#{classBB.addClass()}" update="@form classes-panel"/>
+		    </h:form>
+		</p:panel>
+		
+		<p:panel id="classes-panel">
+			<h:form>
+			
+				<p:panelGrid columns="2" layout="grid">
+			        
+			        <p:outputLabel for="name">Name</p:outputLabel>
+			        <p:inputText id="name" value="#{classBB.searchName}"/>
+			        
+			        <p:outputLabel for="tutor">Tutor</p:outputLabel>
+	                <p:selectOneMenu id="tutor" value="#{classBB.searchIdTutor}">
+	                    <f:selectItem itemLabel="Select Tutor" itemValue=""/>
+                    	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname}" itemValue="#{t.idUser}"/>
+	                </p:selectOneMenu>
+			        
+			    </p:panelGrid>
+			    
+   		     	<p:commandButton value="Search" action="#{classBB.search()}" update="@form"/>
+   		     	<p:commandButton value="Clear" action="#{classBB.clear()}" update="@form"/>
+			
+				<p:commandButton value="CSV" styleClass="mr-2 mb-2">
+                    <p:dataExporter type="csv" target="classes" fileName="classes" />
+                </p:commandButton>
+			
+				<p:dataTable id="classes" value="#{classBB.lazyClass}" var="c" paginator="true" rows="10" rowsPerPageTemplate="5,10,15">
+				
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Name" />
+						</f:facet>
+						<h:outputText value="#{c.name}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Tutor" />
+						</f:facet>
+						<h:outputText value="#{c.user.forename} #{c.user.surname}" />
+					</p:column>
+					
+					<p:column exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Options" />
+						</f:facet>
+						<p:commandButton value="Details" ajax="false"
+							action="#{classBB.editClass(c)}" />
+						<p:commandButton value="Remove"
+							action="#{classBB.removeClass(c)}" update="@form" />
+					</p:column>
+		
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+		
+	</ui:define>
+	
+</ui:composition>

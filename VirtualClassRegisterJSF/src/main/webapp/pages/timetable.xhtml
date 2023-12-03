@@ -8,7 +8,41 @@
 	<ui:define name="title">Virtual Class Register - Timetable</ui:define>
 	
 	<ui:define name="content">
+		
+		<p:panel id="timetable-panel">
+			<h:form>
 			
+				<p:panelGrid columns="2" layout="grid">
+			        
+			        <p:outputLabel for="semester">Semester</p:outputLabel>
+	                <p:selectOneMenu id="semester" value="#{timetableBB.searchIdSemester}">
+	                    <f:selectItem itemLabel="Select Semester" itemValue=""/>
+                    	<f:selectItems value="#{semesterBB.list}" var="s" itemLabel="#{s.name} #{s.startDate} - #{s.endDate}" itemValue="#{s.idSemester}"/>
+	                </p:selectOneMenu>
+	                
+	                <p:outputLabel for="class">Class</p:outputLabel>
+	                <p:selectOneMenu id="class" value="#{timetableBB.searchIdClass}">
+	                    <f:selectItem itemLabel="Select Class" itemValue=""/>
+                    	<f:selectItems value="#{classBB.list}" var="c" itemLabel="#{c.name}" itemValue="#{c.idClass}"/>
+	                </p:selectOneMenu>
+			        
+			        <p:outputLabel for="teacher">Teacher</p:outputLabel>
+	                <p:selectOneMenu id="teacher" value="#{timetableBB.searchIdTeacher}">
+	                    <f:selectItem itemLabel="Select Teacher" itemValue=""/>
+                    	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname}" itemValue="#{t.idUser}"/>
+	                </p:selectOneMenu>
+			        
+			    </p:panelGrid>
+			    
+   		     	<p:commandButton value="Search" action="#{timetableBB.search()}" update="@form"/>
+			
+				<p:commandButton value="CSV" styleClass="mr-2 mb-2">
+                    <p:dataExporter type="csv" target="" fileName="" />
+                </p:commandButton>
+			
+			</h:form>
+		</p:panel>
+		
 	</ui:define>
 	
 </ui:composition>
