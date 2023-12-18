@@ -40,7 +40,7 @@ public class SemesterBB {
 		semester = new Semester();
 	}
 	
-	public LocalDate  getCurrentDate() {
+	public LocalDate getCurrentDate() {
 		return LocalDate.now();
 	}
 	

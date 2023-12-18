@@ -1,0 +1,72 @@
+<ui:composition template="/templates/page-template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="jakarta.faces.facelets"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="title">Virtual Class Register - Teacher Panel</ui:define>
+	
+	<ui:define name="content">
+	
+		<p:messages id="messages" closable="true">
+			<p:autoUpdate/>
+		</p:messages>
+		
+		<p:panel id="teacher-panel">
+			<h:form>
+			
+				<p:panelGrid columns="2" layout="grid">
+			        
+			        <p:outputLabel for="semester">Semester</p:outputLabel>
+	                <p:selectOneMenu id="semester" value="#{teacherPanelBB.searchIdSemester}" required="true" requiredMessage="Semester is required!">
+	                    <f:selectItem itemLabel="Select Semester" itemValue=""/>
+                    	<f:selectItems value="#{semesterBB.list}" var="s" itemLabel="#{s.name} #{s.startDate} - #{s.endDate}" itemValue="#{s.idSemester}"/>
+	                </p:selectOneMenu>
+			        
+			    </p:panelGrid>
+			    
+   		     	<p:commandButton value="Search" action="#{teacherPanelBB.search()}" update="@form"/>
+			
+				<p:commandButton value="CSV" styleClass="mr-2 mb-2">
+                    <p:dataExporter type="csv" target="lessons" fileName="lessons" />
+                </p:commandButton>
+			
+				<p:dataTable id="lessons" value="#{teacherPanelBB.lessons}" var="l" paginator="true" rows="10" rowsPerPageTemplate="5,10,15">
+				
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Lesson" />
+						</f:facet>
+						<h:outputText value="#{l.teacherteachessubject.subject.name}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Class" />
+						</f:facet>
+						<h:outputText value="#{l.clazz.name}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Date" />
+						</f:facet>
+						<h:outputText value="#{l.day.toLowerCase()} #{l.startTime} - #{l.endTime}" />
+					</p:column>
+					
+					<p:column exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Options" />
+						</f:facet>
+						<p:commandButton value="Details" ajax="false"
+							action="#{teacherPanelBB.lessonDetails(l)}" />
+					</p:column>
+		
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+		
+	</ui:define>
+	
+</ui:composition>

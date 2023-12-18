@@ -34,7 +34,7 @@ public class Class implements Serializable {
 	private List<Lesson> lessons;
 
 	//bi-directional many-to-one association to User
-	@OneToMany(mappedBy="clazz")
+	@OneToMany(mappedBy="clazz", fetch=FetchType.EAGER)
 	private List<User> users;
 	
 	public Class(Class clazz) {

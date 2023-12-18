@@ -18,11 +18,13 @@
 					<p:linkButton outcome="addSemester" value="#{textMain.add_semester}" />
 					<p:linkButton outcome="addLesson" value="#{textMain.add_lesson}" />
 					<p:linkButton outcome="profile" value="#{textMain.profile}" />
+					<p:linkButton outcome="teacherPanel" value="#{textMain.teacherPanel}" />
 					<p:linkButton outcome="subject" value="#{textMain.subject}" />
 					<p:linkButton outcome="timetable" value="#{textMain.timetable}" />
 					<h:form styleClass="inline">
 						<p:commandButton value="#{textMain.logout}" action="#{userBB.logout()}" />
 					</h:form>
+					Witaj #{remoteClient.details.name}!
 				</h:panelGroup>
 			</div>
 			

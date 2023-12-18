@@ -1,0 +1,103 @@
+<ui:composition template="/templates/page-template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="jakarta.faces.facelets"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+	
+	<f:metadata>
+	    <f:viewAction action="#{studentDetailsBB.onLoad()}" />
+	</f:metadata>
+	
+	<ui:define name="title">Virtual Class Register - Student Details</ui:define>
+	
+	<ui:define name="content">
+	
+		<p:messages id="messages" closable="true">
+			<p:autoUpdate/>
+		</p:messages>
+			
+		<p:panel id='studentDetails' styleClass="mb-4">
+			<p>Subject: #{studentDetailsBB.lesson.teacherteachessubject.subject.name}</p>	
+			<p>Class: #{studentDetailsBB.student.clazz.name}</p>
+			<p>Date: #{studentDetailsBB.lesson.day.toLowerCase()} #{studentDetailsBB.lesson.startTime} - #{studentDetailsBB.lesson.endTime}</p>
+			<p>Name: #{studentDetailsBB.student.name}</p>
+			<h:form>
+				<p:commandButton value="Go back" ajax="false"
+								action="#{studentDetailsBB.lessonDetails()}" />
+			</h:form>
+			<p>Grades</p>
+			<div id="grades" class="flex flex-row flex-wrap">
+				<c:forEach var="grade" items="#{studentDetailsBB.grades}">
+					<div class="flex align-items-center justify-content-center w-3rem h-3rem bg-primary font-bold border-round m-2">#{grade.value}</div>
+	          	</c:forEach>			
+			</div>
+			<p>Behaviour Points</p>
+			<div id="behaviour-points" class="flex flex-row flex-wrap">
+				<c:forEach var="behaviourPoint" items="#{studentDetailsBB.behaviourPoints}">
+					<div class="flex align-items-center justify-content-center w-3rem h-3rem bg-primary font-bold border-round m-2">#{behaviourPoint.value}</div>
+	          	</c:forEach>
+			</div>
+		</p:panel>
+		
+		<p:panel id="grades-panel">
+			<h3>Grades</h3>
+			<h:form id="formGrades">
+			
+				<p:panelGrid columns="2" layout="grid">
+			        
+			        <p:outputLabel for="grade-type">Grade Type</p:outputLabel>
+	                <p:selectOneMenu id="grade-type" value="#{studentDetailsBB.idGradeType}" required="true" requiredMessage="Grade Type is required!">
+	                    <f:selectItem itemLabel="Select Grade Type" itemValue=""/>
+                    	<f:selectItems value="#{studentDetailsBB.gradeTypes}" var="g" itemLabel="#{g.name}" itemValue="#{g.idGradeType}"/>
+	                </p:selectOneMenu>
+
+			        <p:outputLabel for="gradeValue">Grade Value</p:outputLabel>
+	                <p:selectOneMenu id="gradeValue" value="#{studentDetailsBB.gradeValue}" required="true" requiredMessage="Grade Value is required!">
+	                    <f:selectItem itemLabel="Select Value" itemValue=""/>
+	                    <f:selectItem itemLabel="1" itemValue="1"/>
+	                    <f:selectItem itemLabel="2" itemValue="2"/>
+	                    <f:selectItem itemLabel="2.5" itemValue="2.5"/>
+	                    <f:selectItem itemLabel="3" itemValue="3"/>
+	                    <f:selectItem itemLabel="3.5" itemValue="3.5"/>
+	                    <f:selectItem itemLabel="4" itemValue="4"/>
+	                    <f:selectItem itemLabel="4.5" itemValue="4.5"/>
+	                    <f:selectItem itemLabel="5" itemValue="5"/>
+	                    <f:selectItem itemLabel="5.5" itemValue="5.5"/>
+	                    <f:selectItem itemLabel="6" itemValue="6"/>
+	                </p:selectOneMenu>
+	                
+	                <p:outputLabel for="gradeNote">Grade Note</p:outputLabel>
+	                <p:inputTextarea id="gradeNote" value="#{studentDetailsBB.gradeNote}" rows="6" cols="30"/>
+			        
+			    </p:panelGrid>
+			    
+		     	<p:commandButton value="Add Grade" action="#{studentDetailsBB.addGrade()}" update="@form studentDetails"/>
+		     	
+		    </h:form>
+		</p:panel>
+		
+		<p:panel id="behaviour-points-panel">
+			<h3>Behaviour Points</h3>
+			<h:form id="formBehaviourPoints">
+			
+				<p:panelGrid columns="2" layout="grid">
+	                
+	                <p:outputLabel for="behaviourPointValue" value="Behaviour Point Value"/>
+                	<p:inputNumber id="behaviourPointValue" value="#{studentDetailsBB.behaviourPointValue}" modifyValueOnWheel="false"
+                		minValue="-50" maxValue="50"/>
+	                
+	                <p:outputLabel for="note">Note</p:outputLabel>
+	                <p:inputTextarea id="note" value="#{studentDetailsBB.behaviourPointNote}" rows="6" cols="30"/>
+			        
+			    </p:panelGrid>
+			    
+		     	<p:commandButton value="Add Behaviour Points" action="#{studentDetailsBB.addBehaviourPoints()}" update="@form studentDetails"/>
+		     	
+		    </h:form>
+		</p:panel>
+		
+	</ui:define>
+	
+</ui:composition>

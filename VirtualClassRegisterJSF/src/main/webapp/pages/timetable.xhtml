@@ -15,7 +15,7 @@
 				<p:panelGrid columns="2" layout="grid">
 			        
 			        <p:outputLabel for="semester">Semester</p:outputLabel>
-	                <p:selectOneMenu id="semester" value="#{timetableBB.searchIdSemester}">
+	                <p:selectOneMenu id="semester" value="#{timetableBB.searchIdSemester}" required="true" requiredMessage="Semester is required!">
 	                    <f:selectItem itemLabel="Select Semester" itemValue=""/>
                     	<f:selectItems value="#{semesterBB.list}" var="s" itemLabel="#{s.name} #{s.startDate} - #{s.endDate}" itemValue="#{s.idSemester}"/>
 	                </p:selectOneMenu>
@@ -25,8 +25,8 @@
 	                    <f:selectItem itemLabel="Select Class" itemValue=""/>
                     	<f:selectItems value="#{classBB.list}" var="c" itemLabel="#{c.name}" itemValue="#{c.idClass}"/>
 	                </p:selectOneMenu>
-			        
-			        <p:outputLabel for="teacher">Teacher</p:outputLabel>
+	                
+	                <p:outputLabel for="teacher">Teacher</p:outputLabel>
 	                <p:selectOneMenu id="teacher" value="#{timetableBB.searchIdTeacher}">
 	                    <f:selectItem itemLabel="Select Teacher" itemValue=""/>
                     	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname}" itemValue="#{t.idUser}"/>
@@ -34,13 +34,19 @@
 			        
 			    </p:panelGrid>
 			    
-   		     	<p:commandButton value="Search" action="#{timetableBB.search()}" update="@form"/>
-			
-				<p:commandButton value="CSV" styleClass="mr-2 mb-2">
-                    <p:dataExporter type="csv" target="" fileName="" />
-                </p:commandButton>
-			
+   		     	<p:commandButton value="Search" action="#{timetableBB.search()}" update="@form timetable"/>
+   		     	
+   		     	<p:messages id="messages"/>
+   		     	
 			</h:form>
+			
+			<div class="grid">
+               	<div class="col-12 lg:col-8">
+               	 	<p:schedule id="timetable" value="#{timetableBB.eventModel}" widgetVar="timetable" tooltip="true"
+               	 		leftHeaderTemplate="" rightHeaderTemplate="" allDaySlot="false" height="600px"
+               	 		view="timeGridWeek" columnHeaderFormat="timeGridWeek: {weekday: 'short'}" centerHeaderTemplate=""/>
+               	</div>
+			</div>
 		</p:panel>
 		
 	</ui:define>

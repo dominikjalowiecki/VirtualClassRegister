@@ -84,7 +84,13 @@ public class ClassBB {
 	}
 	
 	public void removeClass(Class clazz) {
-		classDAO.remove(clazz);
+		try {
+			classDAO.remove(clazz);
+		} catch(Exception e) {
+			e.printStackTrace();
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to remove class", null));
+			return;
+		}
 		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully removed class", null));
 	}
 	

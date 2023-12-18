@@ -86,7 +86,13 @@ public class SubjectBB {
 	}
 	
 	public void removeSubject(Subject subject) {
-		subjectDAO.remove(subject);
+		try {
+			subjectDAO.remove(subject);
+		} catch(Exception e) {
+			e.printStackTrace();
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to remove subject", null));
+			return;
+		}
 		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully removed subject", null));
 	}
 	

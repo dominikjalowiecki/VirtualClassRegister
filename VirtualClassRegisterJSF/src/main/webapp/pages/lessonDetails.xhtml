@@ -1,0 +1,53 @@
+<ui:composition template="/templates/page-template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="jakarta.faces.facelets"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<f:metadata>
+	    <f:viewAction action="#{lessonDetailsBB.onLoad()}" />
+	</f:metadata>
+	
+	<ui:define name="title">Virtual Class Register - Lesson Details</ui:define>
+	
+	<ui:define name="content">
+			
+		<p:panel styleClass="mb-4">
+			<p>Subject: #{lessonDetailsBB.lesson.teacherteachessubject.subject.name}</p>	
+			<p>Class: #{lessonDetailsBB.lesson.clazz.name}</p>
+			<p>Date: #{lessonDetailsBB.lesson.day.toLowerCase()} #{lessonDetailsBB.lesson.startTime} - #{lessonDetailsBB.lesson.endTime}</p>
+		</p:panel>
+		
+		<p:panel id="students-panel">
+			<h:form>
+			
+				<p:commandButton value="CSV" styleClass="mr-2 mb-2">
+                    <p:dataExporter type="csv" target="classes" fileName="classes" />
+                </p:commandButton>
+			
+				<p:dataTable id="lessons" value="#{lessonDetailsBB.lesson.clazz.users}" var="u" paginator="true" rows="10" rowsPerPageTemplate="5,10,15">
+				
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Name" />
+						</f:facet>
+						<h:outputText value="#{u.name}" />
+					</p:column>
+					
+					<p:column exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Options" />
+						</f:facet>
+						<p:commandButton value="Details" ajax="false"
+							action="#{lessonDetailsBB.studentDetails(u, lessonDetailsBB.lesson)}" />
+					</p:column>
+		
+				</p:dataTable>
+				
+			</h:form>
+		</p:panel>
+		
+	</ui:define>
+	
+</ui:composition>

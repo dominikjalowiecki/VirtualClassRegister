@@ -1,7 +1,9 @@
 package com.virtualclassregister.dao;
 
 import java.util.List;
+import java.util.Map;
 
+import com.virtualclassregister.entities.Class;
 import com.virtualclassregister.entities.Grade;
 
 import jakarta.ejb.Stateless;
@@ -40,6 +42,62 @@ public class GradeDAO {
 		list = query.getResultList();
 
 		return list;
+	}
+	
+	public List<Grade> getList(Map<String, Object> searchParams) {		
+		List<Grade> list = null;
+
+		Query query = prepareQuery(searchParams);
+
+		list = query.getResultList();
+
+		return list;
+	}
+	
+	private Query prepareQuery(Map<String, Object> searchParams) {
+		String select = "SELECT g ";
+		String from = "FROM Grade g ";
+		String where = "";
+		String orderby = "ORDER BY g.created ASC";
+
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				if (where.isEmpty()) {
+					where = "WHERE ";
+				} else {
+					where += "AND ";
+				}
+				
+				String key = set.getKey();
+				
+				where += "g.";
+				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					where += words[1] + " LIKE :" + words[1] + " ";
+				} else {
+					where += key + " = :" + key + " ";
+				}
+			}
+		}
+		
+		Query query = em.createQuery(select + from + where + orderby);
+		
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				String key = set.getKey();				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					query.setParameter(words[1], "%" + set.getValue() + "%");
+				} else {
+					query.setParameter(key, set.getValue());
+				}
+			}
+		}
+		
+		return query;
 	}
 
 }

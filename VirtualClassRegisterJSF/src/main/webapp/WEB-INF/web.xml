@@ -35,6 +35,9 @@
 /pages/login.jsf : PUBLIC;
 /pages/addUser.jsf : ADMINISTRATOR;
 /pages/profile.jsf : STUDENT, TEACHER, ADMINISTRATOR;
+/pages/teacherPanel.jsf : TEACHER;
+/pages/lessonDetails.jsf : TEACHER;
+/pages/studentDetails.jsf : TEACHER;
 		</param-value>
 	</init-param>
 	<init-param>

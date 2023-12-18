@@ -99,6 +99,10 @@ public class User implements Serializable {
 	public String getForename() {
 		return this.forename;
 	}
+	
+	public String getName() {
+		return this.forename + " " + this.surname;
+	}
 
 	public void setForename(String forename) {
 		this.forename = forename;

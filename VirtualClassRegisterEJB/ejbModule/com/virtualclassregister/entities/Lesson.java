@@ -86,7 +86,7 @@ public class Lesson implements Serializable {
 	
 	public String getEndTime() {
 		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
-		return sdf.format(this.start);
+		return sdf.format(this.end);
 	}
 
 	public void setEnd(Time end) {
