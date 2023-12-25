@@ -3,8 +3,9 @@ package com.virtualclassregister.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.virtualclassregister.entities.Class;
 import com.virtualclassregister.entities.Grade;
+import com.virtualclassregister.entities.Semester;
+import com.virtualclassregister.entities.User;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -41,6 +42,19 @@ public class GradeDAO {
 
 		list = query.getResultList();
 
+		return list;
+	}
+	
+	public List<Grade> getListByStudent(Semester semester, User student) {
+		List<Grade> list = null;
+		
+		Query query = em.createQuery("SELECT g FROM Grade g JOIN g.lesson AS l WHERE l.semester = :semester AND g.user = :student ORDER BY l.idLesson ASC, g.created ASC");
+		
+		query.setParameter("semester", semester);
+		query.setParameter("student", student);
+		
+		list = query.getResultList();
+		
 		return list;
 	}
 	

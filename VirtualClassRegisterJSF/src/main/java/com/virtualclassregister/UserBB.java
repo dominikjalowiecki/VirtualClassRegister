@@ -1,5 +1,6 @@
 package com.virtualclassregister;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +13,13 @@ import com.virtualclassregister.dao.ClassDAO;
 import com.virtualclassregister.dao.UserDAO;
 import com.virtualclassregister.entities.Class;
 import com.virtualclassregister.entities.User;
+import com.virtualclassregister.lazyModels.LazyUser;
 
 import jakarta.ejb.EJB;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.Flash;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,9 +28,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Named
-@RequestScoped
-public class UserBB {
+@ViewScoped
+public class UserBB implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@EJB
 	UserDAO userDAO;
 	
@@ -37,8 +42,16 @@ public class UserBB {
 	@Inject
 	FacesContext ctx;
 	
+	@Inject
+	Flash flash;
+	
 	@Getter private User user;
 	@Getter @Setter private String currentPassword;
+	
+	@Inject
+	@Getter private LazyUser lazyUser;
+	
+	@Getter @Setter private String searchEmail;
 	
 	public UserBB() {
 		user = new User();
@@ -46,13 +59,20 @@ public class UserBB {
 	}
 	
 	public List<User> getTutors() {
-		Map<String, String> searchParams = new HashMap<>();
+		Map<String, Object> searchParams = new HashMap<>();
 		searchParams.put("role", "TEACHER");		
 		return userDAO.getList(searchParams);
 	}
 	
+	public List<Class> getClasses(){
+		if("STUDENT".equals(user.getRole())) {
+			return classDAO.getFullList();
+		}
+		return null;
+	}
+	
 	public void addUser() {
-		Map<String, String> searchParams = new HashMap<>();
+		Map<String, Object> searchParams = new HashMap<>();
 		searchParams.put("email", user.getEmail());
 		List<User> users = userDAO.getList(searchParams);
 		
@@ -92,7 +112,7 @@ public class UserBB {
 	}
 	
 	public String login() {
-		Map<String, String> searchParams = new HashMap<>();
+		Map<String, Object> searchParams = new HashMap<>();
 		searchParams.put("email", user.getEmail());		
 		List<User> users = userDAO.getList(searchParams);
 		
@@ -120,6 +140,36 @@ public class UserBB {
 		ctx.getExternalContext().getFlash().setKeepMessages(true);
 		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You have been logged out", null));
 		return "login?faces-redirect=true";
+	}
+	
+	public String editUser(User user) {
+		flash.put("user", user);
+		
+		return "editUser?faces-redirect=true";
+	}
+	
+	public void removeUser(User user) {
+		try {
+			userDAO.remove(user);
+		} catch(Exception e) {
+			e.printStackTrace();
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to remove user", null));
+			return;
+		}
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully removed user", null));
+	}
+	
+	public void search() {
+		Map<String, Object> searchParams = new HashMap<>();
+		if(!searchEmail.isEmpty()) {
+			searchParams.put("like email", searchEmail);
+		}
+		lazyUser.setSearchParams(searchParams);
+	}
+	
+	public void clear() {
+		searchEmail = "";
+		lazyUser.setSearchParams(null);
 	}
 	
 }

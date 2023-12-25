@@ -1,0 +1,22 @@
+<ui:composition template="/templates/page-template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="jakarta.faces.facelets"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="title">Virtual Class Register - Administration panel</ui:define>
+	
+	<ui:define name="content">
+		
+		<p:panel>
+			<p:linkButton styleClass="m-1" outcome="user" value="#{textMain.user}" />
+			<p:linkButton styleClass="m-1" outcome="addSemester" value="#{textMain.add_semester}" />
+			<p:linkButton styleClass="m-1" outcome="class" value="#{textMain.class}" />
+			<p:linkButton styleClass="m-1" outcome="subject" value="#{textMain.subject}" />
+			<p:linkButton styleClass="m-1" outcome="addLesson" value="#{textMain.add_lesson}" />
+		</p:panel>
+		
+	</ui:define>
+	
+</ui:composition>

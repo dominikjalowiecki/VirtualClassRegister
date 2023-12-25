@@ -20,13 +20,11 @@ import jakarta.faces.context.Flash;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
 
 @Named
 @ViewScoped
-@Transactional
 public class EditSubjectBB implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -99,6 +97,7 @@ public class EditSubjectBB implements Serializable {
 				try {
 					teacherteachessubjectDAO.remove(teacherteachessubject);
 				} catch(Exception e) {
+					ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to remove teacher from subject", null));
 					e.printStackTrace();
 				}
 			}

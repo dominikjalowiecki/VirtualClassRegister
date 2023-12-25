@@ -67,6 +67,8 @@ public class EditClassBB implements Serializable {
 		
 		classDAO.merge(clazz);
 		
+		loaded = new Class(clazz);
+		
 		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully updated class", null));
 	}
 	

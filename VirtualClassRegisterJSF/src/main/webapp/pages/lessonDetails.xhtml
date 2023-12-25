@@ -12,18 +12,85 @@
 	<ui:define name="title">Virtual Class Register - Lesson Details</ui:define>
 	
 	<ui:define name="content">
+	
+		<p:messages id="messages" closable="true">
+			<p:autoUpdate/>
+		</p:messages>
 			
 		<p:panel styleClass="mb-4">
 			<p>Subject: #{lessonDetailsBB.lesson.teacherteachessubject.subject.name}</p>	
 			<p>Class: #{lessonDetailsBB.lesson.clazz.name}</p>
 			<p>Date: #{lessonDetailsBB.lesson.day.toLowerCase()} #{lessonDetailsBB.lesson.startTime} - #{lessonDetailsBB.lesson.endTime}</p>
+			<hr/>
+			<p class="font-bold">Add Announcement</p>
+			<h:form id="form">
+						
+				<p:panelGrid columns="2" layout="grid">
+			        <p:outputLabel for="title">Title</p:outputLabel>
+			        <p:inputText id="title" value="#{lessonDetailsBB.announcement.title}" required="true"
+			        	requiredMessage="Title is required!" maxlength="85"/>
+			        
+			        <p:outputLabel for="content">Content</p:outputLabel>
+			        <h:panelGroup>
+				        <p:inputTextarea id="content" value="#{lessonDetailsBB.announcement.content}" rows="6" cols="30" required="true" requiredMessage="Content is required!"
+		                	counter="announcementContent" maxlength="200" counterTemplate="{0} characters remaining."/>
+		                <h:outputText id="announcementContent" class="block" />
+	                </h:panelGroup>
+		       	</p:panelGrid>
+			
+				<p:commandButton styleClass="m-1" value="Add Announcement" action="#{lessonDetailsBB.addAnnouncement()}" update="@form announcements-panel"/>
+				<p:linkButton styleClass="m-1" outcome="teacherPanel" value="Go back" />
+				
+			</h:form>
 		</p:panel>
 		
-		<p:panel id="students-panel">
+		<p:panel id="announcements-panel" header="Announcements" styleClass="mb-4" toggleable="true" collapsed="true">
 			<h:form>
 			
-				<p:commandButton value="CSV" styleClass="mr-2 mb-2">
-                    <p:dataExporter type="csv" target="classes" fileName="classes" />
+				<p:commandButton value="CSV" styleClass="m-1">
+                    <p:dataExporter type="csv" target="announcements" fileName="announcements" />
+                </p:commandButton>
+			
+				<p:dataTable id="announcements" value="#{lessonDetailsBB.announcements}" var="a" paginator="true" rows="10" rowsPerPageTemplate="5,10,15">
+				
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Title" />
+						</f:facet>
+						<h:outputText value="#{a.title}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Content" />
+						</f:facet>
+						<h:outputText value="#{a.content}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Crated" />
+						</f:facet>
+						<h:outputText value="#{a.createdDatetime}" />
+					</p:column>
+					
+					<p:column exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Options" />
+						</f:facet>
+						<p:commandButton styleClass="m-1" value="Remove"
+							action="#{lessonDetailsBB.removeAnnouncement(a)}" update="@form" />
+					</p:column>
+		
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+		
+		<p:panel id="students-panel" header="Students" toggleable="true" collapsed="true">
+			<h:form>
+			
+				<p:commandButton value="CSV" styleClass="m-1">
+                    <p:dataExporter type="csv" target="students" fileName="students" />
                 </p:commandButton>
 			
 				<p:dataTable id="lessons" value="#{lessonDetailsBB.lesson.clazz.users}" var="u" paginator="true" rows="10" rowsPerPageTemplate="5,10,15">
@@ -39,7 +106,7 @@
 						<f:facet name="header">
 							<h:outputText value="Options" />
 						</f:facet>
-						<p:commandButton value="Details" ajax="false"
+						<p:commandButton styleClass="m-1" value="Details" ajax="false"
 							action="#{lessonDetailsBB.studentDetails(u, lessonDetailsBB.lesson)}" />
 					</p:column>
 		

@@ -3,6 +3,7 @@ package com.virtualclassregister;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +71,12 @@ public class StudentDetailsBB implements Serializable {
 	@Getter @Setter private Byte behaviourPointValue;
 	@Getter @Setter private String behaviourPointNote;
 	
+	@Getter @Setter private Grade selectedGrade;
+	@Getter @Setter private Behaviourpoint selectedBehaviourPoint;
+
+	private List<Grade> grades;
+	private List<Behaviourpoint> behaviourPoints;
+	
 	public List<Gradetype> getGradeTypes(){		
 		return gradetypeDAO.getFullList();
 	}
@@ -78,7 +85,7 @@ public class StudentDetailsBB implements Serializable {
 		Map<String, Object> searchParams = new HashMap<>();
 		searchParams.put("user", student);
 		searchParams.put("lesson", lesson);
-		List<Grade> grades = gradeDAO.getList(searchParams);
+		grades = gradeDAO.getList(searchParams);
 		
 		return grades;
 	}
@@ -86,9 +93,37 @@ public class StudentDetailsBB implements Serializable {
 	public List<Behaviourpoint> getBehaviourPoints() {
 		Map<String, Object> searchParams = new HashMap<>();
 		searchParams.put("user", student);
-		List<Behaviourpoint> behaviourPoints = behaviourpointDAO.getList(searchParams);
+		searchParams.put("clazz", lesson.getClazz());
+		searchParams.put("semester", lesson.getSemester());
+		behaviourPoints = behaviourpointDAO.getList(searchParams);
 		
 		return behaviourPoints;
+	}
+	
+	public BigDecimal getGradesWeightedAverage() {
+		BigDecimal weightedAverage = new BigDecimal("0");
+		BigDecimal weightSummary = new BigDecimal("0");
+		
+		for(Grade grade : grades) {
+			weightedAverage = weightedAverage.add(grade.getValue().multiply(grade.getGradetype().getWeightage()));
+			weightSummary = weightSummary.add(grade.getGradetype().getWeightage());
+		}
+		
+		if(!BigDecimal.ZERO.equals(weightSummary)) {
+			weightedAverage = weightedAverage.divide(weightSummary, 2, RoundingMode.HALF_UP);
+		}
+		
+		return weightedAverage;
+	}
+	
+	public int getBehaviourPointsSummary() {
+		int summary = 0;
+		
+		for(Behaviourpoint behaviourpoint : behaviourPoints) {
+			summary += behaviourpoint.getValue();
+		}
+		
+		return summary;
 	}
 	
 	public void onLoad() throws IOException {
@@ -150,6 +185,14 @@ public class StudentDetailsBB implements Serializable {
 		flash.put("lesson", lesson);
 		
 		return "lessonDetails?faces-redirect=true";
+	}
+	
+	public void deleteGrade() {
+		gradeDAO.remove(selectedGrade);
+	}
+	
+	public void deleteBehaviourPoint() {
+		behaviourpointDAO.remove(selectedBehaviourPoint);
 	}
 	
 }

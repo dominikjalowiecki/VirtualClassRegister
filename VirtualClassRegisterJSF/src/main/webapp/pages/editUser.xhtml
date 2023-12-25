@@ -1,0 +1,72 @@
+<ui:composition template="/templates/page-template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="jakarta.faces.facelets"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<f:metadata>
+	    <f:viewAction action="#{editUserBB.onLoad()}" />
+	</f:metadata>
+	
+	<ui:define name="title">Virtual Class Register - Edit User</ui:define>
+	
+	<ui:define name="content">
+	
+			
+		<p:panel styleClass="mb-4">
+			<p>Name: #{editUserBB.user.name}</p>
+			<h:panelGroup rendered="#{editUserBB.user.clazz != null ? 'true' : 'false' }" >
+				<p>Class: #{editUserBB.user.clazz.name}</p>
+			</h:panelGroup>
+			<p>Role: #{editUserBB.user.role}</p>
+			<p>Created: 
+				<h:outputText value="#{editUserBB.user.created}" >
+    				<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+				</h:outputText>
+			</p>
+			<hr/>
+			<p class="font-bold">Edit User</p>
+			<h:form id="form">
+			
+				<p:panelGrid columns="2" layout="grid">
+			        
+			        <p:outputLabel for="email">Email</p:outputLabel>
+			        <p:inputText id="email" value="#{editUserBB.user.email}" required="true"
+			        	requiredMessage="Email is required!" maxlength="120" validatorMessage="Invalid email format!">
+			        	<f:validateRegex
+							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+						<f:validateLength maximum="120"/>
+			        </p:inputText>
+			        
+			        <p:outputLabel for="class">Class</p:outputLabel> 
+                	<p:selectOneMenu id="class" value="#{editUserBB.user.clazz.idClass}">
+	                    <f:selectItem itemLabel="Select Class" itemValue=""/>
+                    	<f:selectItems value="#{editUserBB.classes}" var="c" itemLabel="#{c.name}" itemValue="#{c.idClass}"/>
+	                </p:selectOneMenu>
+			        
+			        <h:panelGroup>
+			        	<p:outputLabel for="password">Password</p:outputLabel>
+			        	<p class="text-sm m-0">Minimum eight characters, at least one uppercase letter, one lowercase letter and one number</p>
+			        </h:panelGroup>
+			        <p:password id="password" value="#{editUserBB.newPassword}" match="repeatPassword" validatorMessage="Invalid password format!">
+				        <f:validateRegex
+								pattern="^$|^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"/>
+			        </p:password>
+			        
+			        <p:outputLabel for="repeatPassword">Repeat Password</p:outputLabel>
+			        <p:password id="repeatPassword" value="#{editUserBB.newPassword}"/>
+			        
+			    </p:panelGrid>
+			    
+		     	<p:commandButton styleClass="m-1"  value="Edit User" action="#{editUserBB.editUser()}" update="@form"/>
+		     	<p:button styleClass="m-1" value="Back" outcome="user"/>
+		     	
+			    <p:messages id="messages"/>
+		     	
+		    </h:form>
+		</p:panel>
+		
+	</ui:define>
+	
+</ui:composition>

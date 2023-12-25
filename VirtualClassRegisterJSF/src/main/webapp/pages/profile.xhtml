@@ -21,12 +21,18 @@
 			        <p:outputLabel for="currentPassword">Current Password</p:outputLabel>
 			        <p:password id="currentPassword" value="#{userBB.currentPassword}" required="true" requiredMessage="Current Password is required!"/>
 			        
-			        <p:outputLabel for="newPassword">New Password<small class="block">Minimum eight characters, at least one uppercase letter, one lowercase letter and one number</small></p:outputLabel>
-			        <p:password id="newPassword" value="#{userBB.user.password}" required="true" requiredMessage="New Password is required!"/>
+			        <h:panelGroup>
+			        	<p:outputLabel for="newPassword">New Password</p:outputLabel>
+			        	<p class="text-sm m-0">Minimum eight characters, at least one uppercase letter, one lowercase letter and one number</p>
+			        </h:panelGroup>
+			        <p:password id="newPassword" value="#{userBB.user.password}" required="true" requiredMessage="New Password is required!" validatorMessage="Invalid password format!">
+				        <f:validateRegex
+							pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"/>
+			        </p:password>
 			        
 			    </p:panelGrid>
 			    
-		     	<p:commandButton value="Change Password" action="#{userBB.changePassword()}" update="@form"/>
+		     	<p:commandButton styleClass="m-1" value="Change Password" action="#{userBB.changePassword()}" update="@form"/>
 		     	
 		    </h:form>
 	    </p:panel>
@@ -34,7 +40,10 @@
 	    <p:panel styleClass="mb-4">
 			<p>Name: #{remoteClient.details.name}</p>
 			<p>Email: #{remoteClient.details.email}</p>
-			<p>Role: #{remoteClient.details.role.toLowerCase()}</p>
+			<h:panelGroup rendered="#{remoteClient.details.clazz != null ? 'true' : 'false' }" >
+				<p>Class: #{remoteClient.details.clazz.name}</p>
+			</h:panelGroup>
+			<p>Role: #{remoteClient.details.role}</p>
 			<p>Created: 
 				<h:outputText value="#{remoteClient.details.created}" >
     				<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />

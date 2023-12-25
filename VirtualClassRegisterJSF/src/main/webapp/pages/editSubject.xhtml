@@ -20,20 +20,20 @@
 			        
 			        <p:outputLabel for="name">Name</p:outputLabel>
 			        <p:inputText id="name" value="#{editSubjectBB.subject.name}" required="true"
-			        	requiredMessage="Name is required!" validatorMessage="Name has to be between 2 to 65 characters!">
+			        	requiredMessage="Name is required!" maxlength="85" validatorMessage="Name has to be between 2 to 65 characters!">
 			        	<f:validateLength minimum="2" maximum="85"/>
 			        </p:inputText>
 			        
 			        <p:outputLabel for="teachers">Teacher</p:outputLabel>
 			        <p:selectManyMenu id="teachers" value="#{editSubjectBB.teachers}" showCheckbox="true" filter="true" filterMatchMode="contains" filterNormalize="true"
 			        	required="true" requiredMessage="Teachers are required!">
-                    	<f:selectItems value="#{userBB.tutors}" var="t"  itemLabel="#{t.forename} #{t.surname} #{t.email}" itemValue="#{t.idUser}"/>
+                    	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname} #{t.email}" itemValue="#{t.idUser}"/>
 			        </p:selectManyMenu>
 			        
 			    </p:panelGrid>
 			    
-		     	<p:commandButton value="Edit Subject" action="#{editSubjectBB.editSubject()}" update="@form"/>
-		     	<p:button value="Back" outcome="subject"/>
+		     	<p:commandButton styleClass="m-1" value="Edit Subject" action="#{editSubjectBB.editSubject()}" update="@form"/>
+		     	<p:button styleClass="m-1" value="Back" outcome="subject"/>
 		     	
 			    <p:messages id="messages"/>
 		    </h:form>

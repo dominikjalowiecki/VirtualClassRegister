@@ -85,7 +85,14 @@ public class LessonBB {
 	}
 	
 	public String removeLesson(Lesson lesson) {
-		lessonDAO.remove(lesson);
+		try {
+			lessonDAO.remove(lesson);
+		} catch(Exception e) {
+			e.printStackTrace();
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to remove lesson", null));
+			return null;
+		}
+		
 		ctx.getExternalContext().getFlash().setKeepMessages(true);
 		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully removed lesson", null));
 		return "class?faces-redirect=true";

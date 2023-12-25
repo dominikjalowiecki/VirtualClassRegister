@@ -8,7 +8,82 @@
 	<ui:define name="title">Virtual Class Register</ui:define>
 	
 	<ui:define name="content">
-		<h1>Index page</h1>
+	
+		<p:panel id="announcements-panel" header="Announcements" styleClass="mb-4">
+			<h:form>
+			
+				<p:panelGrid columns="2" layout="grid">
+			        
+			        <p:outputLabel for="semester">Semester</p:outputLabel>
+	                <p:selectOneMenu id="semester" value="#{announcementBB.searchIdSemester}">
+	                    <f:selectItem itemLabel="Select Semester" itemValue=""/>
+	                   	<f:selectItems value="#{semesterBB.list}" var="s" itemLabel="#{s.name} #{s.startDate} - #{s.endDate}" itemValue="#{s.idSemester}"/>
+	                   	<p:ajax update="lesson"/>
+	                </p:selectOneMenu>
+	                
+	                <h:panelGroup rendered="#{remoteClient.details.role == 'STUDENT' ? 'true' : 'false'}" >
+	                    <p:outputLabel for="lesson">Lesson</p:outputLabel>
+	                </h:panelGroup>
+	                
+	                <h:panelGroup rendered="#{remoteClient.details.role == 'STUDENT' ? 'true' : 'false'}" >
+		                <p:selectOneMenu id="lesson" value="#{announcementBB.searchIdLesson}">
+		                    <f:selectItem itemLabel="Select Lesson" itemValue=""/>
+		                   	<f:selectItems value="#{announcementBB.lessons}" var="l" itemLabel="#{l.teacherteachessubject.subject.name}" itemValue="#{l.idLesson}"/>
+		                </p:selectOneMenu>
+	                </h:panelGroup>
+	
+			    </p:panelGrid>
+		    
+  		     	<p:commandButton styleClass="m-1" value="Search" action="#{announcementBB.search()}" update="@form announcements-panel"/>
+			
+				<p:dataTable id="announcements" value="#{announcementBB.lazyAnnouncement}" var="a" paginator="true" rows="10" rowsPerPageTemplate="5,10,15">
+				
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Lesson" />
+						</f:facet>
+						<h:outputText value="#{a.lesson.teacherteachessubject.subject.name}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Semester" />
+						</f:facet>
+						<h:outputText value="#{a.lesson.semester.name}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Teacher" />
+						</f:facet>
+						<h:outputText value="#{a.lesson.teacherteachessubject.user.name}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Title" />
+						</f:facet>
+						<h:outputText value="#{a.title}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Content" />
+						</f:facet>
+						<h:outputText value="#{a.content}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Created" />
+						</f:facet>
+						<h:outputText value="#{a.createdDatetime}" />
+					</p:column>
+		
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+		
 	</ui:define>
 	
 </ui:composition>

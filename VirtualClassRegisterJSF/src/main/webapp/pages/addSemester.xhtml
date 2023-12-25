@@ -10,13 +10,14 @@
 	<ui:define name="content">
 			
 		<p:panel styleClass="mb-4">
+			<p:linkButton styleClass="m-1" outcome="administrationPanel" value="Go back" />
 			<h:form id="form">
 			
 				<p:panelGrid columns="2" layout="grid">
 			        
 			        <p:outputLabel for="name">Name</p:outputLabel>
 			        <p:inputText id="name" value="#{semesterBB.semester.name}" required="true"
-			        	requiredMessage="#{textValidation.name_is_required}" validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}">
+			        	requiredMessage="#{textValidation.name_is_required}" maxlength="65" validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}">
 			        	<f:validateLength minimum="2" maximum="65"/>
 			        </p:inputText>
 			        
@@ -26,7 +27,7 @@
 			        
 			    </p:panelGrid>
 			    
-		     	<p:commandButton value="Add semester" action="#{semesterBB.addSemester()}" update="@form"/>
+		     	<p:commandButton styleClass="m-1" value="Add semester" action="#{semesterBB.addSemester()}" update="@form"/>
 		     	
 			    <p:messages id="messages"/>
 		    </h:form>

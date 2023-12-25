@@ -18,7 +18,7 @@
 	</context-param>
   <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>saga</param-value>
+    <param-value>vela</param-value>
   </context-param>
   <filter>
 	<filter-name>SecurityFilter</filter-name>
@@ -32,12 +32,17 @@
 		<param-value>
 /jakarta.faces.resource : PUBLIC;
 /pages : ADMINISTRATOR;
-/pages/login.jsf : PUBLIC;
-/pages/addUser.jsf : ADMINISTRATOR;
-/pages/profile.jsf : STUDENT, TEACHER, ADMINISTRATOR;
-/pages/teacherPanel.jsf : TEACHER;
+/pages/addAnnouncement.jsf : TEACHER;
+/pages/announcements.jsf : STUDENT, TEACHER, ADMINISTRATOR;
+/pages/gradeBook.jsf : STUDENT;
+/pages/index.jsf : STUDENT, TEACHER, ADMINISTRATOR;
 /pages/lessonDetails.jsf : TEACHER;
+/pages/login.jsf : PUBLIC;
+/pages/profile.jsf : STUDENT, TEACHER, ADMINISTRATOR;
 /pages/studentDetails.jsf : TEACHER;
+/pages/teacherPanel.jsf : TEACHER;
+/pages/timetable.jsf : STUDENT, TEACHER, ADMINISTRATOR;
+/pages/viewExpired.jsf : PUBLIC;
 		</param-value>
 	</init-param>
 	<init-param>

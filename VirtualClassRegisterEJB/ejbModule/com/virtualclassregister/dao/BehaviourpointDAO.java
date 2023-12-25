@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.virtualclassregister.entities.Behaviourpoint;
-import com.virtualclassregister.entities.Grade;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;

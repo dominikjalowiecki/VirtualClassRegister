@@ -43,32 +43,118 @@ public class UserDAO {
 		return list;
 	}
 	
-	public List<User> getList(Map<String, String> searchParams) {
+	public List<User> getList(Map<String, Object> searchParams) {
+		List<User> list = null;
+		
+		Query query = prepareQuery(searchParams);
+
+		list = query.getResultList();
+
+		return list;
+	}
+	
+	public int getCount(Map<String, Object> searchParams) {
+		String select = "SELECT COUNT(u) FROM User u ";
+		String where = "";
+		
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				if (where.isEmpty()) {
+					where = "WHERE ";
+				} else {
+					where += "AND ";
+				}
+				
+				String key = set.getKey();
+				
+				where += "u.";
+				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					where += words[1] + " LIKE :" + words[1] + " ";
+				} else {
+					where += key + " = :" + key + " ";
+				}
+			}
+		}
+		
+		Query query = em.createQuery(select + where);
+		
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				String key = set.getKey();				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					query.setParameter(words[1], "%" + set.getValue() + "%");
+				} else {
+					query.setParameter(key, set.getValue());
+				}
+			}
+		}
+		
+		int count = ((Long) query.getSingleResult()).intValue();
+		return count;
+	}
+	
+	public List<User> getList(Map<String, Object> searchParams, int offset, int pageSize) {		
 		List<User> list = null;
 
+		Query query = prepareQuery(searchParams);
+
+		list = query
+				.setMaxResults(pageSize)
+				.setFirstResult(offset)
+				.getResultList();
+
+		return list;
+	}
+	
+	private Query prepareQuery(Map<String, Object> searchParams) {
 		String select = "SELECT u ";
 		String from = "FROM User u ";
 		String where = "";
 		String orderby = "ORDER BY u.forename, u.surname ASC";
 
-		for (Map.Entry<String, String> set : searchParams.entrySet()) {
-			if (where.isEmpty()) {
-				where = "WHERE ";
-			} else {
-				where += "AND ";
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				if (where.isEmpty()) {
+					where = "WHERE ";
+				} else {
+					where += "AND ";
+				}
+				
+				String key = set.getKey();
+				
+				where += "u.";
+				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					where += words[1] + " LIKE :" + words[1] + " ";
+				} else {
+					where += key + " = :" + key + " ";
+				}
 			}
-			where += "u." + set.getKey() + " = :" + set.getKey() + " ";
 		}
 		
 		Query query = em.createQuery(select + from + where + orderby);
 		
-		for (Map.Entry<String, String> set : searchParams.entrySet()) {
-			query.setParameter(set.getKey(), set.getValue());
+		if(searchParams != null) {
+			for (Map.Entry<String, Object> set : searchParams.entrySet()) {
+				String key = set.getKey();				
+				String words[] = key.split("\\s+");
+				
+				if(words.length == 2 && words[0].equals("like")) {
+					query.setParameter(words[1], "%" + set.getValue() + "%");
+				} else {
+					query.setParameter(key, set.getValue());
+				}
+			}
 		}
-
-		list = query.getResultList();
-
-		return list;
+		
+		return query;
 	}
 
 }

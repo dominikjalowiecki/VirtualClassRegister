@@ -1,9 +1,20 @@
 package com.virtualclassregister.entities;
 
 import java.io.Serializable;
-import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 
 /**
@@ -54,9 +65,6 @@ public class User implements Serializable {
 	@JoinColumn(name="idClass")
 	private Class clazz;
 
-	public User() {
-	}
-	
 	public User(User user) {
 		this.idUser = user.idUser;
 		this.created = user.created;
@@ -70,6 +78,9 @@ public class User implements Serializable {
 		this.grades = user.grades;
 		this.teacherteachessubjects = user.teacherteachessubjects;
 		this.clazz = user.clazz;
+	}
+	
+	public User() {
 	}
 
 	public int getIdUser() {

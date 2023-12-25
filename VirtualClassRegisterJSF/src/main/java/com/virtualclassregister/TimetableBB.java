@@ -130,7 +130,7 @@ public class TimetableBB implements Serializable {
 			
 	        DefaultScheduleEvent<?> event = DefaultScheduleEvent.builder()
         		.title(subjectName)
-        		.description(teacherName + "; Klasa " + clazzName)
+        		.description(teacherName + "; Class " + clazzName)
                 .startDate(LocalDateTime.ofInstant(c.toInstant(), ZoneId.systemDefault()))
                 .overlapAllowed(true)
                 .editable(false)

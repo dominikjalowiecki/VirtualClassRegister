@@ -2,8 +2,13 @@ package com.virtualclassregister;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import com.virtualclassregister.dao.AnnouncementDAO;
 import com.virtualclassregister.dao.LessonDAO;
+import com.virtualclassregister.entities.Announcement;
 import com.virtualclassregister.entities.Lesson;
 import com.virtualclassregister.entities.User;
 
@@ -25,6 +30,9 @@ public class LessonDetailsBB implements Serializable {
 	@EJB
 	LessonDAO lessonDAO;
 	
+	@EJB
+	AnnouncementDAO announcementDAO;
+	
 	@Inject
 	FacesContext ctx;
 	
@@ -34,12 +42,22 @@ public class LessonDetailsBB implements Serializable {
 	private Lesson loaded;
 	
 	@Getter private Lesson lesson;
+	@Getter private Announcement announcement;
+	
+	public List<Announcement> getAnnouncements() {
+		Map<String, Object> searchParams = new HashMap<>();
+		searchParams.put("lesson", lesson);
+		
+		return announcementDAO.getList(searchParams);
+	}
 	
 	public void onLoad() throws IOException {
 		loaded = (Lesson) flash.get("lesson");
 
 		if (loaded != null) {
 			lesson = new Lesson(loaded);
+			announcement = new Announcement();
+			announcement.setLesson(lesson);
 		} else {
 			ctx.getExternalContext().getFlash().setKeepMessages(true);
 			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid operation!", null));
@@ -56,6 +74,18 @@ public class LessonDetailsBB implements Serializable {
 		flash.put("lesson", lesson);
 		
 		return "studentDetails?faces-redirect=true";
+	}
+	
+	public void addAnnouncement() {
+		announcementDAO.create(announcement);
+		announcement = new Announcement();
+		announcement.setLesson(lesson);
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully added new announcement", null));
+	}
+	
+	public void removeAnnouncement(Announcement announcement) {
+		announcementDAO.remove(announcement);
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully removed announcement", null));
 	}
 	
 }

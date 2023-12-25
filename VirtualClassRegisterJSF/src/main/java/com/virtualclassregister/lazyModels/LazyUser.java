@@ -7,8 +7,8 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
-import com.virtualclassregister.dao.SubjectDAO;
-import com.virtualclassregister.entities.Subject;
+import com.virtualclassregister.dao.UserDAO;
+import com.virtualclassregister.entities.User;
 
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
@@ -17,23 +17,23 @@ import lombok.Setter;
 
 @Named
 @RequestScoped
-public class LazySubject extends LazyDataModel<Subject> {
+public class LazyUser extends LazyDataModel<User> {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Setter private Map<String, Object> searchParams;
 	
 	@EJB
-	SubjectDAO subjectDAO;
+	UserDAO userDAO;
 
 	@Override
 	public int count(Map<String, FilterMeta> filterBy) {
-		return subjectDAO.getCount(searchParams);
+		return userDAO.getCount(searchParams);
 	}
 
 	@Override
-	public List<Subject> load(int offset, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-		return subjectDAO.getList(searchParams, offset, pageSize);
+	public List<User> load(int offset, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+		return userDAO.getList(searchParams, offset, pageSize);
 	}
 
 }

@@ -5,7 +5,7 @@
 	xmlns:f="jakarta.faces.core"
 	xmlns:p="http://primefaces.org/ui">
 	
-	<ui:define name="title">Virtual Class Register - Teacher Panel</ui:define>
+	<ui:define name="title">Virtual Class Register - Teacher panel</ui:define>
 	
 	<ui:define name="content">
 	
@@ -26,9 +26,9 @@
 			        
 			    </p:panelGrid>
 			    
-   		     	<p:commandButton value="Search" action="#{teacherPanelBB.search()}" update="@form"/>
+   		     	<p:commandButton styleClass="m-1" value="Search" action="#{teacherPanelBB.search()}" update="@form"/>
 			
-				<p:commandButton value="CSV" styleClass="mr-2 mb-2">
+				<p:commandButton value="CSV" styleClass="m-1">
                     <p:dataExporter type="csv" target="lessons" fileName="lessons" />
                 </p:commandButton>
 			
@@ -59,7 +59,7 @@
 						<f:facet name="header">
 							<h:outputText value="Options" />
 						</f:facet>
-						<p:commandButton value="Details" ajax="false"
+						<p:commandButton styleClass="m-1" value="Details" ajax="false"
 							action="#{teacherPanelBB.lessonDetails(l)}" />
 					</p:column>
 		

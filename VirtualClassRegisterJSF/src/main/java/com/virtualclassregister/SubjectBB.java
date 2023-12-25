@@ -18,13 +18,11 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.Flash;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
 
 @Named
 @RequestScoped
-@Transactional
 public class SubjectBB {
 	
 	@EJB
