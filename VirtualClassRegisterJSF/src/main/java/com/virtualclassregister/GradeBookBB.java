@@ -1,14 +1,28 @@
 package com.virtualclassregister;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.simplesecurity.RemoteClient;
+
+import org.primefaces.model.charts.ChartData;
+import org.primefaces.model.charts.axes.cartesian.CartesianScales;
+import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearAxes;
+import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearTicks;
+import org.primefaces.model.charts.bar.BarChartOptions;
+import org.primefaces.model.charts.hbar.HorizontalBarChartDataSet;
+import org.primefaces.model.charts.hbar.HorizontalBarChartModel;
+import org.primefaces.model.charts.line.LineChartDataSet;
+import org.primefaces.model.charts.line.LineChartModel;
+import org.primefaces.model.charts.line.LineChartOptions;
+import org.primefaces.model.charts.optionconfig.title.Title;
 
 import com.virtualclassregister.dao.BehaviourpointDAO;
 import com.virtualclassregister.dao.GradeDAO;
@@ -20,7 +34,9 @@ import com.virtualclassregister.entities.User;
 import com.virtualclassregister.utils.LessonWithGrades;
 
 import jakarta.ejb.EJB;
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.Flash;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -42,6 +58,9 @@ public class GradeBookBB implements Serializable {
 	
 	@Inject
 	FacesContext ctx;
+	
+	@Inject
+	Flash flash;
 		
 	@Getter @Setter private Grade selectedGrade;
 	@Getter @Setter private Behaviourpoint selectedBehaviourPoint;
@@ -51,6 +70,33 @@ public class GradeBookBB implements Serializable {
 	@Getter private List<Behaviourpoint> behaviourPoints;
 	
 	@Getter @Setter private int searchIdSemester;
+	
+	private User requestedUser;
+	@Getter private User student;
+	
+	@Getter private HorizontalBarChartModel hbarModel;
+	@Getter private LineChartModel lineModel;
+	
+	public void onLoad() throws IOException {
+		student = (User) flash.get("student");
+		
+		HttpSession session = (HttpSession) ctx.getExternalContext().getSession(true);
+		RemoteClient<User> remoteClient = RemoteClient.load(session);
+		requestedUser = remoteClient.getDetails(); 
+		
+		if(student == null) {
+			student = requestedUser;
+			
+			if(!"Student".equals(student.getRole())) {
+				ctx.getExternalContext().getFlash().setKeepMessages(true);
+				ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid operation!", null));
+				if (!ctx.isPostback()) {
+					ctx.getExternalContext().redirect("class.jsf");
+					ctx.responseComplete();
+				}
+			}
+		}
+	}
 	
 	public BigDecimal getGradesWeightedAverage() {
 		BigDecimal weightedAverage = new BigDecimal("0");
@@ -79,17 +125,13 @@ public class GradeBookBB implements Serializable {
 	}
 	
 	public void search() {
-		HttpSession session = (HttpSession) ctx.getExternalContext().getSession(true);
-		RemoteClient<User> remoteClient = RemoteClient.load(session);
-		User requestedUser = remoteClient.getDetails();
-		
 		Semester semester = new Semester();
 		semester.setIdSemester(searchIdSemester);
 					
-		grades = gradeDAO.getListByStudent(semester, requestedUser);
+		grades = gradeDAO.getListByStudent(semester, student);
 				
 		Map<String, Object> searchParams = new HashMap<>();
-		searchParams.put("user", requestedUser);
+		searchParams.put("user", student);
 		searchParams.put("semester", semester);
 		behaviourPoints = behaviourpointDAO.getList(searchParams);
 		
@@ -130,6 +172,120 @@ public class GradeBookBB implements Serializable {
 			
 			lwg.setWeightedAverage(weightedAverage);
 		}
+		
+		if("Administrator".equals(requestedUser.getRole())) {
+			createHorizontalBarModel();
+			createLineModel();
+		}
+	}
+	
+	private void createHorizontalBarModel() {
+        hbarModel = new HorizontalBarChartModel();
+        ChartData data = new ChartData();
+
+        HorizontalBarChartDataSet hbarDataSet = new HorizontalBarChartDataSet();
+        hbarDataSet.setLabel("Weighted average");
+        
+        List<Number> values = new ArrayList<>();
+        List<String> bgColor = new ArrayList<>();
+        List<String> borderColor = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
+        
+        for(LessonWithGrades lwg : lessonsWithGrades) {
+            values.add(lwg.getWeightedAverage());
+
+            bgColor.add("rgba(255, 99, 132, 0.2)");
+
+            borderColor.add("rgb(255, 99, 132)");
+
+            labels.add(lwg.getSubjectName());
+        }
+        
+        hbarDataSet.setData(values);
+        hbarDataSet.setBackgroundColor(bgColor);
+        hbarDataSet.setBorderColor(borderColor);
+        hbarDataSet.setBorderWidth(1);
+        data.addChartDataSet(hbarDataSet);
+        data.setLabels(labels);
+        hbarModel.setData(data);
+
+        //Options
+        BarChartOptions options = new BarChartOptions();
+        CartesianScales cScales = new CartesianScales();
+        CartesianLinearAxes linearAxes = new CartesianLinearAxes();
+        linearAxes.setOffset(true);
+        linearAxes.setBeginAtZero(true);
+        CartesianLinearTicks ticks = new CartesianLinearTicks();
+        linearAxes.setTicks(ticks);
+        cScales.addXAxesData(linearAxes);
+        options.setScales(cScales);
+
+        Title title = new Title();
+        title.setDisplay(true);
+        title.setText("Grade Weighted Average");
+        options.setTitle(title);
+
+        hbarModel.setOptions(options);
+	}
+	
+	private void createLineModel() {
+        lineModel = new LineChartModel();
+        ChartData data = new ChartData();
+
+        LineChartDataSet dataSet = new LineChartDataSet();
+        List<Object> values = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
+
+        int behaviourPointsBalance = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String createdDate = null;
+        String lastCreatedDate = null;
+        for(Behaviourpoint behaviourPoint : behaviourPoints) {        	
+        	createdDate = sdf.format(behaviourPoint.getCreated());
+        	
+        	if(lastCreatedDate != null && !createdDate.equals(lastCreatedDate)) {
+        		values.add(behaviourPointsBalance);
+            	labels.add(lastCreatedDate);
+        	}
+        	
+        	behaviourPointsBalance += behaviourPoint.getValue();
+        	
+        	lastCreatedDate = createdDate;
+        }
+        
+        if(lastCreatedDate != null) {
+        	values.add(behaviourPointsBalance);
+        	labels.add(lastCreatedDate);
+        }
+        
+        dataSet.setData(values);
+        dataSet.setFill(false);
+        dataSet.setLabel("Behaviour points");
+        dataSet.setBorderColor("rgb(75, 192, 192)");
+        dataSet.setTension(0.1);
+        data.addChartDataSet(dataSet);
+        data.setLabels(labels);
+
+        //Options
+        LineChartOptions options = new LineChartOptions();
+        options.setMaintainAspectRatio(false);
+        Title title = new Title();
+        title.setDisplay(true);
+        title.setText("Behaviour Points Balance");
+        options.setTitle(title);
+
+        Title subtitle = new Title();
+        subtitle.setDisplay(true);
+        options.setSubtitle(subtitle);
+
+        lineModel.setOptions(options);
+        lineModel.setData(data);
+    }
+	
+	public String editClass() {
+		flash.put("clazz", student.getClazz());
+		
+		return "editClass?faces-redirect=true";
 	}
 	
 }

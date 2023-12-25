@@ -8,10 +8,6 @@
 	<ui:define name="title">Virtual Class Register - Subject</ui:define>
 	
 	<ui:define name="content">
-	
-		<p:messages id="messages" closable="true">
-			<p:autoUpdate/>
-		</p:messages>
 			
 		<p:panel header="Add Subject" styleClass="mb-4" toggleable="true" collapsed="true">
 			<h:form id="form">
@@ -36,8 +32,11 @@
 		    </h:form>
 		</p:panel>
 		
+		<p:messages id="messages" closable="true">
+			<p:autoUpdate/>
+		</p:messages>
+		
 		<p:panel id="subjects-panel">
-			<p:linkButton styleClass="m-1" outcome="administrationPanel" value="Go back" />
 			<h:form>
 			
 				<p:panelGrid columns="2" layout="grid">
@@ -53,6 +52,8 @@
 				<p:commandButton value="CSV" styleClass="m-1">
                     <p:dataExporter type="csv" target="subjects" fileName="subjects" />
                 </p:commandButton>
+			
+				<p:linkButton styleClass="m-1" outcome="administrationPanel" value="Go back" />
 			
 				<p:dataTable id="subjects" value="#{subjectBB.lazySubject}" var="s" paginator="true" rows="10" rowsPerPageTemplate="5,10,15">
 				

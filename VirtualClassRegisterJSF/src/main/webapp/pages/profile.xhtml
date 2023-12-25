@@ -8,10 +8,6 @@
 	<ui:define name="title">Virtual Class Register - Profile</ui:define>
 	
 	<ui:define name="content">
-			
-		<p:messages id="messages" closable="true">
-			<p:autoUpdate/>
-		</p:messages>
 		
 		<p:panel header="Change Password" styleClass="mb-4" toggleable="true" collapsed="true">
 			<h:form id="form">
@@ -36,6 +32,10 @@
 		     	
 		    </h:form>
 	    </p:panel>
+	    
+	    <p:messages id="messages" closable="true">
+			<p:autoUpdate/>
+		</p:messages>
 	    
 	    <p:panel styleClass="mb-4">
 			<p>Name: #{remoteClient.details.name}</p>

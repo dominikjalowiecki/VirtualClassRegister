@@ -1,82 +1,172 @@
-<ui:composition template="/templates/page-template.xhtml"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="jakarta.faces.facelets"
-	xmlns:h="jakarta.faces.html"
-	xmlns:f="jakarta.faces.core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<ui:composition
+  template="/templates/page-template.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="jakarta.faces.facelets"
+  xmlns:h="jakarta.faces.html"
+  xmlns:f="jakarta.faces.core"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+>
+  <f:metadata>
+    <f:viewAction action="#{gradeBookBB.onLoad()}" />
+  </f:metadata>
 
-	
-	<ui:define name="title">Virtual Class Register - Grade Book</ui:define>
-	
-	<ui:define name="content">
-	
-		<p:panel id='studentDetails' styleClass="mb-4">
-			
-			<h:form>
-			
-				<p:panelGrid columns="2" layout="grid">
-			        
-			        <p:outputLabel for="semester">Semester</p:outputLabel>
-	                <p:selectOneMenu id="semester" value="#{gradeBookBB.searchIdSemester}" required="true" requiredMessage="Semester is required!">
-	                    <f:selectItem itemLabel="Select Semester" itemValue=""/>
-                    	<f:selectItems value="#{semesterBB.list}" var="s" itemLabel="#{s.name} #{s.startDate} - #{s.endDate}" itemValue="#{s.idSemester}"/>
-	                </p:selectOneMenu>
-			        
-			    </p:panelGrid>
-			
-				<p:commandButton value="Search" action="#{gradeBookBB.search()}" update="@form" />
-				
-				<p:messages id="messages" />
-			
-				<h:panelGroup rendered="#{gradeBookBB.lessonsWithGrades != null and gradeBookBB.behaviourPoints != null ? 'true' : 'false' }">
-					<p>Grades</p>
-					<c:forEach var="lessonWithGrade" items="#{gradeBookBB.lessonsWithGrades}">
-						<div class="border-left-2 pl-3 mb-4">
-							<p>#{lessonWithGrade.subjectName} - #{lessonWithGrade.teacherName}</p>
-							<div id="grades" class="flex flex-row flex-wrap">
-								<c:forEach var="grade" items="#{lessonWithGrade.grades}">
-									<p:commandLink class="flex align-items-center justify-content-center w-2rem h-2rem bg-primary font-bold border-round m-1 text-xs cursor-pointer"
-										value="#{grade.value}" action="#{gradeBookBB.setSelectedGrade(grade)}" oncomplete="PF('gradeDetails').show()" update=":gradeDetailsContent" />
-			          			</c:forEach>
-							</div>
-							<p class="font-bold text-sm">Weighted average: #{lessonWithGrade.weightedAverage}</p>
-						</div>
-					</c:forEach>
-					<p class="font-bold text-sm">Weighted average: #{gradeBookBB.gradesWeightedAverage}</p>
-					<hr />
-					<p>Behaviour Points</p>
-					<div id="behaviour-points" class="flex flex-row flex-wrap">
-						<c:forEach var="behaviourPoint" items="#{gradeBookBB.behaviourPoints}">
-							<p:commandLink class="flex align-items-center justify-content-center w-2rem h-2rem bg-primary font-bold border-round m-1 text-xs cursor-pointer"
-								value="#{behaviourPoint.value}" action="#{gradeBookBB.setSelectedBehaviourPoint(behaviourPoint)}" oncomplete="PF('behaviourPointDetails').show()" update=":behaviourPointDetailsContent" />
-	          			</c:forEach>
-					</div>
-					<p class="font-bold text-sm">Summary: #{gradeBookBB.behaviourPointsSummary}</p>
-				</h:panelGroup>
-			</h:form>
-		</p:panel>
-		
-		<p:dialog header="Grade Details" widgetVar="gradeDetails" minHeight="40" width="350" showEffect="fade" modal="true" draggable="false" dynamic="true">
-			<p:panel id="gradeDetailsContent">
-				<p>Class: #{gradeBookBB.selectedGrade.lesson.clazz.name}</p>
-				<p>Value: #{gradeBookBB.selectedGrade.value}</p>
-				<p>Type: #{gradeBookBB.selectedGrade.gradetype.name}</p>
-				<p>Weightage: #{gradeBookBB.selectedGrade.gradetype.weightage}</p>
-				<p>Note: #{gradeBookBB.selectedGrade.note}</p>
-				<p>Created: #{gradeBookBB.selectedGrade.createdDatetime}</p>
-			</p:panel>
-		</p:dialog>
-		
-		<p:dialog header="Behaviour Point Details" widgetVar="behaviourPointDetails" minHeight="40" width="350" showEffect="fade" modal="true" draggable="false" dynamic="true">
-		    <p:panel id="behaviourPointDetailsContent">
-		    	<p>Class: #{gradeBookBB.selectedBehaviourPoint.clazz.name}</p>
-		    	<p>Value: #{gradeBookBB.selectedBehaviourPoint.value}</p>
-		    	<p>Note: #{gradeBookBB.selectedBehaviourPoint.note}</p>
-		    	<p>Created: #{gradeBookBB.selectedBehaviourPoint.createdDatetime}</p>
-			</p:panel>
-		</p:dialog>
-		
-	</ui:define>
-	
+  <ui:define name="title">Virtual Class Register - Grade Book</ui:define>
+
+  <ui:define name="content">
+    <p:panel id="studentDetails" styleClass="mb-4">
+      <p>Name: #{gradeBookBB.student.name}</p>
+      <h:panelGroup
+        rendered="#{gradeBookBB.student.clazz != null ? 'true' : 'false' }"
+      >
+        <p>Class: #{gradeBookBB.student.clazz.name}</p>
+      </h:panelGroup>
+      <hr />
+      <p class="font-bold">Grade Book</p>
+      <h:form>
+        <p:panelGrid columns="2" layout="grid">
+          <p:outputLabel for="semester">Semester</p:outputLabel>
+          <p:selectOneMenu
+            id="semester"
+            value="#{gradeBookBB.searchIdSemester}"
+            required="true"
+            requiredMessage="Semester is required!"
+          >
+            <f:selectItem itemLabel="Select Semester" itemValue="" />
+            <f:selectItems
+              value="#{semesterBB.list}"
+              var="s"
+              itemLabel="#{s.name} #{s.startDate} - #{s.endDate}"
+              itemValue="#{s.idSemester}"
+            />
+          </p:selectOneMenu>
+        </p:panelGrid>
+
+        <p:commandButton
+          styleClass="m-1"
+          value="Search"
+          action="#{gradeBookBB.search()}"
+          update="@form"
+        />
+        <p:commandButton
+          styleClass="m-1"
+          value="Go back"
+          ajax="false"
+          rendered="#{remoteClient.details.role == 'Administrator' ? 'true' : 'false'}"
+          action="#{gradeBookBB.editClass()}"
+          immediate="true"
+        />
+
+        <p:messages id="messages" />
+
+        <h:panelGroup
+          rendered="#{gradeBookBB.lessonsWithGrades != null and gradeBookBB.behaviourPoints != null ? 'true' : 'false' }"
+        >
+          <h:panelGroup
+            rendered="#{remoteClient.details.role == 'Administrator' ? 'true' : 'false'}"
+          >
+            <div class="grid">
+              <div class="col-12 lg:col-6">
+                <p:barChart
+                  model="#{gradeBookBB.hbarModel}"
+                  style="width: 100%; height: 300px"
+                />
+              </div>
+              <div class="col-12 lg:col-6">
+                <p:lineChart
+                  model="#{gradeBookBB.lineModel}"
+                  style="width: 100%; height: 300px"
+                />
+              </div>
+            </div>
+          </h:panelGroup>
+          <p>Grades</p>
+          <c:forEach
+            var="lessonWithGrade"
+            items="#{gradeBookBB.lessonsWithGrades}"
+          >
+            <div class="border-left-2 pl-3 mb-4">
+              <p>
+                #{lessonWithGrade.subjectName} - #{lessonWithGrade.teacherName}
+              </p>
+              <div id="grades" class="flex flex-row flex-wrap">
+                <c:forEach var="grade" items="#{lessonWithGrade.grades}">
+                  <p:commandLink
+                    class="flex align-items-center justify-content-center w-2rem h-2rem bg-primary font-bold border-round m-1 text-xs cursor-pointer"
+                    value="#{grade.value}"
+                    action="#{gradeBookBB.setSelectedGrade(grade)}"
+                    oncomplete="PF('gradeDetails').show()"
+                    update=":gradeDetailsContent"
+                  />
+                </c:forEach>
+              </div>
+              <p class="font-bold text-sm">
+                Weighted average: #{lessonWithGrade.weightedAverage}
+              </p>
+            </div>
+          </c:forEach>
+          <p class="font-bold text-sm">
+            Weighted average: #{gradeBookBB.gradesWeightedAverage}
+          </p>
+          <hr />
+          <p>Behaviour Points</p>
+          <div id="behaviour-points" class="flex flex-row flex-wrap">
+            <c:forEach
+              var="behaviourPoint"
+              items="#{gradeBookBB.behaviourPoints}"
+            >
+              <p:commandLink
+                class="flex align-items-center justify-content-center w-2rem h-2rem bg-primary font-bold border-round m-1 text-xs cursor-pointer"
+                value="#{behaviourPoint.value}"
+                action="#{gradeBookBB.setSelectedBehaviourPoint(behaviourPoint)}"
+                oncomplete="PF('behaviourPointDetails').show()"
+                update=":behaviourPointDetailsContent"
+              />
+            </c:forEach>
+          </div>
+          <p class="font-bold text-sm">
+            Summary: #{gradeBookBB.behaviourPointsSummary}
+          </p>
+        </h:panelGroup>
+      </h:form>
+    </p:panel>
+
+    <p:dialog
+      header="Grade Details"
+      widgetVar="gradeDetails"
+      minHeight="40"
+      width="350"
+      showEffect="fade"
+      modal="true"
+      draggable="false"
+      dynamic="true"
+    >
+      <p:panel id="gradeDetailsContent">
+        <p>Class: #{gradeBookBB.selectedGrade.lesson.clazz.name}</p>
+        <p>Value: #{gradeBookBB.selectedGrade.value}</p>
+        <p>Type: #{gradeBookBB.selectedGrade.gradetype.name}</p>
+        <p>Weightage: #{gradeBookBB.selectedGrade.gradetype.weightage}</p>
+        <p>Note: #{gradeBookBB.selectedGrade.note}</p>
+        <p>Created: #{gradeBookBB.selectedGrade.createdDatetime}</p>
+      </p:panel>
+    </p:dialog>
+
+    <p:dialog
+      header="Behaviour Point Details"
+      widgetVar="behaviourPointDetails"
+      minHeight="40"
+      width="350"
+      showEffect="fade"
+      modal="true"
+      draggable="false"
+      dynamic="true"
+    >
+      <p:panel id="behaviourPointDetailsContent">
+        <p>Class: #{gradeBookBB.selectedBehaviourPoint.clazz.name}</p>
+        <p>Value: #{gradeBookBB.selectedBehaviourPoint.value}</p>
+        <p>Note: #{gradeBookBB.selectedBehaviourPoint.note}</p>
+        <p>Created: #{gradeBookBB.selectedBehaviourPoint.createdDatetime}</p>
+      </p:panel>
+    </p:dialog>
+  </ui:define>
 </ui:composition>

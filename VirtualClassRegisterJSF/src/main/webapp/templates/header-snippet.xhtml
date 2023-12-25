@@ -1,58 +1,117 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="jakarta.faces.facelets"
-	xmlns:h="jakarta.faces.html"
-	xmlns:f="jakarta.faces.core"
-	xmlns:p="http://primefaces.org/ui">
+<ui:composition
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="jakarta.faces.facelets"
+  xmlns:h="jakarta.faces.html"
+  xmlns:f="jakarta.faces.core"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <p:panel styleClass="text-center mb-4">
+    <h1>
+      <ui:insert name="title">Page header</ui:insert>
+    </h1>
+    <div class="grid">
+      <div
+        class="col-12 lg:col-8 flex flex-wrap align-items-center justify-content-center lg:justify-content-start"
+      >
+        <p:linkButton
+          styleClass="m-1"
+          outcome="login"
+          value="#{textMain.login}"
+          rendered="#{remoteClient == null ? 'true' : 'false' }"
+        />
+        <h:panelGroup rendered="#{remoteClient != null ? 'true' : 'false' }">
+          <p:linkButton
+            styleClass="m-1"
+            outcome="index"
+            value="#{textMain.main_page}"
+          />
+          <h:panelGroup
+            rendered="#{remoteClient.details.role == 'Administrator' ? 'true' : 'false'}"
+          >
+            <p:linkButton
+              styleClass="m-1"
+              outcome="administrationPanel"
+              value="#{textMain.administration_panel}"
+            />
+          </h:panelGroup>
+          <h:panelGroup
+            rendered="#{remoteClient.details.role == 'Nauczyciel' ? 'true' : 'false'}"
+          >
+            <p:linkButton
+              styleClass="m-1"
+              outcome="teacherPanel"
+              value="#{textMain.teacherPanel}"
+              rendered="#{remoteClient.details.role == 'Nauczyciel' ? 'true' : 'false'}"
+            />
+          </h:panelGroup>
+          <h:panelGroup
+            rendered="#{remoteClient.details.role == 'Student' ? 'true' : 'false'}"
+          >
+            <p:linkButton
+              styleClass="m-1"
+              outcome="gradeBook"
+              value="#{textMain.gradeBook}"
+              rendered="#{remoteClient.details.role == 'Student' ? 'true' : 'false'}"
+            />
+          </h:panelGroup>
+          <p:linkButton
+            styleClass="m-1"
+            outcome="timetable"
+            value="#{textMain.timetable}"
+          />
+          <p:linkButton
+            styleClass="m-1"
+            outcome="profile"
+            value="#{textMain.profile}"
+          />
+          <h:form styleClass="inline">
+            <p:commandButton
+              styleClass="m-1"
+              value="#{textMain.logout}"
+              action="#{userBB.logout()}"
+            />
+          </h:form>
+        </h:panelGroup>
+      </div>
 
-	<p:panel styleClass="text-center mb-4">
-		<h1>
-			<ui:insert name="title">Page header</ui:insert>
-		</h1>
-		<div class="grid">
-			<div class="col-12 lg:col-8 flex flex-wrap align-items-center justify-content-center lg:justify-content-start">
-				<p:linkButton styleClass="m-1" outcome="login" value="#{textMain.login}" rendered="#{remoteClient == null ? 'true' : 'false' }" />
-				<h:panelGroup rendered="#{remoteClient != null ? 'true' : 'false' }">
-					<p:linkButton styleClass="m-1" outcome="index" value="#{textMain.main_page}" />
-					<h:panelGroup rendered="#{remoteClient.details.role == 'ADMINISTRATOR' ? 'true' : 'false'}" >
-						<p:linkButton styleClass="m-1" outcome="administrationPanel" value="#{textMain.administration_panel}" />
-					</h:panelGroup>
-					<h:panelGroup rendered="#{remoteClient.details.role == 'TEACHER' ? 'true' : 'false'}" >
-						<p:linkButton styleClass="m-1" outcome="teacherPanel" value="#{textMain.teacherPanel}" rendered="#{remoteClient.details.role == 'TEACHER' ? 'true' : 'false'}" />
-					</h:panelGroup>
-					<h:panelGroup rendered="#{remoteClient.details.role == 'STUDENT' ? 'true' : 'false'}" >
-						<p:linkButton styleClass="m-1" outcome="gradeBook" value="#{textMain.gradeBook}" rendered="#{remoteClient.details.role == 'STUDENT' ? 'true' : 'false'}" />
-					</h:panelGroup>
-					<p:linkButton styleClass="m-1" outcome="timetable" value="#{textMain.timetable}" />
-					<p:linkButton styleClass="m-1" outcome="profile" value="#{textMain.profile}" />
-					<h:form styleClass="inline">
-						<p:commandButton styleClass="m-1" value="#{textMain.logout}" action="#{userBB.logout()}" />
-					</h:form>
-				</h:panelGroup>
-			</div>
-			
-			<div class="col-12 lg:col-4 flex flex-wrap align-items-center justify-content-between lg:justify-content-end">
-				<div class="font-bold">
-					<h:panelGroup rendered="#{remoteClient != null ? 'true' : 'false' }">
-						Witaj #{remoteClient.details.name}!
-					</h:panelGroup>
-				</div>
-				<h:form id="languageForm" class="flex align-items-center ml-2">
-					<p:outputLabel for="language">Wybierz język:</p:outputLabel>
-					<p:selectOneMenu id="language" styleClass="ml-2" value="#{langBB.selectedLanguage}" var="l" panelStyle="width:180px" converter="languageConverter">
-						<f:selectItems value="#{langBB.availableLanguages}" var="language" itemLabel="#{language.name}" itemValue="#{language}" />
-						<p:column style="width:10%">
-		                    <span class="flag flag-#{l.code}" style="width: 30px; height: 20px"/>
-		                </p:column>
-		
-		                <p:column>
-		                    <h:outputText value="#{l.name}"/>
-		                </p:column>
-		               	<f:ajax render="@all"/>
-		            </p:selectOneMenu>
-				</h:form>
-			</div>
-		</div>
-		
-	</p:panel>
+      <div
+        class="col-12 lg:col-4 flex flex-wrap align-items-center justify-content-between lg:justify-content-end"
+      >
+        <div class="font-bold">
+          <h:panelGroup rendered="#{remoteClient != null ? 'true' : 'false' }">
+            Witaj #{remoteClient.details.name}!
+          </h:panelGroup>
+        </div>
+        <h:form id="languageForm" class="flex align-items-center ml-2">
+          <p:outputLabel for="language">Wybierz język:</p:outputLabel>
+          <p:selectOneMenu
+            id="language"
+            styleClass="ml-2"
+            value="#{langBB.selectedLanguage}"
+            var="l"
+            panelStyle="width:180px"
+            converter="languageConverter"
+          >
+            <f:selectItems
+              value="#{langBB.availableLanguages}"
+              var="language"
+              itemLabel="#{language.name}"
+              itemValue="#{language}"
+            />
+            <p:column style="width: 10%">
+              <span
+                class="flag flag-#{l.code}"
+                style="width: 30px; height: 20px"
+              />
+            </p:column>
 
+            <p:column>
+              <h:outputText value="#{l.name}" />
+            </p:column>
+            <f:ajax render="@all" />
+          </p:selectOneMenu>
+        </h:form>
+      </div>
+    </div>
+  </p:panel>
 </ui:composition>

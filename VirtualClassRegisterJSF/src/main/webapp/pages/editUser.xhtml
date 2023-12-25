@@ -16,9 +16,6 @@
 			
 		<p:panel styleClass="mb-4">
 			<p>Name: #{editUserBB.user.name}</p>
-			<h:panelGroup rendered="#{editUserBB.user.clazz != null ? 'true' : 'false' }" >
-				<p>Class: #{editUserBB.user.clazz.name}</p>
-			</h:panelGroup>
 			<p>Role: #{editUserBB.user.role}</p>
 			<p>Created: 
 				<h:outputText value="#{editUserBB.user.created}" >

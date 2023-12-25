@@ -60,12 +60,12 @@ public class UserBB implements Serializable {
 	
 	public List<User> getTutors() {
 		Map<String, Object> searchParams = new HashMap<>();
-		searchParams.put("role", "TEACHER");		
+		searchParams.put("role", "Nauczyciel");		
 		return userDAO.getList(searchParams);
 	}
 	
 	public List<Class> getClasses(){
-		if("STUDENT".equals(user.getRole())) {
+		if("Student".equals(user.getRole())) {
 			return classDAO.getFullList();
 		}
 		return null;

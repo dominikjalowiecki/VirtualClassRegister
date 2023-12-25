@@ -1,60 +1,85 @@
-<ui:composition template="/templates/page-template.xhtml"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="jakarta.faces.facelets"
-	xmlns:h="jakarta.faces.html"
-	xmlns:f="jakarta.faces.core"
-	xmlns:p="http://primefaces.org/ui">
-	
-	<f:metadata>
-	    <f:viewAction action="#{editLessonBB.onLoad()}" />
-	</f:metadata>
-	
-	<ui:define name="title">Virtual Class Register - Edit Lesson</ui:define>
-	
-	<ui:define name="content">
-			
-		<p:panel styleClass="mb-4">
-			<h:form id="form">
-			
-				<p:panelGrid columns="2" layout="grid">
-				
-					<p:outputLabel>Semester</p:outputLabel>
-					<h:outputText value="#{editLessonBB.lesson.semester.name} #{editLessonBB.lesson.semester.startDate} - #{editLessonBB.lesson.semester.endDate}" />
-	                
-	                <p:outputLabel>Class</p:outputLabel>
-	                <h:outputText value="#{editLessonBB.lesson.clazz.name}" />
-	                
-	                <p:outputLabel>Subject</p:outputLabel>
-	                <h:outputText value="#{editLessonBB.lesson.teacherteachessubject.subject.name} - #{editLessonBB.lesson.teacherteachessubject.user.forename} #{editLessonBB.lesson.teacherteachessubject.user.surname}" />
-	                
-			        <p:outputLabel for="day-of-the-week">Day of the week</p:outputLabel>
-	                <p:selectOneMenu id="day-of-the-week" value="#{editLessonBB.lesson.day}" required="true" requiredMessage="Day is required!">
-	                    <f:selectItem itemLabel="Select Day of the week" itemValue=""/>
-	                    <f:selectItem itemLabel="Monday" itemValue="MONDAY"/>
-	                    <f:selectItem itemLabel="Tuesday" itemValue="TUESDAY"/>
-	                    <f:selectItem itemLabel="Wednesday" itemValue="WEDNESDAY"/>
-	                    <f:selectItem itemLabel="Thursday" itemValue="THURSDAY"/>
-	                    <f:selectItem itemLabel="Friday" itemValue="FRIDAY"/>
-	                    <f:selectItem itemLabel="Saturday" itemValue="SATURDAY"/>
-	                    <f:selectItem itemLabel="Sunday" itemValue="SUNDAY"/>
-	                </p:selectOneMenu>
-	                
-	                <p:outputLabel for="start" value="Start Time" />
-					<p:datePicker id="start" value="#{editLessonBB.start}" timeOnly="true" pattern="HH:mm" required="true" />
-					
-				 	<p:outputLabel for="end" value="End Time" />
-					<p:datePicker id="end" value="#{editLessonBB.end}" timeOnly="true" pattern="HH:mm" required="true" />
-	               
-			    </p:panelGrid>
-			    
-		     	<p:commandButton styleClass="m-1" value="Edit Lesson" action="#{editLessonBB.editLesson()}" update="@form"/>
-		     	<p:button styleClass="m-1" value="Back" outcome="class"/>
-		     	
-			    <p:messages id="messages"/>
-			    
-		    </h:form>
-		</p:panel>
-		
-	</ui:define>
-	
+<ui:composition
+  template="/templates/page-template.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="jakarta.faces.facelets"
+  xmlns:h="jakarta.faces.html"
+  xmlns:f="jakarta.faces.core"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <f:metadata>
+    <f:viewAction action="#{editLessonBB.onLoad()}" />
+  </f:metadata>
+
+  <ui:define name="title">Virtual Class Register - Edit Lesson</ui:define>
+
+  <ui:define name="content">
+    <p:panel styleClass="mb-4">
+      <h:form id="form">
+        <p:panelGrid columns="2" layout="grid">
+          <p:outputLabel>Semester</p:outputLabel>
+          <h:outputText
+            value="#{editLessonBB.lesson.semester.name} #{editLessonBB.lesson.semester.startDate} - #{editLessonBB.lesson.semester.endDate}"
+          />
+
+          <p:outputLabel>Class</p:outputLabel>
+          <h:outputText value="#{editLessonBB.lesson.clazz.name}" />
+
+          <p:outputLabel>Subject</p:outputLabel>
+          <h:outputText
+            value="#{editLessonBB.lesson.teacherteachessubject.subject.name} - #{editLessonBB.lesson.teacherteachessubject.user.forename} #{editLessonBB.lesson.teacherteachessubject.user.surname}"
+          />
+
+          <p:outputLabel for="day-of-the-week">Day of the week</p:outputLabel>
+          <p:selectOneMenu
+            id="day-of-the-week"
+            value="#{editLessonBB.lesson.day}"
+            required="true"
+            requiredMessage="Day is required!"
+          >
+            <f:selectItem itemLabel="Select Day of the week" itemValue="" />
+            <f:selectItem itemLabel="Monday" itemValue="Poniedziałek" />
+            <f:selectItem itemLabel="Tuesday" itemValue="Wtorek" />
+            <f:selectItem itemLabel="Wednesday" itemValue="Środa" />
+            <f:selectItem itemLabel="Thursday" itemValue="Czwartek" />
+            <f:selectItem itemLabel="Friday" itemValue="Piątek" />
+            <f:selectItem itemLabel="Saturday" itemValue="Sobota" />
+            <f:selectItem itemLabel="Sunday" itemValue="Niedziela" />
+          </p:selectOneMenu>
+
+          <p:outputLabel for="start" value="Start Time" />
+          <p:datePicker
+            id="start"
+            value="#{editLessonBB.start}"
+            timeOnly="true"
+            pattern="HH:mm"
+            required="true"
+          />
+
+          <p:outputLabel for="end" value="End Time" />
+          <p:datePicker
+            id="end"
+            value="#{editLessonBB.end}"
+            timeOnly="true"
+            pattern="HH:mm"
+            required="true"
+          />
+        </p:panelGrid>
+
+        <p:commandButton
+          styleClass="m-1"
+          value="Edit Lesson"
+          action="#{editLessonBB.editLesson()}"
+          update="@form"
+        />
+        <p:commandButton
+          styleClass="m-1"
+          value="Go back"
+          ajax="false"
+          action="#{editLessonBB.editClass()}"
+        />
+
+        <p:messages id="messages" />
+      </h:form>
+    </p:panel>
+  </ui:define>
 </ui:composition>

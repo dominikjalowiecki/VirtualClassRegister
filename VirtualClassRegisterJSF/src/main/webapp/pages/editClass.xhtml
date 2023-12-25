@@ -1,98 +1,182 @@
-<ui:composition template="/templates/page-template.xhtml"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="jakarta.faces.facelets"
-	xmlns:h="jakarta.faces.html"
-	xmlns:f="jakarta.faces.core"
-	xmlns:p="http://primefaces.org/ui">
-	
-	<f:metadata>
-	    <f:viewAction action="#{editClassBB.onLoad()}" />
-	</f:metadata>
-	
-	<ui:define name="title">Virtual Class Register - Edit Class</ui:define>
-	
-	<ui:define name="content">
-	
-		<p:messages id="messages" closable="true">
-			<p:autoUpdate/>
-		</p:messages>
-			
-		<p:panel styleClass="mb-4">
-			<h:form id="form">
-			
-				<p:panelGrid columns="2" layout="grid">
-			        
-			        <p:outputLabel for="name">Name</p:outputLabel>
-			        <p:inputText id="name" value="#{editClassBB.clazz.name}" required="true"
-			        	requiredMessage="#{textValidation.name_is_required}" maxlength="65" validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}">
-			        	<f:validateLength minimum="2" maximum="65"/>
-			        </p:inputText>
-			        
-			        <p:outputLabel for="tutor">Tutor</p:outputLabel>
-	                <p:selectOneMenu id="tutor" value="#{editClassBB.clazz.user.idUser}" required="true" requiredMessage="#{textValidation.tutor_is_required}">
-	                    <f:selectItem itemLabel="Select Tutor" itemValue=""/>
-                    	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname}" itemValue="#{t.idUser}"/>
-	                </p:selectOneMenu>
-			        
-			    </p:panelGrid>
-			    
-		     	<p:commandButton styleClass="m-1"  value="Edit Class" action="#{editClassBB.editClass()}" update="@form"/>
-		     	<p:button styleClass="m-1" value="Back" outcome="class"/>
-		     	
-		    </h:form>
-		</p:panel>
-		
-		<p:panel id="lessons-panel">
-			<h:form>
-			
-				<p:commandButton value="CSV" styleClass="m-1">
-                    <p:dataExporter type="csv" target="lessons" fileName="lessons" />
-                </p:commandButton>
-			
-				<p:dataTable id="lessons" value="#{editClassBB.clazz.lessons}" var="l" paginator="true" rows="10" rowsPerPageTemplate="5,10,15">
-				
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Name" />
-						</f:facet>
-						<h:outputText value="#{l.teacherteachessubject.subject.name}" />
-					</p:column>
-					
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Teacher" />
-						</f:facet>
-						<h:outputText value="#{l.teacherteachessubject.user.forename} #{l.teacherteachessubject.user.surname}" />
-					</p:column>
-					
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Semester" />
-						</f:facet>
-						<h:outputText value="#{l.semester.name}" />
-					</p:column>
-					
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Date" />
-						</f:facet>
-						<h:outputText value="#{l.day.toLowerCase()} #{l.startTime} - #{l.endTime}" />
-					</p:column>
-					
-					<p:column exportable="false">
-						<f:facet name="header">
-							<h:outputText value="Options" />
-						</f:facet>
-						<p:commandButton styleClass="m-1" value="Details" ajax="false"
-							action="#{lessonBB.editLesson(l)}" />
-						<p:commandButton styleClass="m-1" value="Remove"
-							action="#{lessonBB.removeLesson(l)}" update="@form" />
-					</p:column>
-		
-				</p:dataTable>
-			</h:form>
-		</p:panel>
-		
-	</ui:define>
-	
+<ui:composition
+  template="/templates/page-template.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="jakarta.faces.facelets"
+  xmlns:h="jakarta.faces.html"
+  xmlns:f="jakarta.faces.core"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <f:metadata>
+    <f:viewAction action="#{editClassBB.onLoad()}" />
+  </f:metadata>
+
+  <ui:define name="title">Virtual Class Register - Edit Class</ui:define>
+
+  <ui:define name="content">
+    <p:panel styleClass="mb-4">
+      <h:form id="form">
+        <p:panelGrid columns="2" layout="grid">
+          <p:outputLabel for="name">Name</p:outputLabel>
+          <p:inputText
+            id="name"
+            value="#{editClassBB.clazz.name}"
+            required="true"
+            requiredMessage="#{textValidation.name_is_required}"
+            maxlength="65"
+            validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}"
+          >
+            <f:validateLength minimum="2" maximum="65" />
+          </p:inputText>
+
+          <p:outputLabel for="tutor">Tutor</p:outputLabel>
+          <p:selectOneMenu
+            id="tutor"
+            value="#{editClassBB.clazz.user.idUser}"
+            required="true"
+            requiredMessage="#{textValidation.tutor_is_required}"
+          >
+            <f:selectItem itemLabel="Select Tutor" itemValue="" />
+            <f:selectItems
+              value="#{userBB.tutors}"
+              var="t"
+              itemLabel="#{t.forename} #{t.surname}"
+              itemValue="#{t.idUser}"
+            />
+          </p:selectOneMenu>
+        </p:panelGrid>
+
+        <p:commandButton
+          styleClass="m-1"
+          value="Edit Class"
+          action="#{editClassBB.editClass()}"
+          update="@form"
+        />
+        <p:button styleClass="m-1" value="Back" outcome="class" />
+      </h:form>
+    </p:panel>
+
+    <p:messages id="messages" closable="true">
+      <p:autoUpdate />
+    </p:messages>
+
+    <p:panel
+      id="lessons-panel"
+      header="Lessons"
+      styleClass="mb-4"
+      toggleable="true"
+      collapsed="true"
+    >
+      <h:form>
+        <p:commandButton value="CSV" styleClass="m-1">
+          <p:dataExporter type="csv" target="lessons" fileName="lessons" />
+        </p:commandButton>
+
+        <p:dataTable
+          id="lessons"
+          value="#{editClassBB.clazz.lessons}"
+          var="l"
+          paginator="true"
+          rows="10"
+          rowsPerPageTemplate="5,10,15"
+        >
+          <p:column>
+            <f:facet name="header">
+              <h:outputText value="Name" />
+            </f:facet>
+            <h:outputText value="#{l.teacherteachessubject.subject.name}" />
+          </p:column>
+
+          <p:column>
+            <f:facet name="header">
+              <h:outputText value="Teacher" />
+            </f:facet>
+            <h:outputText
+              value="#{l.teacherteachessubject.user.forename} #{l.teacherteachessubject.user.surname}"
+            />
+          </p:column>
+
+          <p:column>
+            <f:facet name="header">
+              <h:outputText value="Semester" />
+            </f:facet>
+            <h:outputText value="#{l.semester.name}" />
+          </p:column>
+
+          <p:column>
+            <f:facet name="header">
+              <h:outputText value="Date" />
+            </f:facet>
+            <h:outputText value="#{l.day} #{l.startTime} - #{l.endTime}" />
+          </p:column>
+
+          <p:column exportable="false">
+            <f:facet name="header">
+              <h:outputText value="Options" />
+            </f:facet>
+            <p:commandButton
+              styleClass="m-1"
+              value="Details"
+              ajax="false"
+              action="#{lessonBB.editLesson(l)}"
+            />
+            <p:commandButton
+              styleClass="m-1"
+              value="Remove"
+              action="#{lessonBB.removeLesson(l)}"
+              update="@form"
+            />
+          </p:column>
+        </p:dataTable>
+      </h:form>
+    </p:panel>
+
+    <p:panel
+      id="students-panel"
+      header="Students"
+      styleClass="mb-4"
+      toggleable="true"
+      collapsed="true"
+    >
+      <h:form>
+        <p:commandButton value="CSV" styleClass="m-1">
+          <p:dataExporter type="csv" target="students" fileName="students" />
+        </p:commandButton>
+
+        <p:dataTable
+          id="students"
+          value="#{editClassBB.clazz.users}"
+          var="s"
+          paginator="true"
+          rows="10"
+          rowsPerPageTemplate="5,10,15"
+        >
+          <p:column>
+            <f:facet name="header">
+              <h:outputText value="Name" />
+            </f:facet>
+            <h:outputText value="#{s.name}" />
+          </p:column>
+
+          <p:column>
+            <f:facet name="header">
+              <h:outputText value="Email" />
+            </f:facet>
+            <h:outputText value="#{s.email}" />
+          </p:column>
+
+          <p:column exportable="false">
+            <f:facet name="header">
+              <h:outputText value="Options" />
+            </f:facet>
+            <p:commandButton
+              styleClass="m-1"
+              value="Details"
+              ajax="false"
+              action="#{editClassBB.gradeBook(s)}"
+            />
+          </p:column>
+        </p:dataTable>
+      </h:form>
+    </p:panel>
+  </ui:define>
 </ui:composition>

@@ -82,7 +82,7 @@ public class Grade implements Serializable {
 	}
 	
 	public String getCreatedDatetime() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		return sdf.format(this.created);
 	}
 

@@ -1,155 +1,298 @@
-<ui:composition template="/templates/page-template.xhtml"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="jakarta.faces.facelets"
-	xmlns:h="jakarta.faces.html"
-	xmlns:f="jakarta.faces.core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-	
-	<f:metadata>
-	    <f:viewAction action="#{studentDetailsBB.onLoad()}" />
-	</f:metadata>
-	
-	<ui:define name="title">Virtual Class Register - Grade book</ui:define>
-	
-	<ui:define name="content">
-			
-		<p:panel id='studentDetails' styleClass="mb-4">
-			<p>Subject: #{studentDetailsBB.lesson.teacherteachessubject.subject.name}</p>	
-			<p>Class: #{studentDetailsBB.student.clazz.name}</p>
-			<p>Date: #{studentDetailsBB.lesson.day.toLowerCase()} #{studentDetailsBB.lesson.startTime} - #{studentDetailsBB.lesson.endTime}</p>
-			<p>Name: #{studentDetailsBB.student.name}</p>
-			<h:form>
-				<p:commandButton styleClass="m-1" value="Go back" ajax="false"
-								action="#{studentDetailsBB.lessonDetails()}" />
-				<p>Grades</p>
-				<div id="grades" class="flex flex-row flex-wrap">
-					<c:forEach var="grade" items="#{studentDetailsBB.grades}">
-						<p:commandLink class="flex align-items-center justify-content-center w-2rem h-2rem bg-primary font-bold border-round m-1 text-xs cursor-pointer"
-							value="#{grade.value}" action="#{studentDetailsBB.setSelectedGrade(grade)}" oncomplete="PF('gradeDetails').show()" update=":gradeDetailsContent" />
-          			</c:forEach>
-				</div>
-				<p class="font-bold text-sm">Weighted average: #{studentDetailsBB.gradesWeightedAverage}</p>
-				<hr />
-				<p>Behaviour Points</p>
-				<div id="behaviour-points" class="flex flex-row flex-wrap">
-					<c:forEach var="behaviourPoint" items="#{studentDetailsBB.behaviourPoints}">
-						<p:commandLink class="flex align-items-center justify-content-center w-2rem h-2rem bg-primary font-bold border-round m-1 text-xs cursor-pointer"
-							value="#{behaviourPoint.value}" action="#{studentDetailsBB.setSelectedBehaviourPoint(behaviourPoint)}" oncomplete="PF('behaviourPointDetails').show()" update=":behaviourPointDetailsContent" />
-          			</c:forEach>
-				</div>
-				<p class="font-bold text-sm">Summary: #{studentDetailsBB.behaviourPointsSummary}</p>
-			</h:form>
-		</p:panel>
-		
-		<p:messages id="messages" closable="true">
-			<p:autoUpdate/>
-		</p:messages>
-		
-		<p:panel id="grades-panel" styleClass="mb-4" header="Add Grade" toggleable="true" collapsed="true">
-			<h:form id="formGrades">
-			
-				<p:panelGrid columns="2" layout="grid">
-			        
-			        <p:outputLabel for="grade-type">Grade Type</p:outputLabel>
-	                <p:selectOneMenu id="grade-type" value="#{studentDetailsBB.idGradeType}" required="true" requiredMessage="Grade Type is required!">
-	                    <f:selectItem itemLabel="Select Grade Type" itemValue=""/>
-                    	<f:selectItems value="#{studentDetailsBB.gradeTypes}" var="g" itemLabel="#{g.name}" itemValue="#{g.idGradeType}"/>
-	                </p:selectOneMenu>
+<ui:composition
+  template="/templates/page-template.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="jakarta.faces.facelets"
+  xmlns:h="jakarta.faces.html"
+  xmlns:f="jakarta.faces.core"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+>
+  <f:metadata>
+    <f:viewAction action="#{studentDetailsBB.onLoad()}" />
+  </f:metadata>
 
-			        <p:outputLabel for="gradeValue">Grade Value</p:outputLabel>
-	                <p:selectOneMenu id="gradeValue" value="#{studentDetailsBB.gradeValue}" required="true" requiredMessage="Grade Value is required!">
-	                    <f:selectItem itemLabel="Select Value" itemValue=""/>
-	                    <f:selectItem itemLabel="1" itemValue="1"/>
-	                    <f:selectItem itemLabel="2" itemValue="2"/>
-	                    <f:selectItem itemLabel="2.5" itemValue="2.5"/>
-	                    <f:selectItem itemLabel="3" itemValue="3"/>
-	                    <f:selectItem itemLabel="3.5" itemValue="3.5"/>
-	                    <f:selectItem itemLabel="4" itemValue="4"/>
-	                    <f:selectItem itemLabel="4.5" itemValue="4.5"/>
-	                    <f:selectItem itemLabel="5" itemValue="5"/>
-	                    <f:selectItem itemLabel="5.5" itemValue="5.5"/>
-	                    <f:selectItem itemLabel="6" itemValue="6"/>
-	                </p:selectOneMenu>
-	                
-	                <p:outputLabel for="gradeNote">Grade Note</p:outputLabel>
-	                <h:panelGroup>
-		                <p:inputTextarea id="gradeNote" value="#{studentDetailsBB.gradeNote}" rows="6" cols="30"
-		                	counter="displayGradeNote" maxlength="200" counterTemplate="{0} characters remaining."/>
-		                <h:outputText id="displayGradeNote" class="block" />
-	             	</h:panelGroup>
-			        
-			    </p:panelGrid>
-			    
-		     	<p:commandButton styleClass="m-1" value="Add Grade" action="#{studentDetailsBB.addGrade()}" update="@form studentDetails"/>
-		     	
-		    </h:form>
-		</p:panel>
-		
-		<p:panel id="behaviour-points-panel" header="Add Behaviour Point" toggleable="true" collapsed="true">
-			<h3>Behaviour Points</h3>
-			<h:form id="formBehaviourPoints">
-			
-				<p:panelGrid columns="2" layout="grid">
-	                
-	                <p:outputLabel for="behaviourPointValue" value="Behaviour Point Value"/>
-                	<p:inputNumber id="behaviourPointValue" value="#{studentDetailsBB.behaviourPointValue}" modifyValueOnWheel="false"
-                		minValue="-50" maxValue="50" required="true" requiredMessage="Behaviour Point Value is required!"/>
-	                
-	                <p:outputLabel for="note">Note</p:outputLabel>
-	                <h:panelGroup>
-		                <p:inputTextarea id="note" value="#{studentDetailsBB.behaviourPointNote}" rows="6" cols="30"
-		                	counter="displayBehaviourPointNote" maxlength="200" counterTemplate="{0} characters remaining."/>
-	                	<h:outputText id="displayBehaviourPointNote" class="block" />
-                	</h:panelGroup>
-			        
-			    </p:panelGrid>
-			    
-		     	<p:commandButton styleClass="m-1" value="Add Behaviour Points" action="#{studentDetailsBB.addBehaviourPoints()}" update="@form studentDetails"/>
-		     	
-		    </h:form>
-		</p:panel>
-		
-		<p:dialog header="Grade Details" widgetVar="gradeDetails" minHeight="40" width="350" showEffect="fade" modal="true" draggable="false" dynamic="true">
-			<p:panel id="gradeDetailsContent">
-				<p>Value: #{studentDetailsBB.selectedGrade.value}</p>
-				<p>Type: #{studentDetailsBB.selectedGrade.gradetype.name}</p>
-				<p>Weightage: #{studentDetailsBB.selectedGrade.gradetype.weightage}</p>
-				<p>Note: #{studentDetailsBB.selectedGrade.note}</p>
-				<p>Created: #{studentDetailsBB.selectedGrade.createdDatetime}</p>
-				<h:form>
-		    		<p:commandButton value="Delete" action="#{studentDetailsBB.deleteGrade()}" styleClass="ui-button-danger m-1"
-		    			oncomplete="PF('gradeDetails').hide()" update="@form studentDetails">
-		    			<p:confirm header="Confirmation" message="Do you want to delete this grade?" icon="pi pi-info-circle" />        
-		    		</p:commandButton>
-		    		
-		    		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-			            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat" />
-			            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
-			        </p:confirmDialog>
-		    	</h:form>
-			</p:panel>
-		</p:dialog>
-		
-		<p:dialog header="Behaviour Point Details" widgetVar="behaviourPointDetails" minHeight="40" width="350" showEffect="fade" modal="true" draggable="false" dynamic="true">
-		    <p:panel id="behaviourPointDetailsContent">
-		    	<p>Value: #{studentDetailsBB.selectedBehaviourPoint.value}</p>
-		    	<p>Note: #{studentDetailsBB.selectedBehaviourPoint.note}</p>
-		    	<p>Created: #{studentDetailsBB.selectedBehaviourPoint.createdDatetime}</p>
-		    	<h:form>
-		    		<p:commandButton value="Delete" action="#{studentDetailsBB.deleteBehaviourPoint()}" styleClass="ui-button-danger m-1"
-		    			oncomplete="PF('behaviourPointDetails').hide()" update="@form studentDetails">
-		    			<p:confirm header="Confirmation" message="Do you want to delete this behaviour point?" icon="pi pi-info-circle"/>
-		    		</p:commandButton>
-		    		
-		    		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-			            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat" />
-			            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
-			        </p:confirmDialog>
-		    	</h:form>
-			</p:panel>
-		</p:dialog>
-		
-	</ui:define>
-	
+  <ui:define name="title">Virtual Class Register - Grade book</ui:define>
+
+  <ui:define name="content">
+    <p:panel id="studentDetails" styleClass="mb-4">
+      <p>
+        Subject: #{studentDetailsBB.lesson.teacherteachessubject.subject.name}
+      </p>
+      <p>Class: #{studentDetailsBB.student.clazz.name}</p>
+      <p>
+        Date: #{studentDetailsBB.lesson.day}
+        #{studentDetailsBB.lesson.startTime} -
+        #{studentDetailsBB.lesson.endTime}
+      </p>
+      <p>Name: #{studentDetailsBB.student.name}</p>
+      <h:form>
+        <p:commandButton
+          styleClass="m-1"
+          value="Go back"
+          ajax="false"
+          action="#{studentDetailsBB.lessonDetails()}"
+        />
+        <p>Grades</p>
+        <div id="grades" class="flex flex-row flex-wrap">
+          <c:forEach var="grade" items="#{studentDetailsBB.grades}">
+            <p:commandLink
+              class="flex align-items-center justify-content-center w-2rem h-2rem bg-primary font-bold border-round m-1 text-xs cursor-pointer"
+              value="#{grade.value}"
+              action="#{studentDetailsBB.setSelectedGrade(grade)}"
+              oncomplete="PF('gradeDetails').show()"
+              update=":gradeDetailsContent"
+            />
+          </c:forEach>
+        </div>
+        <p class="font-bold text-sm">
+          Weighted average: #{studentDetailsBB.gradesWeightedAverage}
+        </p>
+        <hr />
+        <p>Behaviour Points</p>
+        <div id="behaviour-points" class="flex flex-row flex-wrap">
+          <c:forEach
+            var="behaviourPoint"
+            items="#{studentDetailsBB.behaviourPoints}"
+          >
+            <p:commandLink
+              class="flex align-items-center justify-content-center w-2rem h-2rem bg-primary font-bold border-round m-1 text-xs cursor-pointer"
+              value="#{behaviourPoint.value}"
+              action="#{studentDetailsBB.setSelectedBehaviourPoint(behaviourPoint)}"
+              oncomplete="PF('behaviourPointDetails').show()"
+              update=":behaviourPointDetailsContent"
+            />
+          </c:forEach>
+        </div>
+        <p class="font-bold text-sm">
+          Summary: #{studentDetailsBB.behaviourPointsSummary}
+        </p>
+      </h:form>
+    </p:panel>
+
+    <p:messages id="messages" closable="true">
+      <p:autoUpdate />
+    </p:messages>
+
+    <p:panel
+      id="grades-panel"
+      styleClass="mb-4"
+      header="Add Grade"
+      toggleable="true"
+      collapsed="true"
+    >
+      <h:form id="formGrades">
+        <p:panelGrid columns="2" layout="grid">
+          <p:outputLabel for="grade-type">Grade Type</p:outputLabel>
+          <p:selectOneMenu
+            id="grade-type"
+            value="#{studentDetailsBB.idGradeType}"
+            required="true"
+            requiredMessage="Grade Type is required!"
+          >
+            <f:selectItem itemLabel="Select Grade Type" itemValue="" />
+            <f:selectItems
+              value="#{studentDetailsBB.gradeTypes}"
+              var="g"
+              itemLabel="#{g.name}"
+              itemValue="#{g.idGradeType}"
+            />
+          </p:selectOneMenu>
+
+          <p:outputLabel for="gradeValue">Grade Value</p:outputLabel>
+          <p:selectOneMenu
+            id="gradeValue"
+            value="#{studentDetailsBB.gradeValue}"
+            required="true"
+            requiredMessage="Grade Value is required!"
+          >
+            <f:selectItem itemLabel="Select Value" itemValue="" />
+            <f:selectItem itemLabel="1" itemValue="1" />
+            <f:selectItem itemLabel="2" itemValue="2" />
+            <f:selectItem itemLabel="2.5" itemValue="2.5" />
+            <f:selectItem itemLabel="3" itemValue="3" />
+            <f:selectItem itemLabel="3.5" itemValue="3.5" />
+            <f:selectItem itemLabel="4" itemValue="4" />
+            <f:selectItem itemLabel="4.5" itemValue="4.5" />
+            <f:selectItem itemLabel="5" itemValue="5" />
+            <f:selectItem itemLabel="5.5" itemValue="5.5" />
+            <f:selectItem itemLabel="6" itemValue="6" />
+          </p:selectOneMenu>
+
+          <p:outputLabel for="gradeNote">Grade Note</p:outputLabel>
+          <h:panelGroup>
+            <p:inputTextarea
+              id="gradeNote"
+              value="#{studentDetailsBB.gradeNote}"
+              rows="6"
+              cols="30"
+              counter="displayGradeNote"
+              maxlength="200"
+              counterTemplate="{0} characters remaining."
+            />
+            <h:outputText id="displayGradeNote" class="block" />
+          </h:panelGroup>
+        </p:panelGrid>
+
+        <p:commandButton
+          styleClass="m-1"
+          value="Add Grade"
+          action="#{studentDetailsBB.addGrade()}"
+          update="@form studentDetails"
+        />
+      </h:form>
+    </p:panel>
+
+    <p:panel
+      id="behaviour-points-panel"
+      header="Add Behaviour Point"
+      toggleable="true"
+      collapsed="true"
+    >
+      <h3>Behaviour Points</h3>
+      <h:form id="formBehaviourPoints">
+        <p:panelGrid columns="2" layout="grid">
+          <p:outputLabel
+            for="behaviourPointValue"
+            value="Behaviour Point Value"
+          />
+          <p:inputNumber
+            id="behaviourPointValue"
+            value="#{studentDetailsBB.behaviourPointValue}"
+            modifyValueOnWheel="false"
+            minValue="-50"
+            maxValue="50"
+            required="true"
+            requiredMessage="Behaviour Point Value is required!"
+          />
+
+          <p:outputLabel for="note">Note</p:outputLabel>
+          <h:panelGroup>
+            <p:inputTextarea
+              id="note"
+              value="#{studentDetailsBB.behaviourPointNote}"
+              rows="6"
+              cols="30"
+              counter="displayBehaviourPointNote"
+              maxlength="200"
+              counterTemplate="{0} characters remaining."
+            />
+            <h:outputText id="displayBehaviourPointNote" class="block" />
+          </h:panelGroup>
+        </p:panelGrid>
+
+        <p:commandButton
+          styleClass="m-1"
+          value="Add Behaviour Points"
+          action="#{studentDetailsBB.addBehaviourPoints()}"
+          update="@form studentDetails"
+        />
+      </h:form>
+    </p:panel>
+
+    <p:dialog
+      header="Grade Details"
+      widgetVar="gradeDetails"
+      minHeight="40"
+      width="350"
+      showEffect="fade"
+      modal="true"
+      draggable="false"
+      dynamic="true"
+    >
+      <p:panel id="gradeDetailsContent">
+        <p>Value: #{studentDetailsBB.selectedGrade.value}</p>
+        <p>Type: #{studentDetailsBB.selectedGrade.gradetype.name}</p>
+        <p>Weightage: #{studentDetailsBB.selectedGrade.gradetype.weightage}</p>
+        <p>Note: #{studentDetailsBB.selectedGrade.note}</p>
+        <p>Created: #{studentDetailsBB.selectedGrade.createdDatetime}</p>
+        <h:form>
+          <p:commandButton
+            value="Delete"
+            action="#{studentDetailsBB.deleteGrade()}"
+            styleClass="ui-button-danger m-1"
+            oncomplete="PF('gradeDetails').hide()"
+            update="@form studentDetails"
+          >
+            <p:confirm
+              header="Confirmation"
+              message="Do you want to delete this grade?"
+              icon="pi pi-info-circle"
+            />
+          </p:commandButton>
+
+          <p:confirmDialog
+            global="true"
+            showEffect="fade"
+            hideEffect="fade"
+            responsive="true"
+            width="350"
+          >
+            <p:commandButton
+              value="No"
+              type="button"
+              styleClass="ui-confirmdialog-no ui-button-flat"
+            />
+            <p:commandButton
+              value="Yes"
+              type="button"
+              styleClass="ui-confirmdialog-yes"
+            />
+          </p:confirmDialog>
+        </h:form>
+      </p:panel>
+    </p:dialog>
+
+    <p:dialog
+      header="Behaviour Point Details"
+      widgetVar="behaviourPointDetails"
+      minHeight="40"
+      width="350"
+      showEffect="fade"
+      modal="true"
+      draggable="false"
+      dynamic="true"
+    >
+      <p:panel id="behaviourPointDetailsContent">
+        <p>Value: #{studentDetailsBB.selectedBehaviourPoint.value}</p>
+        <p>Note: #{studentDetailsBB.selectedBehaviourPoint.note}</p>
+        <p>
+          Created: #{studentDetailsBB.selectedBehaviourPoint.createdDatetime}
+        </p>
+        <h:form>
+          <p:commandButton
+            value="Delete"
+            action="#{studentDetailsBB.deleteBehaviourPoint()}"
+            styleClass="ui-button-danger m-1"
+            oncomplete="PF('behaviourPointDetails').hide()"
+            update="@form studentDetails"
+          >
+            <p:confirm
+              header="Confirmation"
+              message="Do you want to delete this behaviour point?"
+              icon="pi pi-info-circle"
+            />
+          </p:commandButton>
+
+          <p:confirmDialog
+            global="true"
+            showEffect="fade"
+            hideEffect="fade"
+            responsive="true"
+            width="350"
+          >
+            <p:commandButton
+              value="No"
+              type="button"
+              styleClass="ui-confirmdialog-no ui-button-flat"
+            />
+            <p:commandButton
+              value="Yes"
+              type="button"
+              styleClass="ui-confirmdialog-yes"
+            />
+          </p:confirmDialog>
+        </h:form>
+      </p:panel>
+    </p:dialog>
+  </ui:define>
 </ui:composition>

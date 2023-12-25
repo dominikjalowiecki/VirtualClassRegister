@@ -31,17 +31,17 @@
 		<param-name>permissions</param-name>
 		<param-value>
 /jakarta.faces.resource : PUBLIC;
-/pages : ADMINISTRATOR;
-/pages/addAnnouncement.jsf : TEACHER;
-/pages/announcements.jsf : STUDENT, TEACHER, ADMINISTRATOR;
-/pages/gradeBook.jsf : STUDENT;
-/pages/index.jsf : STUDENT, TEACHER, ADMINISTRATOR;
-/pages/lessonDetails.jsf : TEACHER;
+/pages : Administrator;
+/pages/addAnnouncement.jsf : Nauczyciel;
+/pages/announcements.jsf : Student, Nauczyciel, Administrator;
+/pages/gradeBook.jsf : Student, Administrator;
+/pages/index.jsf : Student, Nauczyciel, Administrator;
+/pages/lessonDetails.jsf : Nauczyciel;
 /pages/login.jsf : PUBLIC;
-/pages/profile.jsf : STUDENT, TEACHER, ADMINISTRATOR;
-/pages/studentDetails.jsf : TEACHER;
-/pages/teacherPanel.jsf : TEACHER;
-/pages/timetable.jsf : STUDENT, TEACHER, ADMINISTRATOR;
+/pages/profile.jsf : Student, Nauczyciel, Administrator;
+/pages/studentDetails.jsf : Nauczyciel;
+/pages/teacherPanel.jsf : Nauczyciel;
+/pages/timetable.jsf : Student, Nauczyciel, Administrator;
 /pages/viewExpired.jsf : PUBLIC;
 		</param-value>
 	</init-param>

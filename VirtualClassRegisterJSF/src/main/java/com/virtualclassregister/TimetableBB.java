@@ -94,25 +94,25 @@ public class TimetableBB implements Serializable {
 		for(Lesson lesson : lessons) {			
 			int dayOfWeek = 1;
 			switch(lesson.getDay()) {
-				case "SUNDAY":
+				case "Niedziela":
 					dayOfWeek = 1;
 					break;
-				case "MONDAY":
+				case "Poniedziałek":
 					dayOfWeek = 2;
 					break;
-				case "TUESDAY":
+				case "Wtorek":
 					dayOfWeek = 3;
 					break;
-				case "WEDNESDAY":
+				case "Środa":
 					dayOfWeek = 4;
 					break;
-				case "THURSDAY":
+				case "Czwartek":
 					dayOfWeek = 5;
 					break;
-				case "FRIDAY":
+				case "Piątek":
 					dayOfWeek = 6;
 					break;
-				case "SATURDAY":
+				case "Sobota":
 					dayOfWeek = 7;
 					break;
 			}

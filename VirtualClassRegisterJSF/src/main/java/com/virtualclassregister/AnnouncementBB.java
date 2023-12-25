@@ -48,7 +48,7 @@ public class AnnouncementBB implements Serializable {
 	private User requestedUser;
 	
 	public List<Lesson> getLessons() {
-		if(!"STUDENT".equals(requestedUser.getRole())) {
+		if(!"Student".equals(requestedUser.getRole())) {
 			return null;
 		}
 
@@ -72,7 +72,7 @@ public class AnnouncementBB implements Serializable {
 		requestedUser = remoteClient.getDetails();
 		
 		Class clazz = null;
-		if(requestedUser.getRole() == "STUDENT") {
+		if(requestedUser.getRole() == "Student") {
 			clazz = requestedUser.getClazz();
 		}
 		lazyAnnouncement.setClazz(clazz);
@@ -94,7 +94,7 @@ public class AnnouncementBB implements Serializable {
 	
 	public void search() {
 		Class clazz = null;
-		if(requestedUser.getRole() == "STUDENT") {
+		if(requestedUser.getRole() == "Student") {
 			clazz = requestedUser.getClazz();
 		}
 		lazyAnnouncement.setClazz(clazz);

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.virtualclassregister.dao.ClassDAO;
 import com.virtualclassregister.entities.Class;
+import com.virtualclassregister.entities.User;
 
 import jakarta.ejb.EJB;
 import jakarta.faces.application.FacesMessage;
@@ -50,7 +51,6 @@ public class EditClassBB implements Serializable {
 				ctx.responseComplete();
 			}
 		}
-
 	}
 	
 	public void editClass() {
@@ -70,6 +70,12 @@ public class EditClassBB implements Serializable {
 		loaded = new Class(clazz);
 		
 		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully updated class", null));
+	}
+	
+	public String gradeBook(User student) {
+		flash.put("student", student);
+		
+		return "gradeBook?faces-redirect=true";
 	}
 	
 }

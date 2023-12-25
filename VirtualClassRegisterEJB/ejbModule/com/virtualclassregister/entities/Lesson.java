@@ -93,7 +93,7 @@ public class Lesson implements Serializable {
 	}
 	
 	public String getEndTime() {
-		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		return sdf.format(this.end);
 	}
 
@@ -106,7 +106,7 @@ public class Lesson implements Serializable {
 	}
 	
 	public String getStartTime() {
-		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		return sdf.format(this.start);
 	}
 

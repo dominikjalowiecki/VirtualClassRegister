@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `VirtualClassRegister`.`User` (
   `surname` VARCHAR(85) NOT NULL,
   `email` VARCHAR(120) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  `role` ENUM('STUDENT', 'TEACHER', 'ADMINISTRATOR') NOT NULL,
+  `role` ENUM('Student', 'Nauczyciel', 'Administrator') NOT NULL,
   `created` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idUser`),
   INDEX `fk_User_Class1_idx` (`idClass` ASC) VISIBLE,
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `VirtualClassRegister`.`Lesson` (
   `idSemester` INT NOT NULL,
   `idClass` INT NOT NULL,
   `idTeacherTeachesSubject` INT NOT NULL,
-  `day` ENUM('MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY') NOT NULL,
+  `day` ENUM('Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'') NOT NULL,
   `start` TIME NOT NULL,
   `end` TIME NOT NULL,
   PRIMARY KEY (`idLesson`),
@@ -241,3 +241,28 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `VirtualClassRegister`.`User`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `VirtualClassRegister`;
+INSERT INTO `VirtualClassRegister`.`User` (`idUser`, `idClass`, `forename`, `surname`, `email`, `password`, `role`, `created`) VALUES (DEFAULT, NULL, 'Admin', '', 'admin@poczta.pl', '$2a$12$yTaSwUomJPevlHGfTpMk9udSeBgUkXAcJ3MGyMWBCbxngY434EScu', 'Administrator', '1970-01-01 00:00:00');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `VirtualClassRegister`.`GradeType`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `VirtualClassRegister`;
+INSERT INTO `VirtualClassRegister`.`GradeType` (`idGradeType`, `name`, `weightage`) VALUES (DEFAULT, 'Odpowiedź ustna', 0.5);
+INSERT INTO `VirtualClassRegister`.`GradeType` (`idGradeType`, `name`, `weightage`) VALUES (DEFAULT, 'Zadanie domowe', 0.3);
+INSERT INTO `VirtualClassRegister`.`GradeType` (`idGradeType`, `name`, `weightage`) VALUES (DEFAULT, 'Kartkówka', 0.35);
+INSERT INTO `VirtualClassRegister`.`GradeType` (`idGradeType`, `name`, `weightage`) VALUES (DEFAULT, 'Test', 0.7);
+INSERT INTO `VirtualClassRegister`.`GradeType` (`idGradeType`, `name`, `weightage`) VALUES (DEFAULT, 'Egzamin', 1);
+INSERT INTO `VirtualClassRegister`.`GradeType` (`idGradeType`, `name`, `weightage`) VALUES (DEFAULT, 'Aktywność', 0.2);
+
+COMMIT;
+

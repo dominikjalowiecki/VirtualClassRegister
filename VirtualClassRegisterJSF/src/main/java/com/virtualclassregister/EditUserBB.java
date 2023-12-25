@@ -67,7 +67,7 @@ public class EditUserBB implements Serializable {
 	}
 	
 	public List<Class> getClasses(){
-		if("STUDENT".equals(user.getRole())) {
+		if("Student".equals(user.getRole())) {
 			return classDAO.getFullList();
 		}
 		return null;

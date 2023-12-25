@@ -69,7 +69,7 @@ public class LessonDetailsBB implements Serializable {
 
 	}
 	
-	public String studentDetails(User user, Lesson lesson) {
+	public String studentDetails(User user) {
 		flash.put("student", user);
 		flash.put("lesson", lesson);
 		

@@ -68,4 +68,10 @@ public class EditLessonBB implements Serializable {
 		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully updated class", null));
 	}
 	
+	public String editClass() {
+		flash.put("clazz", lesson.getClazz());
+		
+		return "editClass?faces-redirect=true";
+	}
+	
 }
