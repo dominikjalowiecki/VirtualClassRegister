@@ -10,13 +10,13 @@
     <f:viewAction action="#{editClassBB.onLoad()}" />
   </f:metadata>
 
-  <ui:define name="title">Virtual Class Register - Edit Class</ui:define>
+  <ui:define name="title">Virtual Class Register - #{textMain.edit_class}</ui:define>
 
   <ui:define name="content">
     <p:panel styleClass="mb-4">
       <h:form id="form">
         <p:panelGrid columns="2" layout="grid">
-          <p:outputLabel for="name">Name</p:outputLabel>
+          <p:outputLabel for="name">#{textMain.name}</p:outputLabel>
           <p:inputText
             id="name"
             value="#{editClassBB.clazz.name}"
@@ -28,14 +28,14 @@
             <f:validateLength minimum="2" maximum="65" />
           </p:inputText>
 
-          <p:outputLabel for="tutor">Tutor</p:outputLabel>
+          <p:outputLabel for="tutor">#{textMain.tutor}</p:outputLabel>
           <p:selectOneMenu
             id="tutor"
             value="#{editClassBB.clazz.user.idUser}"
             required="true"
             requiredMessage="#{textValidation.tutor_is_required}"
           >
-            <f:selectItem itemLabel="Select Tutor" itemValue="" />
+            <f:selectItem itemLabel="#{textMain.select_tutor}" itemValue="" />
             <f:selectItems
               value="#{userBB.tutors}"
               var="t"
@@ -47,11 +47,11 @@
 
         <p:commandButton
           styleClass="m-1"
-          value="Edit Class"
+          value="#{textMain.edit_class}"
           action="#{editClassBB.editClass()}"
           update="@form"
         />
-        <p:button styleClass="m-1" value="Back" outcome="class" />
+        <p:button styleClass="m-1" value="#{textMain.go_back}" outcome="class" />
       </h:form>
     </p:panel>
 
@@ -61,7 +61,7 @@
 
     <p:panel
       id="lessons-panel"
-      header="Lessons"
+      header="#{textMain.lessons}"
       styleClass="mb-4"
       toggleable="true"
       collapsed="true"
@@ -81,14 +81,14 @@
         >
           <p:column>
             <f:facet name="header">
-              <h:outputText value="Name" />
+              <h:outputText value="#{textMain.name}" />
             </f:facet>
             <h:outputText value="#{l.teacherteachessubject.subject.name}" />
           </p:column>
 
           <p:column>
             <f:facet name="header">
-              <h:outputText value="Teacher" />
+              <h:outputText value="#{textMain.teacher}" />
             </f:facet>
             <h:outputText
               value="#{l.teacherteachessubject.user.forename} #{l.teacherteachessubject.user.surname}"
@@ -97,31 +97,31 @@
 
           <p:column>
             <f:facet name="header">
-              <h:outputText value="Semester" />
+              <h:outputText value="#{textMain.semester}" />
             </f:facet>
             <h:outputText value="#{l.semester.name}" />
           </p:column>
 
           <p:column>
             <f:facet name="header">
-              <h:outputText value="Date" />
+              <h:outputText value="#{textMain.date}" />
             </f:facet>
             <h:outputText value="#{l.day} #{l.startTime} - #{l.endTime}" />
           </p:column>
 
           <p:column exportable="false">
             <f:facet name="header">
-              <h:outputText value="Options" />
+              <h:outputText value="#{textMain.options}" />
             </f:facet>
             <p:commandButton
               styleClass="m-1"
-              value="Details"
+              value="#{textMain.details}"
               ajax="false"
               action="#{lessonBB.editLesson(l)}"
             />
             <p:commandButton
               styleClass="m-1"
-              value="Remove"
+              value="#{textMain.remove}"
               action="#{lessonBB.removeLesson(l)}"
               update="@form"
             />
@@ -132,7 +132,7 @@
 
     <p:panel
       id="students-panel"
-      header="Students"
+      header="#{textMain.students}"
       styleClass="mb-4"
       toggleable="true"
       collapsed="true"
@@ -152,7 +152,7 @@
         >
           <p:column>
             <f:facet name="header">
-              <h:outputText value="Name" />
+              <h:outputText value="#{textMain.name}" />
             </f:facet>
             <h:outputText value="#{s.name}" />
           </p:column>
@@ -166,11 +166,11 @@
 
           <p:column exportable="false">
             <f:facet name="header">
-              <h:outputText value="Options" />
+              <h:outputText value="#{textMain.options}" />
             </f:facet>
             <p:commandButton
               styleClass="m-1"
-              value="Details"
+              value="#{textMain.details}"
               ajax="false"
               action="#{editClassBB.gradeBook(s)}"
             />

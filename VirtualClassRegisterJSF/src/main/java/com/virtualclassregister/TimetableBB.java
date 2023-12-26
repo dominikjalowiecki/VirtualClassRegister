@@ -42,6 +42,10 @@ public class TimetableBB implements Serializable {
 	@ManagedProperty("#{textMessage}")
 	private ResourceBundle textMessage;
 	
+	@Inject
+	@ManagedProperty("#{textMain}")
+	private ResourceBundle textMain;
+	
 	@EJB
 	LessonDAO lessonDAO;
 	
@@ -61,12 +65,12 @@ public class TimetableBB implements Serializable {
 	
 	public void search() {
 		if(searchIdClass == 0 && searchIdTeacher == 0) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Class or teacher is required!", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("class_or_teacher_is_required"), null));
 			return;
 		}
 		
 		if(searchIdClass != 0 && searchIdTeacher != 0) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Choose class or teacher!", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("choose_class_or_teacher"), null));
 			return;
 		}
 		
@@ -130,7 +134,7 @@ public class TimetableBB implements Serializable {
 			
 	        DefaultScheduleEvent<?> event = DefaultScheduleEvent.builder()
         		.title(subjectName)
-        		.description(teacherName + "; Class " + clazzName)
+        		.description(teacherName + "; " + textMain.getString("class") + " " + clazzName)
                 .startDate(LocalDateTime.ofInstant(c.toInstant(), ZoneId.systemDefault()))
                 .overlapAllowed(true)
                 .editable(false)

@@ -5,7 +5,7 @@
 	xmlns:f="jakarta.faces.core"
 	xmlns:p="http://primefaces.org/ui">
 	
-	<ui:define name="title">Virtual Class Register - Timetable</ui:define>
+	<ui:define name="title">Virtual Class Register - #{textMain.timetable}</ui:define>
 	
 	<ui:define name="content">
 		
@@ -14,27 +14,27 @@
 			
 				<p:panelGrid columns="2" layout="grid">
 			        
-			        <p:outputLabel for="semester">Semester</p:outputLabel>
-	                <p:selectOneMenu id="semester" value="#{timetableBB.searchIdSemester}" required="true" requiredMessage="Semester is required!">
-	                    <f:selectItem itemLabel="Select Semester" itemValue=""/>
+			        <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
+	                <p:selectOneMenu id="semester" value="#{timetableBB.searchIdSemester}" required="true" requiredMessage="#{textValidation.semester_is_required}">
+	                    <f:selectItem itemLabel="#{textMain.select_semester}" itemValue=""/>
                     	<f:selectItems value="#{semesterBB.list}" var="s" itemLabel="#{s.name} #{s.startDate} - #{s.endDate}" itemValue="#{s.idSemester}"/>
 	                </p:selectOneMenu>
 	                
-	                <p:outputLabel for="class">Class</p:outputLabel>
+	                <p:outputLabel for="class">#{textMain.class}</p:outputLabel>
 	                <p:selectOneMenu id="class" value="#{timetableBB.searchIdClass}">
-	                    <f:selectItem itemLabel="Select Class" itemValue=""/>
+	                    <f:selectItem itemLabel="#{textMain.select_class}" itemValue=""/>
                     	<f:selectItems value="#{classBB.list}" var="c" itemLabel="#{c.name}" itemValue="#{c.idClass}"/>
 	                </p:selectOneMenu>
 	                
-	                <p:outputLabel for="teacher">Teacher</p:outputLabel>
+	                <p:outputLabel for="teacher">#{textMain.teacher}</p:outputLabel>
 	                <p:selectOneMenu id="teacher" value="#{timetableBB.searchIdTeacher}">
-	                    <f:selectItem itemLabel="Select Teacher" itemValue=""/>
+	                    <f:selectItem itemLabel="#{textMain.select_teacher}" itemValue=""/>
                     	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname}" itemValue="#{t.idUser}"/>
 	                </p:selectOneMenu>
 			        
 			    </p:panelGrid>
 			    
-   		     	<p:commandButton styleClass="m-1" value="Search" action="#{timetableBB.search()}" update="@form timetable"/>
+   		     	<p:commandButton styleClass="m-1" value="#{textMain.search}" action="#{timetableBB.search()}" update="@form timetable"/>
    		     	
    		     	<p:messages id="messages"/>
    		     	

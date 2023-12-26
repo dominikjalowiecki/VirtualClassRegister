@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.faces.simplesecurity.RemoteClient;
 
@@ -34,6 +35,7 @@ import com.virtualclassregister.entities.User;
 import com.virtualclassregister.utils.LessonWithGrades;
 
 import jakarta.ejb.EJB;
+import jakarta.faces.annotation.ManagedProperty;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.Flash;
@@ -49,7 +51,15 @@ import lombok.Setter;
 public class GradeBookBB implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-		
+	
+	@Inject
+	@ManagedProperty("#{textMessage}")
+	private ResourceBundle textMessage;
+	
+	@Inject
+	@ManagedProperty("#{textMain}")
+	private ResourceBundle textMain;
+	
 	@EJB
 	GradeDAO gradeDAO;
 	
@@ -89,7 +99,7 @@ public class GradeBookBB implements Serializable {
 			
 			if(!"Student".equals(student.getRole())) {
 				ctx.getExternalContext().getFlash().setKeepMessages(true);
-				ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid operation!", null));
+				ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("invalid_operation"), null));
 				if (!ctx.isPostback()) {
 					ctx.getExternalContext().redirect("class.jsf");
 					ctx.responseComplete();
@@ -184,7 +194,7 @@ public class GradeBookBB implements Serializable {
         ChartData data = new ChartData();
 
         HorizontalBarChartDataSet hbarDataSet = new HorizontalBarChartDataSet();
-        hbarDataSet.setLabel("Weighted average");
+        hbarDataSet.setLabel(textMain.getString("weighted_average"));
         
         List<Number> values = new ArrayList<>();
         List<String> bgColor = new ArrayList<>();
@@ -222,7 +232,7 @@ public class GradeBookBB implements Serializable {
 
         Title title = new Title();
         title.setDisplay(true);
-        title.setText("Grade Weighted Average");
+        title.setText(textMain.getString("grade_weighted_average"));
         options.setTitle(title);
 
         hbarModel.setOptions(options);
@@ -260,7 +270,7 @@ public class GradeBookBB implements Serializable {
         
         dataSet.setData(values);
         dataSet.setFill(false);
-        dataSet.setLabel("Behaviour points");
+        dataSet.setLabel(textMain.getString("behaviour_points"));
         dataSet.setBorderColor("rgb(75, 192, 192)");
         dataSet.setTension(0.1);
         data.addChartDataSet(dataSet);
@@ -271,7 +281,7 @@ public class GradeBookBB implements Serializable {
         options.setMaintainAspectRatio(false);
         Title title = new Title();
         title.setDisplay(true);
-        title.setText("Behaviour Points Balance");
+        title.setText(textMain.getString("behaviour_points_balance"));
         options.setTitle(title);
 
         Title subtitle = new Title();

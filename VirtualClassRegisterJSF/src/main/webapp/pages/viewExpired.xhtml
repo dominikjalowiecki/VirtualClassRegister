@@ -5,17 +5,17 @@
 	xmlns:f="jakarta.faces.core"
 	xmlns:p="http://primefaces.org/ui">
 	
-	<ui:define name="title">View Expired</ui:define>
+	<ui:define name="title">#{textMain.view_expired}</ui:define>
 	
 	<ui:define name="head">
-		<meta http-equiv="refresh" content="1;url=#{request.contextPath}"/>
+		<meta http-equiv="refresh" content="1;url=#{request.contextPath}/pages/"/>
 	</ui:define>
 	
 	<ui:define name="content">
 		
 		<p:panel>
-			<h3>View has expired!</h3>
-			<p>Redirecting to main page...</p>
+			<h3>#{textMain.view_has_expired}</h3>
+			<p>#{textMain.redirecting_to_main_page}</p>
 		</p:panel>
 		
 	</ui:define>

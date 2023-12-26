@@ -136,7 +136,7 @@ public class StudentDetailsBB implements Serializable {
 			lesson = new Lesson(loadedLesson);
 		} else {
 			ctx.getExternalContext().getFlash().setKeepMessages(true);
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid operation!", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("invalid_operation"), null));
 			if (!ctx.isPostback()) {
 				ctx.getExternalContext().redirect("teacherPanel.jsf");
 				ctx.responseComplete();

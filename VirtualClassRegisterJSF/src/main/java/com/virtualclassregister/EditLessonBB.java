@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import com.virtualclassregister.dao.LessonDAO;
 import com.virtualclassregister.entities.Lesson;
 
 import jakarta.ejb.EJB;
+import jakarta.faces.annotation.ManagedProperty;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.Flash;
@@ -23,6 +25,10 @@ import lombok.Setter;
 public class EditLessonBB implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Inject
+	@ManagedProperty("#{textMessage}")
+	private ResourceBundle textMessage;
 
 	@EJB
 	LessonDAO lessonDAO;
@@ -50,7 +56,7 @@ public class EditLessonBB implements Serializable {
 			end = new Date(lesson.getEnd().getTime());
 		} else {
 			ctx.getExternalContext().getFlash().setKeepMessages(true);
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid operation!", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("invalid_operation"), null));
 			if (!ctx.isPostback()) {
 				ctx.getExternalContext().redirect("class.jsf");
 				ctx.responseComplete();
@@ -65,7 +71,7 @@ public class EditLessonBB implements Serializable {
 		
 		lessonDAO.merge(lesson);
 		
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully updated class", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_updated_lesson"), null));
 	}
 	
 	public String editClass() {

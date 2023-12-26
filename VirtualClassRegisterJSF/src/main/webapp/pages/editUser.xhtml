@@ -9,55 +9,54 @@
 	    <f:viewAction action="#{editUserBB.onLoad()}" />
 	</f:metadata>
 	
-	<ui:define name="title">Virtual Class Register - Edit User</ui:define>
+	<ui:define name="title">Virtual Class Register - #{textMain.edit_user}</ui:define>
 	
 	<ui:define name="content">
 	
 			
 		<p:panel styleClass="mb-4">
-			<p>Name: #{editUserBB.user.name}</p>
-			<p>Role: #{editUserBB.user.role}</p>
-			<p>Created: 
+			<p>#{textMain.name}: #{editUserBB.user.name}</p>
+			<p>#{textMain.role}: #{editUserBB.user.role}</p>
+			<p>#{textMain.created}: 
 				<h:outputText value="#{editUserBB.user.created}" >
     				<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 				</h:outputText>
 			</p>
 			<hr/>
-			<p class="font-bold">Edit User</p>
 			<h:form id="form">
 			
 				<p:panelGrid columns="2" layout="grid">
 			        
 			        <p:outputLabel for="email">Email</p:outputLabel>
 			        <p:inputText id="email" value="#{editUserBB.user.email}" required="true"
-			        	requiredMessage="Email is required!" maxlength="120" validatorMessage="Invalid email format!">
+			        	requiredMessage="#{textValidation.email_is_required}" maxlength="120" validatorMessage="#{textValidation.invalid_email_format}">
 			        	<f:validateRegex
 							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
 						<f:validateLength maximum="120"/>
 			        </p:inputText>
 			        
-			        <p:outputLabel for="class">Class</p:outputLabel> 
+			        <p:outputLabel for="class">#{textMain.class}</p:outputLabel> 
                 	<p:selectOneMenu id="class" value="#{editUserBB.user.clazz.idClass}">
-	                    <f:selectItem itemLabel="Select Class" itemValue=""/>
+	                    <f:selectItem itemLabel="#{textMain.select_class}" itemValue=""/>
                     	<f:selectItems value="#{editUserBB.classes}" var="c" itemLabel="#{c.name}" itemValue="#{c.idClass}"/>
 	                </p:selectOneMenu>
 			        
 			        <h:panelGroup>
-			        	<p:outputLabel for="password">Password</p:outputLabel>
-			        	<p class="text-sm m-0">Minimum eight characters, at least one uppercase letter, one lowercase letter and one number</p>
+			        	<p:outputLabel for="password">#{textMain.password}</p:outputLabel>
+			        	<p class="text-sm m-0">#{textMain.password_hint}</p>
 			        </h:panelGroup>
-			        <p:password id="password" value="#{editUserBB.newPassword}" match="repeatPassword" validatorMessage="Invalid password format!">
+			        <p:password id="password" value="#{editUserBB.newPassword}" match="repeatPassword" validatorMessage="#{textValidation.invalid_password_format}">
 				        <f:validateRegex
 								pattern="^$|^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"/>
 			        </p:password>
 			        
-			        <p:outputLabel for="repeatPassword">Repeat Password</p:outputLabel>
+			        <p:outputLabel for="repeatPassword">#{textMain.repeat_password}</p:outputLabel>
 			        <p:password id="repeatPassword" value="#{editUserBB.newPassword}"/>
 			        
 			    </p:panelGrid>
 			    
-		     	<p:commandButton styleClass="m-1"  value="Edit User" action="#{editUserBB.editUser()}" update="@form"/>
-		     	<p:button styleClass="m-1" value="Back" outcome="user"/>
+		     	<p:commandButton styleClass="m-1"  value="#{textMain.edit_user}" action="#{editUserBB.editUser()}" update="@form"/>
+		     	<p:button styleClass="m-1" value="#{textMain.go_back}" outcome="user"/>
 		     	
 			    <p:messages id="messages"/>
 		     	

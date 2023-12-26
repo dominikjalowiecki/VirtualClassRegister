@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.faces.simplesecurity.RemoteClient;
 
@@ -16,6 +17,7 @@ import com.virtualclassregister.entities.User;
 import com.virtualclassregister.lazyModels.LazyUser;
 
 import jakarta.ejb.EJB;
+import jakarta.faces.annotation.ManagedProperty;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.Flash;
@@ -32,6 +34,10 @@ import lombok.Setter;
 public class UserBB implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	
+	@Inject
+	@ManagedProperty("#{textMessage}")
+	private ResourceBundle textMessage;
 
 	@EJB
 	UserDAO userDAO;
@@ -77,7 +83,7 @@ public class UserBB implements Serializable {
 		List<User> users = userDAO.getList(searchParams);
 		
 		if(!users.isEmpty()) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email is already used!", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("email_is_already_used"), null));
 			user.setEmail(null);
 			return;
 		}
@@ -92,7 +98,7 @@ public class UserBB implements Serializable {
 		user = new User();
 		user.setClazz(new Class());
 		
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully added new user", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_added_new_user"), null));
 	}
 	
 	public void changePassword() {
@@ -101,14 +107,14 @@ public class UserBB implements Serializable {
 		User requestedUser = remoteClient.getDetails();
 		
 		if(!BCrypt.checkpw(currentPassword, requestedUser.getPassword())) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Entered password doesn't match current password", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("entered_password_doesnt_match_current_password"), null));
 			return;
 		}
 		
 		requestedUser.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12)));
 		userDAO.merge(requestedUser);
 		
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Password has been successfully changed", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("password_has_been_successfully_changed"), null));
 	}
 	
 	public String login() {
@@ -117,7 +123,7 @@ public class UserBB implements Serializable {
 		List<User> users = userDAO.getList(searchParams);
 		
 		if(users.isEmpty() || !BCrypt.checkpw(user.getPassword(), users.get(0).getPassword())) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Provided invalid credentials", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("provided_invalid_credentials"), null));
 			return null;
 		}
 		
@@ -138,7 +144,7 @@ public class UserBB implements Serializable {
 		HttpSession session = (HttpSession) ctx.getExternalContext().getSession(true);
 		session.invalidate();
 		ctx.getExternalContext().getFlash().setKeepMessages(true);
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You have been logged out", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("you_have_been_logged_out"), null));
 		return "login?faces-redirect=true";
 	}
 	
@@ -153,10 +159,10 @@ public class UserBB implements Serializable {
 			userDAO.remove(user);
 		} catch(Exception e) {
 			e.printStackTrace();
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to remove user", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("unable_to_remove_user"), null));
 			return;
 		}
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully removed user", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_removed_user"), null));
 	}
 	
 	public void search() {

@@ -5,30 +5,30 @@
 	xmlns:f="jakarta.faces.core"
 	xmlns:p="http://primefaces.org/ui">
 	
-	<ui:define name="title">Virtual Class Register - Subject</ui:define>
+	<ui:define name="title">Virtual Class Register - #{textMain.subject}</ui:define>
 	
 	<ui:define name="content">
 			
-		<p:panel header="Add Subject" styleClass="mb-4" toggleable="true" collapsed="true">
+		<p:panel header="#{textMain.add_subject}" styleClass="mb-4" toggleable="true" collapsed="true">
 			<h:form id="form">
 			
 				<p:panelGrid columns="2" layout="grid">
 			        
-			        <p:outputLabel for="name">Name</p:outputLabel>
+			        <p:outputLabel for="name">#{textMain.name}</p:outputLabel>
 			        <p:inputText id="name" value="#{subjectBB.subject.name}" required="true"
-			        	requiredMessage="Name is required!" maxlength="85" validatorMessage="Name has to be between 2 to 65 characters!">
-			        	<f:validateLength minimum="2" maximum="85"/>
+			        	requiredMessage="#{textValidation.name_is_required}" maxlength="65" validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}">
+			        	<f:validateLength minimum="2" maximum="65"/>
 			        </p:inputText>
 			        
-			        <p:outputLabel for="teachers">Teacher</p:outputLabel>
+			        <p:outputLabel for="teachers">#{textMain.teacher}</p:outputLabel>
 			        <p:selectManyMenu id="teachers" value="#{subjectBB.teachers}" showCheckbox="true" filter="true" filterMatchMode="contains" filterNormalize="true"
-			        	required="true" requiredMessage="Teachers are required!">
+			        	required="true" requiredMessage="#{textValidation.teacher_is_required}">
                     	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname} #{t.email}" itemValue="#{t.idUser}"/>
 			        </p:selectManyMenu>
 			        
 			    </p:panelGrid>
 			    
-		     	<p:commandButton styleClass="m-1" value="Add Subject" action="#{subjectBB.addSubject()}" update="@form subjects-panel"/>		     	
+		     	<p:commandButton styleClass="m-1" value="#{textMain.add_subject}" action="#{subjectBB.addSubject()}" update="@form subjects-panel"/>		     	
 		    </h:form>
 		</p:panel>
 		
@@ -41,36 +41,36 @@
 			
 				<p:panelGrid columns="2" layout="grid">
 			        
-			        <p:outputLabel for="name">Name</p:outputLabel>
+			        <p:outputLabel for="name">#{textMain.name}</p:outputLabel>
 			        <p:inputText id="name" value="#{subjectBB.searchName}"/>
 			        
 			    </p:panelGrid>
 			    
-   		     	<p:commandButton styleClass="m-1" value="Search" action="#{subjectBB.search()}" update="@form"/>
-   		     	<p:commandButton styleClass="m-1" value="Clear" action="#{subjectBB.clear()}" update="@form"/>
+   		     	<p:commandButton styleClass="m-1" value="#{textMain.search}" action="#{subjectBB.search()}" update="@form"/>
+   		     	<p:commandButton styleClass="m-1" value="#{textMain.clear}" action="#{subjectBB.clear()}" update="@form"/>
 			
 				<p:commandButton value="CSV" styleClass="m-1">
                     <p:dataExporter type="csv" target="subjects" fileName="subjects" />
                 </p:commandButton>
 			
-				<p:linkButton styleClass="m-1" outcome="administrationPanel" value="Go back" />
+				<p:linkButton styleClass="m-1" outcome="administrationPanel" value="#{textMain.go_back}" />
 			
 				<p:dataTable id="subjects" value="#{subjectBB.lazySubject}" var="s" paginator="true" rows="10" rowsPerPageTemplate="5,10,15">
 				
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Name" />
+							<h:outputText value="#{textMain.name}" />
 						</f:facet>
 						<h:outputText value="#{s.name}" />
 					</p:column>
 					
 					<p:column exportable="false">
 						<f:facet name="header">
-							<h:outputText value="Options" />
+							<h:outputText value="#{textMain.options}" />
 						</f:facet>
-						<p:commandButton styleClass="m-1" value="Details" ajax="false"
+						<p:commandButton styleClass="m-1" value="#{textMain.details}" ajax="false"
 							action="#{subjectBB.editSubject(s)}" />
-						<p:commandButton styleClass="m-1" value="Remove"
+						<p:commandButton styleClass="m-1" value="#{textMain.remove}"
 							action="#{subjectBB.removeSubject(s)}" update="@form" />
 					</p:column>
 		

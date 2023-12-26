@@ -6,7 +6,7 @@
   xmlns:f="jakarta.faces.core"
   xmlns:p="http://primefaces.org/ui"
 >
-  <ui:define name="title">Virtual Class Register - Teacher panel</ui:define>
+  <ui:define name="title">Virtual Class Register - #{textMain.teacher_panel}</ui:define>
 
   <ui:define name="content">
     <p:messages id="messages" closable="true">
@@ -16,14 +16,14 @@
     <p:panel id="teacher-panel">
       <h:form>
         <p:panelGrid columns="2" layout="grid">
-          <p:outputLabel for="semester">Semester</p:outputLabel>
+          <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
           <p:selectOneMenu
             id="semester"
             value="#{teacherPanelBB.searchIdSemester}"
             required="true"
-            requiredMessage="Semester is required!"
+            requiredMessage="#{textValidation.semester_is_required}"
           >
-            <f:selectItem itemLabel="Select Semester" itemValue="" />
+            <f:selectItem itemLabel="#{textMain.select_semester}" itemValue="" />
             <f:selectItems
               value="#{semesterBB.list}"
               var="s"
@@ -35,7 +35,7 @@
 
         <p:commandButton
           styleClass="m-1"
-          value="Search"
+          value="#{textMain.search}"
           action="#{teacherPanelBB.search()}"
           update="@form"
         />
@@ -54,32 +54,32 @@
         >
           <p:column>
             <f:facet name="header">
-              <h:outputText value="Lesson" />
+              <h:outputText value="#{textMain.lesson}" />
             </f:facet>
             <h:outputText value="#{l.teacherteachessubject.subject.name}" />
           </p:column>
 
           <p:column>
             <f:facet name="header">
-              <h:outputText value="Class" />
+              <h:outputText value="#{textMain.class}" />
             </f:facet>
             <h:outputText value="#{l.clazz.name}" />
           </p:column>
 
           <p:column>
             <f:facet name="header">
-              <h:outputText value="Date" />
+              <h:outputText value="#{textMain.date}" />
             </f:facet>
             <h:outputText value="#{l.day} #{l.startTime} - #{l.endTime}" />
           </p:column>
 
           <p:column exportable="false">
             <f:facet name="header">
-              <h:outputText value="Options" />
+              <h:outputText value="#{textMain.options}" />
             </f:facet>
             <p:commandButton
               styleClass="m-1"
-              value="Details"
+              value="#{textMain.details}"
               ajax="false"
               action="#{teacherPanelBB.lessonDetails(l)}"
             />

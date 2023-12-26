@@ -5,12 +5,14 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import com.virtualclassregister.dao.ClassDAO;
 import com.virtualclassregister.entities.Class;
 import com.virtualclassregister.entities.User;
 
 import jakarta.ejb.EJB;
+import jakarta.faces.annotation.ManagedProperty;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.Flash;
@@ -24,6 +26,10 @@ import lombok.Getter;
 public class EditClassBB implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Inject
+	@ManagedProperty("#{textMessage}")
+	private ResourceBundle textMessage;
 
 	@EJB
 	ClassDAO classDAO;
@@ -45,7 +51,7 @@ public class EditClassBB implements Serializable {
 			clazz = new Class(loaded);
 		} else {
 			ctx.getExternalContext().getFlash().setKeepMessages(true);
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid operation!", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("invalid_operation"), null));
 			if (!ctx.isPostback()) {
 				ctx.getExternalContext().redirect("class.jsf");
 				ctx.responseComplete();
@@ -60,7 +66,7 @@ public class EditClassBB implements Serializable {
 			List<Class> clazzes = classDAO.getList(searchParams);
 			
 			if(!clazzes.isEmpty()) {
-				ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Name is already used!", null));
+				ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("name_is_already_used"), null));
 				return;
 			}
 		}
@@ -69,7 +75,7 @@ public class EditClassBB implements Serializable {
 		
 		loaded = new Class(clazz);
 		
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully updated class", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_updated_class"), null));
 	}
 	
 	public String gradeBook(User student) {

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -14,6 +15,7 @@ import com.virtualclassregister.entities.Class;
 import com.virtualclassregister.entities.User;
 
 import jakarta.ejb.EJB;
+import jakarta.faces.annotation.ManagedProperty;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.Flash;
@@ -28,6 +30,10 @@ import lombok.Setter;
 public class EditUserBB implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Inject
+	@ManagedProperty("#{textMessage}")
+	private ResourceBundle textMessage;
 
 	@EJB
 	UserDAO userDAO;
@@ -57,7 +63,7 @@ public class EditUserBB implements Serializable {
 			}
 		} else {
 			ctx.getExternalContext().getFlash().setKeepMessages(true);
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid operation!", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("invalid_operation"), null));
 			if (!ctx.isPostback()) {
 				ctx.getExternalContext().redirect("user.jsf");
 				ctx.responseComplete();
@@ -80,7 +86,7 @@ public class EditUserBB implements Serializable {
 			List<User> users = userDAO.getList(searchParams);
 			
 			if(!users.isEmpty()) {
-				ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email is already used!", null));
+				ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("email_is_already_used"), null));
 				return;
 			}
 		}
@@ -97,8 +103,9 @@ public class EditUserBB implements Serializable {
 		userDAO.merge(user);
 		
 		loaded = new User(user);
+		user.setClazz(new Class());
 		
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully updated user", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_updated_user"), null));
 	}
 	
 }

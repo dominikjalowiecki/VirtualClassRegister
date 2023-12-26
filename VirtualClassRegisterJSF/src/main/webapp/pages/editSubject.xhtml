@@ -9,7 +9,7 @@
 	    <f:viewAction action="#{editSubjectBB.onLoad()}" />
 	</f:metadata>
 	
-	<ui:define name="title">Virtual Class Register - Edit Subject</ui:define>
+	<ui:define name="title">Virtual Class Register - #{textMain.edit_subject}</ui:define>
 	
 	<ui:define name="content">
 			
@@ -18,22 +18,22 @@
 			
 				<p:panelGrid columns="2" layout="grid">
 			        
-			        <p:outputLabel for="name">Name</p:outputLabel>
+			        <p:outputLabel for="name">#{textMain.name}</p:outputLabel>
 			        <p:inputText id="name" value="#{editSubjectBB.subject.name}" required="true"
-			        	requiredMessage="Name is required!" maxlength="85" validatorMessage="Name has to be between 2 to 65 characters!">
-			        	<f:validateLength minimum="2" maximum="85"/>
+			        	requiredMessage="#{textValidation.name_is_required}" maxlength="65" validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}">
+			        	<f:validateLength minimum="2" maximum="65"/>
 			        </p:inputText>
 			        
-			        <p:outputLabel for="teachers">Teacher</p:outputLabel>
+			        <p:outputLabel for="teachers">#{textMain.teacher}</p:outputLabel>
 			        <p:selectManyMenu id="teachers" value="#{editSubjectBB.teachers}" showCheckbox="true" filter="true" filterMatchMode="contains" filterNormalize="true"
-			        	required="true" requiredMessage="Teachers are required!">
+			        	required="true" requiredMessage="#{textValidation.teacher_is_required}">
                     	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname} #{t.email}" itemValue="#{t.idUser}"/>
 			        </p:selectManyMenu>
 			        
 			    </p:panelGrid>
 			    
-		     	<p:commandButton styleClass="m-1" value="Edit Subject" action="#{editSubjectBB.editSubject()}" update="@form"/>
-		     	<p:button styleClass="m-1" value="Back" outcome="subject"/>
+		     	<p:commandButton styleClass="m-1" value="#{textMain.edit_subject}" action="#{editSubjectBB.editSubject()}" update="@form"/>
+		     	<p:button styleClass="m-1" value="#{textMain.go_back}" outcome="subject"/>
 		     	
 			    <p:messages id="messages"/>
 		    </h:form>

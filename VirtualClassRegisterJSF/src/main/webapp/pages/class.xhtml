@@ -5,30 +5,30 @@
 	xmlns:f="jakarta.faces.core"
 	xmlns:p="http://primefaces.org/ui">
 	
-	<ui:define name="title">Virtual Class Register - Class</ui:define>
+	<ui:define name="title">Virtual Class Register - #{textMain.class}</ui:define>
 	
 	<ui:define name="content">
 			
-		<p:panel header="Add Class" styleClass="mb-4" toggleable="true" collapsed="true">
+		<p:panel header="#{textMain.add_class}" styleClass="mb-4" toggleable="true" collapsed="true">
 		    <h:form id="form">
 			
 				<p:panelGrid columns="2" layout="grid">
 			        
-			        <p:outputLabel for="name">Name</p:outputLabel>
+			        <p:outputLabel for="name">#{textMain.name}</p:outputLabel>
 			        <p:inputText id="name" value="#{classBB.clazz.name}" required="true"
 			        	requiredMessage="#{textValidation.name_is_required}" maxlength="65" validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}">
 			        	<f:validateLength minimum="2" maximum="65"/>
 			        </p:inputText>
 			        
-			        <p:outputLabel for="tutor">Tutor</p:outputLabel>
+			        <p:outputLabel for="tutor">#{textMain.tutor}</p:outputLabel>
 	                <p:selectOneMenu id="tutor" value="#{classBB.clazz.user.idUser}" required="true" requiredMessage="#{textValidation.tutor_is_required}">
-	                    <f:selectItem itemLabel="Select Tutor" itemValue=""/>
+	                    <f:selectItem itemLabel="#{textMain.select_tutor}" itemValue=""/>
                     	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname}" itemValue="#{t.idUser}"/>
 	                </p:selectOneMenu>
 			        
 			    </p:panelGrid>
 			    
-		     	<p:commandButton styleClass="m-1" value="Add Class" action="#{classBB.addClass()}" update="@form classes-panel"/>
+		     	<p:commandButton styleClass="m-1" value="#{textMain.add_class}" action="#{classBB.addClass()}" update="@form classes-panel"/>
 		    </h:form>
 		</p:panel>
 		
@@ -41,49 +41,49 @@
 			
 				<p:panelGrid columns="2" layout="grid">
 			        
-			        <p:outputLabel for="name">Name</p:outputLabel>
+			        <p:outputLabel for="name">#{textMain.name}</p:outputLabel>
 			        <p:inputText id="name" value="#{classBB.searchName}"/>
 			        
-			        <p:outputLabel for="tutor">Tutor</p:outputLabel>
+			        <p:outputLabel for="tutor">#{textMain.tutor}</p:outputLabel>
 	                <p:selectOneMenu id="tutor" value="#{classBB.searchIdTutor}">
-	                    <f:selectItem itemLabel="Select Tutor" itemValue=""/>
+	                    <f:selectItem itemLabel="#{textMain.select_tutor}" itemValue=""/>
                     	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname}" itemValue="#{t.idUser}"/>
 	                </p:selectOneMenu>
 			        
 			    </p:panelGrid>
 			    
-   		     	<p:commandButton styleClass="m-1" value="Search" action="#{classBB.search()}" update="@form"/>
-   		     	<p:commandButton styleClass="m-1" value="Clear" action="#{classBB.clear()}" update="@form"/>
+   		     	<p:commandButton styleClass="m-1" value="#{textMain.search}" action="#{classBB.search()}" update="@form"/>
+   		     	<p:commandButton styleClass="m-1" value="#{textMain.clear}" action="#{classBB.clear()}" update="@form"/>
 			
 				<p:commandButton value="CSV" styleClass="m-1">
                     <p:dataExporter type="csv" target="classes" fileName="classes" />
                 </p:commandButton>
                 
-       			<p:linkButton styleClass="m-1" outcome="administrationPanel" value="Go back" />
+       			<p:linkButton styleClass="m-1" outcome="administrationPanel" value="#{textMain.go_back}" />
 			
 				<p:dataTable id="classes" value="#{classBB.lazyClass}" var="c" paginator="true" rows="10" rowsPerPageTemplate="5,10,15">
 				
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Name" />
+							<h:outputText value="#{textMain.name}" />
 						</f:facet>
 						<h:outputText value="#{c.name}" />
 					</p:column>
 					
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Tutor" />
+							<h:outputText value="#{textMain.tutor}" />
 						</f:facet>
 						<h:outputText value="#{c.user.name}" />
 					</p:column>
 					
 					<p:column exportable="false">
 						<f:facet name="header">
-							<h:outputText value="Options" />
+							<h:outputText value="#{textMain.options}" />
 						</f:facet>
-						<p:commandButton styleClass="m-1" value="Details" ajax="false"
+						<p:commandButton styleClass="m-1" value="#{textMain.details}" ajax="false"
 							action="#{classBB.editClass(c)}" />
-						<p:commandButton styleClass="m-1" value="Remove"
+						<p:commandButton styleClass="m-1" value="#{textMain.remove}"
 							action="#{classBB.removeClass(c)}" update="@form" />
 					</p:column>
 		

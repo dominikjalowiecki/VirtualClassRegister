@@ -5,30 +5,30 @@
 	xmlns:f="jakarta.faces.core"
 	xmlns:p="http://primefaces.org/ui">
 	
-	<ui:define name="title">Virtual Class Register - Profile</ui:define>
+	<ui:define name="title">Virtual Class Register - #{textMain.profile}</ui:define>
 	
 	<ui:define name="content">
 		
-		<p:panel header="Change Password" styleClass="mb-4" toggleable="true" collapsed="true">
+		<p:panel header="#{textMain.change_password}" styleClass="mb-4" toggleable="true" collapsed="true">
 			<h:form id="form">
 			
 				<p:panelGrid columns="2" layout="grid">
 			        
-			        <p:outputLabel for="currentPassword">Current Password</p:outputLabel>
-			        <p:password id="currentPassword" value="#{userBB.currentPassword}" required="true" requiredMessage="Current Password is required!"/>
+			        <p:outputLabel for="currentPassword">#{textMain.current_password}</p:outputLabel>
+			        <p:password id="currentPassword" value="#{userBB.currentPassword}" required="true" requiredMessage="#{textValidation.current_password_is_required}"/>
 			        
 			        <h:panelGroup>
-			        	<p:outputLabel for="newPassword">New Password</p:outputLabel>
-			        	<p class="text-sm m-0">Minimum eight characters, at least one uppercase letter, one lowercase letter and one number</p>
+			        	<p:outputLabel for="newPassword">#{textMain.new_password}</p:outputLabel>
+			        	<p class="text-sm m-0">#{textMain.password_hint}</p>
 			        </h:panelGroup>
-			        <p:password id="newPassword" value="#{userBB.user.password}" required="true" requiredMessage="New Password is required!" validatorMessage="Invalid password format!">
+			        <p:password id="newPassword" value="#{userBB.user.password}" required="true" requiredMessage="#{textValidation.new_password_is_required}" validatorMessage="#{textValidation.invalid_password_format}">
 				        <f:validateRegex
 							pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"/>
 			        </p:password>
 			        
 			    </p:panelGrid>
 			    
-		     	<p:commandButton styleClass="m-1" value="Change Password" action="#{userBB.changePassword()}" update="@form"/>
+		     	<p:commandButton styleClass="m-1" value="#{textMain.change_password}" action="#{userBB.changePassword()}" update="@form"/>
 		     	
 		    </h:form>
 	    </p:panel>
@@ -38,13 +38,13 @@
 		</p:messages>
 	    
 	    <p:panel styleClass="mb-4">
-			<p>Name: #{remoteClient.details.name}</p>
+			<p>#{textMain.name}: #{remoteClient.details.name}</p>
 			<p>Email: #{remoteClient.details.email}</p>
 			<h:panelGroup rendered="#{remoteClient.details.clazz != null ? 'true' : 'false' }" >
-				<p>Class: #{remoteClient.details.clazz.name}</p>
+				<p>#{textMain.class}: #{remoteClient.details.clazz.name}</p>
 			</h:panelGroup>
-			<p>Role: #{remoteClient.details.role}</p>
-			<p>Created: 
+			<p>#{textMain.role}: #{remoteClient.details.role}</p>
+			<p>#{textMain.created}: 
 				<h:outputText value="#{remoteClient.details.created}" >
     				<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 				</h:outputText>

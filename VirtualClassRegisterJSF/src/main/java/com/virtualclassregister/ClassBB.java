@@ -65,7 +65,7 @@ public class ClassBB {
 		List<Class> clazzs = classDAO.getList(searchParams);
 		
 		if(!clazzs.isEmpty()) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("name_is_already_user"), null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("name_is_already_used"), null));
 			return;
 		}
 		
@@ -88,10 +88,10 @@ public class ClassBB {
 			classDAO.remove(clazz);
 		} catch(Exception e) {
 			e.printStackTrace();
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to remove class", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("unable_to_remove_class"), null));
 			return;
 		}
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully removed class", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_removed_class"), null));
 	}
 	
 	public void search() {

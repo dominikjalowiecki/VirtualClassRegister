@@ -40,7 +40,7 @@
             <p:linkButton
               styleClass="m-1"
               outcome="teacherPanel"
-              value="#{textMain.teacherPanel}"
+              value="#{textMain.teacher_panel}"
               rendered="#{remoteClient.details.role == 'Nauczyciel' ? 'true' : 'false'}"
             />
           </h:panelGroup>
@@ -50,7 +50,7 @@
             <p:linkButton
               styleClass="m-1"
               outcome="gradeBook"
-              value="#{textMain.gradeBook}"
+              value="#{textMain.grade_book}"
               rendered="#{remoteClient.details.role == 'Student' ? 'true' : 'false'}"
             />
           </h:panelGroup>
@@ -79,11 +79,11 @@
       >
         <div class="font-bold">
           <h:panelGroup rendered="#{remoteClient != null ? 'true' : 'false' }">
-            Witaj #{remoteClient.details.name}!
+            #{textMain.welcome} #{remoteClient.details.forename}!
           </h:panelGroup>
         </div>
         <h:form id="languageForm" class="flex align-items-center ml-2">
-          <p:outputLabel for="language">Wybierz język:</p:outputLabel>
+          <p:outputLabel for="language">#{textMain.choose_language}:</p:outputLabel>
           <p:selectOneMenu
             id="language"
             styleClass="ml-2"

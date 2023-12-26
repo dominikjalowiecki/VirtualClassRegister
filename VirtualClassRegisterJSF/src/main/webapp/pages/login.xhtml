@@ -5,7 +5,7 @@
 	xmlns:f="jakarta.faces.core"
 	xmlns:p="http://primefaces.org/ui">
 	
-	<ui:define name="title">Virtual Class Register - Login</ui:define>
+	<ui:define name="title">Virtual Class Register - #{textMain.login}</ui:define>
 	
 	<ui:define name="content">
 		
@@ -16,22 +16,19 @@
 			        
 			        <p:outputLabel for="email">Email</p:outputLabel>
 			        <p:inputText id="email" value="#{userBB.user.email}" required="true"
-			        	requiredMessage="Email is required!" validatorMessage="Invalid email format!">
+			        	requiredMessage="#{textValidation.email_is_required}" validatorMessage="#{textValidation.invalid_email_format}">
 			        	<f:validateRegex
 							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
 						<f:validateLength maximum="120"/>
 			        </p:inputText>
 			        
-			        <p:outputLabel for="password">Password</p:outputLabel>
+			        <p:outputLabel for="password">#{textMain.password}</p:outputLabel>
 			        <p:password id="password" value="#{userBB.user.password}" required="true"
-			        	requiredMessage="Password is required!" validatorMessage="Invalid password format!">
-				        <f:validateRegex
-								pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"/>
-			        </p:password>
+			        	requiredMessage="#{textValidation.password_is_required}"/>
 			        
 			    </p:panelGrid>
 			     
-		     	<p:commandButton styleClass="m-1" value="Login" ajax="false" action="#{userBB.login()}"/>
+		     	<p:commandButton styleClass="m-1" value="#{textMain.login}" ajax="false" action="#{userBB.login()}"/>
 		     	
 			    <p:messages id="messages"/>
 		    </h:form>

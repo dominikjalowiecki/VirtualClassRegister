@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import com.virtualclassregister.dao.AnnouncementDAO;
 import com.virtualclassregister.dao.LessonDAO;
@@ -13,6 +14,7 @@ import com.virtualclassregister.entities.Lesson;
 import com.virtualclassregister.entities.User;
 
 import jakarta.ejb.EJB;
+import jakarta.faces.annotation.ManagedProperty;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.Flash;
@@ -27,6 +29,10 @@ public class LessonDetailsBB implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Inject
+	@ManagedProperty("#{textMessage}")
+	private ResourceBundle textMessage;
+	
 	@EJB
 	LessonDAO lessonDAO;
 	
@@ -60,7 +66,7 @@ public class LessonDetailsBB implements Serializable {
 			announcement.setLesson(lesson);
 		} else {
 			ctx.getExternalContext().getFlash().setKeepMessages(true);
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid operation!", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("invalid_operation"), null));
 			if (!ctx.isPostback()) {
 				ctx.getExternalContext().redirect("teacherPanel.jsf");
 				ctx.responseComplete();
@@ -80,12 +86,12 @@ public class LessonDetailsBB implements Serializable {
 		announcementDAO.create(announcement);
 		announcement = new Announcement();
 		announcement.setLesson(lesson);
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully added new announcement", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_added_new_announcement"), null));
 	}
 	
 	public void removeAnnouncement(Announcement announcement) {
 		announcementDAO.remove(announcement);
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully removed announcement", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_removed_announcement"), null));
 	}
 	
 }

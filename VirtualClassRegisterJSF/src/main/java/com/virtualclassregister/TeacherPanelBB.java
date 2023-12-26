@@ -3,7 +3,6 @@ package com.virtualclassregister;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javax.faces.simplesecurity.RemoteClient;
 
@@ -13,7 +12,6 @@ import com.virtualclassregister.entities.Semester;
 import com.virtualclassregister.entities.User;
 
 import jakarta.ejb.EJB;
-import jakarta.faces.annotation.ManagedProperty;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.Flash;
 import jakarta.faces.view.ViewScoped;
@@ -28,10 +26,6 @@ import lombok.Setter;
 public class TeacherPanelBB implements Serializable {
 		
 	private static final long serialVersionUID = 1L;
-	
-	@Inject
-	@ManagedProperty("#{textMessage}")
-	private ResourceBundle textMessage;
 	
 	@EJB
 	LessonDAO lessonDAO;

@@ -3,6 +3,7 @@ package com.virtualclassregister;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import com.virtualclassregister.dao.SubjectDAO;
 import com.virtualclassregister.dao.TeacherteachessubjectDAO;
@@ -13,6 +14,7 @@ import com.virtualclassregister.lazyModels.LazySubject;
 
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.annotation.ManagedProperty;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.Flash;
@@ -24,6 +26,10 @@ import lombok.Setter;
 @Named
 @RequestScoped
 public class SubjectBB {
+	
+	@Inject
+	@ManagedProperty("#{textMessage}")
+	private ResourceBundle textMessage;
 	
 	@EJB
 	SubjectDAO subjectDAO;
@@ -56,7 +62,7 @@ public class SubjectBB {
 		List<Subject> subjects = subjectDAO.getList(searchParams);
 		
 		if(!subjects.isEmpty()) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Name is already used!", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("name_is_already_used"), null));
 			return;
 		}
 		
@@ -74,7 +80,7 @@ public class SubjectBB {
 		subject = new Subject();
 		teachers = null;
 		
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully added new subject", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_added_new_subject"), null));
 	}
 	
 	public String editSubject(Subject subject) {
@@ -88,10 +94,10 @@ public class SubjectBB {
 			subjectDAO.remove(subject);
 		} catch(Exception e) {
 			e.printStackTrace();
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to remove subject", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("unable_to_remove_subject"), null));
 			return;
 		}
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully removed subject", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_removed_subject"), null));
 	}
 	
 	public void search() {

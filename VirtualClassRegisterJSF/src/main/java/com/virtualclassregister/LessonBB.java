@@ -59,7 +59,7 @@ public class LessonBB {
 
 	public void addLesson() {
 		if(!start.before(end)) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "End time has to be before start time!", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("end_time_has_to_be_before_start_time"), null));
 			return;
 		}
 		
@@ -89,12 +89,12 @@ public class LessonBB {
 			lessonDAO.remove(lesson);
 		} catch(Exception e) {
 			e.printStackTrace();
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to remove lesson", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("unable_to_remove_lesson"), null));
 			return null;
 		}
 		
 		ctx.getExternalContext().getFlash().setKeepMessages(true);
-		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully removed lesson", null));
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_removed_lesson"), null));
 		return "class?faces-redirect=true";
 	}
 	
