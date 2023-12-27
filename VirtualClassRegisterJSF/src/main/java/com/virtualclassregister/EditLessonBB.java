@@ -66,6 +66,11 @@ public class EditLessonBB implements Serializable {
 	}
 	
 	public void editLesson() {
+		if(!start.before(end)) {
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, textMessage.getString("end_time_has_to_be_before_start_time"), null));
+			return;
+		}
+		
 		lesson.setStart(new Time(start.getTime()));
 		lesson.setEnd(new Time(end.getTime()));
 		

@@ -8,6 +8,7 @@ import com.virtualclassregister.utils.Language;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
