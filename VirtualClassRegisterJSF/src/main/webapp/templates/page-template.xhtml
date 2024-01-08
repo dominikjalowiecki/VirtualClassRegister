@@ -13,6 +13,7 @@
 		<ui:insert name="title">Page title</ui:insert>
 	</title>
 	<link type="image/x-icon" rel="shortcut icon" href="#{resource['template:image/favicon.ico']}" />
+   	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<h:outputStylesheet library="template" name="css/primeflex.css" />
 	<h:outputStylesheet library="template" name="css/flags.css" />
 	<h:outputStylesheet library="template" name="css/style.css" />
@@ -22,7 +23,9 @@
 
 	<ui:include src="/templates/header-snippet.xhtml" />
 
-	<ui:insert name="content"></ui:insert>
+	<div class='p-2'>
+		<ui:insert name="content"></ui:insert>
+	</div>
 	
 	<ui:include src="/templates/footer-snippet.xhtml" />
 

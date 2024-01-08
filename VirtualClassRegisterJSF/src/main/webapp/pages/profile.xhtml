@@ -12,32 +12,29 @@
 		<p:panel header="#{textMain.change_password}" styleClass="mb-4" toggleable="true" collapsed="true">
 			<h:form id="form">
 			
-				<p:panelGrid columns="2" layout="grid">
+		        <div class="sm:w-14rem">
+		        	<div class="field">
+				        <p:outputLabel for="currentPassword">#{textMain.current_password}</p:outputLabel>
+				        <p:password id="currentPassword" styleClass='w-full' value="#{userBB.currentPassword}" required="true" requiredMessage="#{textValidation.current_password_is_required}"/>
+			       	</div>
 			        
-			        <p:outputLabel for="currentPassword">#{textMain.current_password}</p:outputLabel>
-			        <p:password id="currentPassword" value="#{userBB.currentPassword}" required="true" requiredMessage="#{textValidation.current_password_is_required}"/>
-			        
-			        <h:panelGroup>
+			        <div class="field">
 			        	<p:outputLabel for="newPassword">#{textMain.new_password}</p:outputLabel>
+				        <p:password id="newPassword" styleClass='w-full' value="#{userBB.user.password}" required="true" requiredMessage="#{textValidation.new_password_is_required}" validatorMessage="#{textValidation.invalid_password_format}">
+					        <f:validateRegex
+								pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"/>
+				        </p:password>
 			        	<p class="text-sm m-0">#{textMain.password_hint}</p>
-			        </h:panelGroup>
-			        <p:password id="newPassword" value="#{userBB.user.password}" required="true" requiredMessage="#{textValidation.new_password_is_required}" validatorMessage="#{textValidation.invalid_password_format}">
-				        <f:validateRegex
-							pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"/>
-			        </p:password>
-			        
-			    </p:panelGrid>
+			    	</div>
+		        </div>
 			    
 		     	<p:commandButton styleClass="m-1" value="#{textMain.change_password}" action="#{userBB.changePassword()}" update="@form"/>
 		     	
+		     	<p:messages styleClass="max-w-30rem" id="messages"/>
 		    </h:form>
 	    </p:panel>
 	    
-	    <p:messages id="messages" closable="true">
-			<p:autoUpdate/>
-		</p:messages>
-	    
-	    <p:panel styleClass="mb-4">
+	    <p:panel>
 			<p>#{textMain.name}: #{remoteClient.details.name}</p>
 			<p>Email: #{remoteClient.details.email}</p>
 			<h:panelGroup rendered="#{remoteClient.details.clazz != null ? 'true' : 'false' }" >

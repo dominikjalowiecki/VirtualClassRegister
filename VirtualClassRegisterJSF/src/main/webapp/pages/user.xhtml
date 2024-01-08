@@ -16,10 +16,12 @@
       collapsed="true"
     >
       <h:form id="form">
-        <p:panelGrid columns="2" layout="grid">
+      	<div class="sm:w-14rem">
+      	<div class="field">
           <p:outputLabel for="forename">#{textMain.forename}</p:outputLabel>
           <p:inputText
             id="forename"
+            styleClass='w-full'
             value="#{userBB.user.forename}"
             required="true"
             requiredMessage="#{textValidation.forename_is_required}"
@@ -28,10 +30,12 @@
           >
             <f:validateLength minimum="2" maximum="65" />
           </p:inputText>
-
+		</div>
+		<div class="field">
           <p:outputLabel for="surname">#{textMain.surname}</p:outputLabel>
           <p:inputText
             id="surname"
+            styleClass='w-full'
             value="#{userBB.user.surname}"
             required="true"
             requiredMessage="#{textValidation.surname_is_required}"
@@ -40,10 +44,12 @@
           >
             <f:validateLength minimum="2" maximum="85" />
           </p:inputText>
-
+        </div>
+		<div class="field">
           <p:outputLabel for="email">Email</p:outputLabel>
           <p:inputText
             id="email"
+            styleClass='w-full'
             value="#{userBB.user.email}"
             required="true"
             requiredMessage="#{textValidation.email_is_required}"
@@ -55,10 +61,12 @@
             />
             <f:validateLength maximum="120" />
           </p:inputText>
-          
+          </div>
+          <div class="field">
           <p:outputLabel for="role">#{textMain.role}</p:outputLabel>
           <p:selectOneMenu
             id="role"
+            styleClass='w-full'
             value="#{userBB.user.role}"
             required="true"
             requiredMessage="#{textValidation.role_is_required}"
@@ -69,9 +77,10 @@
             <f:selectItem itemLabel="Administrator" itemValue="Administrator" />
             <p:ajax update="class" />
           </p:selectOneMenu>
-
+		  </div>
+		  <div class="field">
           <p:outputLabel for="class">#{textMain.class}</p:outputLabel>
-          <p:selectOneMenu id="class" value="#{userBB.user.clazz.idClass}">
+          <p:selectOneMenu id="class" styleClass='w-full' value="#{userBB.user.clazz.idClass}">
             <f:selectItem itemLabel="#{textMain.select_class}" itemValue="" />
             <f:selectItems
               value="#{userBB.classes}"
@@ -80,15 +89,12 @@
               itemValue="#{c.idClass}"
             />
           </p:selectOneMenu>
-
-          <h:panelGroup>
+		  </div>
+		  <div class="field">
             <p:outputLabel for="password">#{textMain.password}</p:outputLabel>
-            <p class="text-sm m-0">
-              #{textMain.password_hint}
-            </p>
-          </h:panelGroup>
           <p:password
             id="password"
+            styleClass='w-full'
             value="#{userBB.user.password}"
             match="repeatPassword"
             required="true"
@@ -97,15 +103,21 @@
           >
             <f:validateRegex pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$" />
           </p:password>
-
+           <p class="text-sm m-0">
+              #{textMain.password_hint}
+           </p>
+		  </div>
+		  <div class="field">
           <p:outputLabel for="repeatPassword">#{textMain.repeat_password}</p:outputLabel>
           <p:password
             id="repeatPassword"
+            styleClass='w-full'
             value="#{userBB.user.password}"
             required="true"
             requiredMessage="#{textValidation.repeat_password_is_required}"
           />
-        </p:panelGrid>
+          </div>
+        </div>
 
         <p:commandButton
           styleClass="m-1"
@@ -122,15 +134,18 @@
 
     <p:panel id="users-panel">
       <h:form>
-        <p:panelGrid columns="2" layout="grid">
-          <p:outputLabel for="email">Email</p:outputLabel>
-          <p:inputText
-            id="email"
-            value="#{userBB.searchEmail}"
-            maxlength="120"
-          />
-        </p:panelGrid>
-
+      	<div class="sm:w-14rem">
+      	  <div class="field">
+	          <p:outputLabel for="email">Email</p:outputLabel>
+	          <p:inputText
+	            id="email"
+	            styleClass='w-full'
+	            value="#{userBB.searchEmail}"
+	            maxlength="120"
+	          />
+          </div>
+		</div>
+		
         <p:commandButton
           styleClass="m-1"
           value="#{textMain.search}"
@@ -156,6 +171,7 @@
 
         <p:dataTable
           id="users"
+          styleClass='mt-4'
           value="#{userBB.lazyUser}"
           var="u"
           paginator="true"

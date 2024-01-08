@@ -5,31 +5,31 @@
   xmlns:f="jakarta.faces.core"
   xmlns:p="http://primefaces.org/ui"
 >
-  <p:panel styleClass="text-center mb-4">
-    <h1>
-      <ui:insert name="title">Page header</ui:insert>
-    </h1>
-    <div class="grid">
+  <header id="header" class="text-center pt-4 mb-3">
+   	<h1 class='m-0 text-2xl'>
+   		<ui:insert name="title">Page header</ui:insert>
+   	</h1>
+    <div id="navigation" class="grid grid-nogutter py-2 px-3 mt-4">
       <div
-        class="col-12 lg:col-8 flex flex-wrap align-items-center justify-content-center lg:justify-content-start"
+        class="col-12 lg:col-8 my-2 lg:my-0 flex flex-wrap align-items-center justify-content-center lg:justify-content-start"
       >
-        <p:linkButton
-          styleClass="m-1"
+        <p:link
+          styleClass='my-2'
           outcome="login"
           value="#{textMain.login}"
           rendered="#{remoteClient == null ? 'true' : 'false' }"
         />
         <h:panelGroup rendered="#{remoteClient != null ? 'true' : 'false' }">
-          <p:linkButton
-            styleClass="m-1"
+          <p:link
+            styleClass="mr-3 my-2"
             outcome="index"
             value="#{textMain.main_page}"
           />
           <h:panelGroup
             rendered="#{remoteClient.details.role == 'Administrator' ? 'true' : 'false'}"
           >
-            <p:linkButton
-              styleClass="m-1"
+            <p:link
+              styleClass="mr-3 my-2"
               outcome="administrationPanel"
               value="#{textMain.administration_panel}"
             />
@@ -37,8 +37,8 @@
           <h:panelGroup
             rendered="#{remoteClient.details.role == 'Nauczyciel' ? 'true' : 'false'}"
           >
-            <p:linkButton
-              styleClass="m-1"
+            <p:link
+              styleClass="mr-3 my-2"
               outcome="teacherPanel"
               value="#{textMain.teacher_panel}"
               rendered="#{remoteClient.details.role == 'Nauczyciel' ? 'true' : 'false'}"
@@ -47,26 +47,26 @@
           <h:panelGroup
             rendered="#{remoteClient.details.role == 'Student' ? 'true' : 'false'}"
           >
-            <p:linkButton
-              styleClass="m-1"
+            <p:link
+              styleClass="mr-3 my-2"
               outcome="gradeBook"
               value="#{textMain.grade_book}"
               rendered="#{remoteClient.details.role == 'Student' ? 'true' : 'false'}"
             />
           </h:panelGroup>
-          <p:linkButton
-            styleClass="m-1"
+          <p:link
+            styleClass="mr-3 my-2"
             outcome="timetable"
             value="#{textMain.timetable}"
           />
-          <p:linkButton
-            styleClass="m-1"
+          <p:link
+            styleClass="mr-3 my-2"
             outcome="profile"
             value="#{textMain.profile}"
           />
           <h:form styleClass="inline">
-            <p:commandButton
-              styleClass="m-1"
+            <p:commandLink
+              styleClass="my-2"
               value="#{textMain.logout}"
               action="#{userBB.logout()}"
             />
@@ -75,7 +75,7 @@
       </div>
 
       <div
-        class="col-12 lg:col-4 flex flex-wrap align-items-center justify-content-between lg:justify-content-end"
+        class="col-12 lg:col-4 my-2 lg:my-0 flex flex-wrap align-items-center justify-content-between lg:justify-content-end"
       >
         <div class="font-bold">
           <h:panelGroup rendered="#{remoteClient != null ? 'true' : 'false' }">
@@ -83,7 +83,7 @@
           </h:panelGroup>
         </div>
         <h:form id="languageForm" class="flex align-items-center ml-2">
-          <p:outputLabel for="language">#{textMain.choose_language}:</p:outputLabel>
+          <p:outputLabel for="language" style="margin-bottom: 2px;">#{textMain.choose_language}:</p:outputLabel>
           <p:selectOneMenu
             id="language"
             styleClass="ml-2"
@@ -113,5 +113,5 @@
         </h:form>
       </div>
     </div>
-  </p:panel>
+  </header>
 </ui:composition>

@@ -9,16 +9,14 @@
   <ui:define name="title">Virtual Class Register - #{textMain.teacher_panel}</ui:define>
 
   <ui:define name="content">
-    <p:messages id="messages" closable="true">
-      <p:autoUpdate />
-    </p:messages>
-
     <p:panel id="teacher-panel">
       <h:form>
-        <p:panelGrid columns="2" layout="grid">
+        <div class="sm:w-14rem">
+        	<div class="field">
           <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
           <p:selectOneMenu
             id="semester"
+            styleClass='w-full'
             value="#{teacherPanelBB.searchIdSemester}"
             required="true"
             requiredMessage="#{textValidation.semester_is_required}"
@@ -27,11 +25,12 @@
             <f:selectItems
               value="#{semesterBB.list}"
               var="s"
-              itemLabel="#{s.name} #{s.startDate} - #{s.endDate}"
+              itemLabel="#{s.name}"
               itemValue="#{s.idSemester}"
             />
           </p:selectOneMenu>
-        </p:panelGrid>
+          </div>
+        </div>
 
         <p:commandButton
           styleClass="m-1"
@@ -43,9 +42,12 @@
         <p:commandButton value="CSV" styleClass="m-1">
           <p:dataExporter type="csv" target="lessons" fileName="lessons" />
         </p:commandButton>
+        
+        <p:messages styleClass="max-w-30rem" id="messages" />
 
         <p:dataTable
           id="lessons"
+          styleClass='mt-4'
           value="#{teacherPanelBB.lessons}"
           var="l"
           paginator="true"

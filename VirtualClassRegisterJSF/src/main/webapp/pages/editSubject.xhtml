@@ -13,29 +13,30 @@
 	
 	<ui:define name="content">
 			
-		<p:panel styleClass="mb-4">
+		<p:panel>
 			<h:form id="form">
 			
-				<p:panelGrid columns="2" layout="grid">
-			        
+				<div class="sm:w-14rem">
+			        <div class="field">
 			        <p:outputLabel for="name">#{textMain.name}</p:outputLabel>
-			        <p:inputText id="name" value="#{editSubjectBB.subject.name}" required="true"
+			        <p:inputText id="name" styleClass='w-full' value="#{editSubjectBB.subject.name}" required="true"
 			        	requiredMessage="#{textValidation.name_is_required}" maxlength="65" validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}">
 			        	<f:validateLength minimum="2" maximum="65"/>
 			        </p:inputText>
-			        
+			        </div>
+			        <div class="field">
 			        <p:outputLabel for="teachers">#{textMain.teacher}</p:outputLabel>
-			        <p:selectManyMenu id="teachers" value="#{editSubjectBB.teachers}" showCheckbox="true" filter="true" filterMatchMode="contains" filterNormalize="true"
+			        <p:selectManyMenu id="teachers" styleClass='w-full' value="#{editSubjectBB.teachers}" showCheckbox="true" filter="true" filterMatchMode="contains" filterNormalize="true"
 			        	required="true" requiredMessage="#{textValidation.teacher_is_required}">
-                    	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname} #{t.email}" itemValue="#{t.idUser}"/>
+                    	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname}" itemValue="#{t.idUser}"/>
 			        </p:selectManyMenu>
-			        
-			    </p:panelGrid>
+			        </div>
+			    </div>
 			    
 		     	<p:commandButton styleClass="m-1" value="#{textMain.edit_subject}" action="#{editSubjectBB.editSubject()}" update="@form"/>
 		     	<p:button styleClass="m-1" value="#{textMain.go_back}" outcome="subject"/>
 		     	
-			    <p:messages id="messages"/>
+			    <p:messages styleClass="max-w-30rem" id="messages"/>
 		    </h:form>
 		</p:panel>
 		

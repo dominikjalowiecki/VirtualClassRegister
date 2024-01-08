@@ -25,20 +25,23 @@
       <hr />
       <p class="font-bold">#{textMain.add_announcement}</p>
       <h:form id="form">
-        <p:panelGrid columns="2" layout="grid">
+        <div class="sm:w-14rem">
+        	<div class="field">
           <p:outputLabel for="title">#{textMain.title}</p:outputLabel>
           <p:inputText
             id="title"
+            styleClass='w-full'
             value="#{lessonDetailsBB.announcement.title}"
             required="true"
             requiredMessage="#{textValidation.title_is_required}"
             maxlength="85"
           />
-
+			</div>
+			<div class="field">
           <p:outputLabel for="content">#{textMain.content}</p:outputLabel>
-          <h:panelGroup>
             <p:inputTextarea
               id="content"
+              styleClass='w-full'
               value="#{lessonDetailsBB.announcement.content}"
               rows="6"
               cols="30"
@@ -49,8 +52,8 @@
               counterTemplate="#{textMain.characters_remaining}: {0}"
             />
             <h:outputText id="announcementContent" class="block" />
-          </h:panelGroup>
-        </p:panelGrid>
+          </div>
+        </div>
 
         <p:commandButton
           styleClass="m-1"
@@ -84,6 +87,7 @@
 
         <p:dataTable
           id="announcements"
+          styleClass='mt-4'
           value="#{lessonDetailsBB.announcements}"
           var="a"
           paginator="true"
@@ -140,6 +144,7 @@
 
         <p:dataTable
           id="students"
+          styleClass='mt-4'
           value="#{lessonDetailsBB.lesson.clazz.users}"
           var="s"
           paginator="true"

@@ -82,10 +82,12 @@
       collapsed="true"
     >
       <h:form id="formGrades">
-        <p:panelGrid columns="2" layout="grid">
+        <div class="sm:w-14rem">
+        	<div class="field">
           <p:outputLabel for="grade-type">#{textMain.type}</p:outputLabel>
           <p:selectOneMenu
             id="grade-type"
+            styleClass='w-full'
             value="#{studentDetailsBB.idGradeType}"
             required="true"
             requiredMessage="#{textValidation.type_is_required}"
@@ -98,10 +100,12 @@
               itemValue="#{g.idGradeType}"
             />
           </p:selectOneMenu>
-
+          </div>
+			<div class="field">
           <p:outputLabel for="gradeValue">#{textMain.value}</p:outputLabel>
           <p:selectOneMenu
             id="gradeValue"
+            styleClass='w-full'
             value="#{studentDetailsBB.gradeValue}"
             required="true"
             requiredMessage="#{textValidation.value_is_required}"
@@ -118,11 +122,12 @@
             <f:selectItem itemLabel="5.5" itemValue="5.5" />
             <f:selectItem itemLabel="6" itemValue="6" />
           </p:selectOneMenu>
-
+          </div>
+			<div class="field">
           <p:outputLabel for="gradeNote">#{textMain.note}</p:outputLabel>
-          <h:panelGroup>
             <p:inputTextarea
               id="gradeNote"
+              styleClass='w-full'
               value="#{studentDetailsBB.gradeNote}"
               rows="6"
               cols="30"
@@ -131,8 +136,8 @@
               counterTemplate="#{textMain.characters_remaining}: {0}"
             />
             <h:outputText id="displayGradeNote" class="block" />
-          </h:panelGroup>
-        </p:panelGrid>
+          </div>
+        </div>
 
         <p:commandButton
           styleClass="m-1"
@@ -150,13 +155,15 @@
       collapsed="true"
     >
       <h:form id="formBehaviourPoints">
-        <p:panelGrid columns="2" layout="grid">
+        <div class="sm:w-14rem">
+        	<div class="field">
           <p:outputLabel
             for="behaviourPointValue"
             value="#{textMain.value}"
           />
           <p:inputNumber
             id="behaviourPointValue"
+            inputStyleClass='w-full'
             value="#{studentDetailsBB.behaviourPointValue}"
             modifyValueOnWheel="false"
             minValue="-50"
@@ -164,11 +171,12 @@
             required="true"
             requiredMessage="#{textValidation.value_is_required}"
           />
-
+          </div>
+			<div class="field">
           <p:outputLabel for="note">#{textMain.note}</p:outputLabel>
-          <h:panelGroup>
             <p:inputTextarea
               id="note"
+              styleClass='w-full'
               value="#{studentDetailsBB.behaviourPointNote}"
               rows="6"
               cols="30"
@@ -177,8 +185,8 @@
               counterTemplate="#{textMain.characters_remaining}: {0}"
             />
             <h:outputText id="displayBehaviourPointNote" class="block" />
-          </h:panelGroup>
-        </p:panelGrid>
+          </div>
+        </div>
 
         <p:commandButton
           styleClass="m-1"

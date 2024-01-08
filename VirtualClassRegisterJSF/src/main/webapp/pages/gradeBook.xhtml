@@ -14,7 +14,7 @@
   <ui:define name="title">Virtual Class Register - #{textMain.grade_book}</ui:define>
 
   <ui:define name="content">
-    <p:panel id="studentDetails" styleClass="mb-4">
+    <p:panel id="studentDetails">
       <p>#{textMain.name}: #{gradeBookBB.student.name}</p>
       <h:panelGroup
         rendered="#{gradeBookBB.student.clazz != null ? 'true' : 'false' }"
@@ -23,10 +23,12 @@
       </h:panelGroup>
       <hr />
       <h:form>
-        <p:panelGrid columns="2" layout="grid">
+        <div class="sm:w-14rem">
+        	<div class="field">
           <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
           <p:selectOneMenu
             id="semester"
+            styleClass='w-full'
             value="#{gradeBookBB.searchIdSemester}"
             required="true"
             requiredMessage="#{textValidation.semester_is_required}"
@@ -35,11 +37,12 @@
             <f:selectItems
               value="#{semesterBB.list}"
               var="s"
-              itemLabel="#{s.name} #{s.startDate} - #{s.endDate}"
+              itemLabel="#{s.name}"
               itemValue="#{s.idSemester}"
             />
           </p:selectOneMenu>
-        </p:panelGrid>
+          </div>
+        </div>
 
         <p:commandButton
           styleClass="m-1"
@@ -56,7 +59,7 @@
           immediate="true"
         />
 
-        <p:messages id="messages" />
+        <p:messages styleClass="max-w-30rem" id="messages" />
 
         <h:panelGroup
           rendered="#{gradeBookBB.lessonsWithGrades != null and gradeBookBB.behaviourPoints != null ? 'true' : 'false' }"
@@ -64,7 +67,7 @@
           <h:panelGroup
             rendered="#{remoteClient.details.role == 'Administrator' ? 'true' : 'false'}"
           >
-            <div class="grid">
+            <div class="grid mt-3">
               <div class="col-12 lg:col-6">
                 <p:barChart
                   model="#{gradeBookBB.hbarModel}"

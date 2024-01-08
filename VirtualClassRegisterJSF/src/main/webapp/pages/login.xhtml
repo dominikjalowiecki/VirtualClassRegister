@@ -9,28 +9,30 @@
 	
 	<ui:define name="content">
 		
-		<p:panel styleClass="mb-4">
+		<p:panel>
 			<h:form id="form">
 			
-				<p:panelGrid columns="2" layout="grid">
+				<div class="sm:w-14rem">
+			       <div class="field">
+				        <p:outputLabel for="email">Email</p:outputLabel>
+				        <p:inputText id="email" styleClass='w-full' value="#{userBB.user.email}" required="true"
+				        	requiredMessage="#{textValidation.email_is_required}" validatorMessage="#{textValidation.invalid_email_format}">
+				        	<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+							<f:validateLength maximum="120"/>
+				        </p:inputText>
+			       </div>
+			       
+			        <div class="field">
+				        <p:outputLabel for="password">#{textMain.password}</p:outputLabel>
+				        <p:password id="password" styleClass='w-full' value="#{userBB.user.password}" required="true"
+				        	requiredMessage="#{textValidation.password_is_required}"/>
+				    </div>
+			    </div>
 			        
-			        <p:outputLabel for="email">Email</p:outputLabel>
-			        <p:inputText id="email" value="#{userBB.user.email}" required="true"
-			        	requiredMessage="#{textValidation.email_is_required}" validatorMessage="#{textValidation.invalid_email_format}">
-			        	<f:validateRegex
-							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
-						<f:validateLength maximum="120"/>
-			        </p:inputText>
-			        
-			        <p:outputLabel for="password">#{textMain.password}</p:outputLabel>
-			        <p:password id="password" value="#{userBB.user.password}" required="true"
-			        	requiredMessage="#{textValidation.password_is_required}"/>
-			        
-			    </p:panelGrid>
-			     
 		     	<p:commandButton styleClass="m-1" value="#{textMain.login}" ajax="false" action="#{userBB.login()}"/>
 		     	
-			    <p:messages id="messages"/>
+			    <p:messages styleClass="max-w-30rem" id="messages"/>
 		    </h:form>
 		</p:panel>
 		

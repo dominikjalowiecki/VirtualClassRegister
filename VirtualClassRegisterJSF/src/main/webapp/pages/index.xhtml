@@ -9,48 +9,50 @@
   <ui:define name="title">Virtual Class Register</ui:define>
 
   <ui:define name="content">
-    <p:panel id="announcements-panel" header="#{textMain.announcements}" styleClass="mb-4">
+    <p:panel id="announcements-panel" header="#{textMain.announcements}">
       <h:form>
-        <p:panelGrid columns="2" layout="grid">
-          <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
-          <p:selectOneMenu
-            id="semester"
-            value="#{announcementBB.searchIdSemester}"
-          >
-            <f:selectItem itemLabel="#{textMain.select_semester}" itemValue="" />
-            <f:selectItems
-              value="#{semesterBB.list}"
-              var="s"
-              itemLabel="#{s.name} #{s.startDate} - #{s.endDate}"
-              itemValue="#{s.idSemester}"
-            />
-            <p:ajax update="lesson" />
-          </p:selectOneMenu>
-
-          <h:panelGroup
-            rendered="#{remoteClient.details.role == 'Student' ? 'true' : 'false'}"
-          >
-            <p:outputLabel for="lesson">#{textMain.lesson}</p:outputLabel>
-          </h:panelGroup>
-
-          <h:panelGroup
-            rendered="#{remoteClient.details.role == 'Student' ? 'true' : 'false'}"
-          >
-            <p:selectOneMenu
-              id="lesson"
-              value="#{announcementBB.searchIdLesson}"
-            >
-              <f:selectItem itemLabel="#{textMain.select_lesson}" itemValue="" />
-              <f:selectItems
-                value="#{announcementBB.lessons}"
-                var="l"
-                itemLabel="#{l.teacherteachessubject.subject.name}"
-                itemValue="#{l.idLesson}"
-              />
-            </p:selectOneMenu>
-          </h:panelGroup>
-        </p:panelGrid>
-
+      
+      <div class="sm:w-14rem">
+      	  <div class="field">
+		      <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
+		      <p:selectOneMenu
+		        id="semester"
+		        styleClass='w-full'
+		        value="#{announcementBB.searchIdSemester}"
+		      >
+		        <f:selectItem itemLabel="#{textMain.select_semester}" itemValue="" />
+		        <f:selectItems
+		          value="#{semesterBB.list}"
+		          var="s"
+		          itemLabel="#{s.name}"
+		          itemValue="#{s.idSemester}"
+		        />
+		        <p:ajax update="lesson" />
+		      </p:selectOneMenu>
+	      </div>
+	
+		  <h:panelGroup
+        	rendered="#{remoteClient.details.role == 'Student' ? 'true' : 'false'}"
+	      >
+			  <div class="field">
+		        <p:outputLabel for="lesson">#{textMain.lesson}</p:outputLabel>
+		        <p:selectOneMenu
+		          id="lesson"
+		          styleClass='w-full'
+		          value="#{announcementBB.searchIdLesson}"
+		        >
+		          <f:selectItem itemLabel="#{textMain.select_lesson}" itemValue="" />
+		          <f:selectItems
+		            value="#{announcementBB.lessons}"
+		            var="l"
+		            itemLabel="#{l.teacherteachessubject.subject.name}"
+		            itemValue="#{l.idLesson}"
+		          />
+		        </p:selectOneMenu>
+		      </div>
+		  </h:panelGroup>
+		</div>
+		
         <p:commandButton
           styleClass="m-1"
           value="#{textMain.search}"
@@ -60,6 +62,7 @@
 
         <p:dataTable
           id="announcements"
+          styleClass='mt-4'
           value="#{announcementBB.lazyAnnouncement}"
           var="a"
           paginator="true"
@@ -74,13 +77,6 @@
             <h:outputText
               value="#{a.lesson.teacherteachessubject.subject.name}"
             />
-          </p:column>
-
-          <p:column>
-            <f:facet name="header">
-              <h:outputText value="#{textMain.semester}" />
-            </f:facet>
-            <h:outputText value="#{a.lesson.semester.name}" />
           </p:column>
 
           <p:column>

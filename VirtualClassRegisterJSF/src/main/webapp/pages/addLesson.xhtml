@@ -9,12 +9,14 @@
   <ui:define name="title">Virtual Class Register - #{textMain.add_lesson}</ui:define>
 
   <ui:define name="content">
-    <p:panel styleClass="mb-4">
+    <p:panel>
       <h:form id="form">
-        <p:panelGrid columns="2" layout="grid">
+        <div class="sm:w-14rem">
+          <div class="field">
           <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
           <p:selectOneMenu
             id="semester"
+            styleClass='w-full'
             value="#{lessonBB.lesson.semester.idSemester}"
             required="true"
             requiredMessage="#{textValidation.semester_is_required}"
@@ -23,14 +25,16 @@
             <f:selectItems
               value="#{semesterBB.list}"
               var="s"
-              itemLabel="#{s.name} #{s.startDate} - #{s.endDate}"
+              itemLabel="#{s.name}"
               itemValue="#{s.idSemester}"
             />
           </p:selectOneMenu>
-
+          </div>
+		  <div class="field">
           <p:outputLabel for="class">#{textMain.class}</p:outputLabel>
           <p:selectOneMenu
             id="class"
+            styleClass='w-full'
             value="#{lessonBB.lesson.clazz.idClass}"
             required="true"
             requiredMessage="#{textValidation.class_is_required}"
@@ -43,10 +47,12 @@
               itemValue="#{c.idClass}"
             />
           </p:selectOneMenu>
-
+          </div>
+		  <div class="field">
           <p:outputLabel for="subject">#{textMain.subject}</p:outputLabel>
           <p:selectOneMenu
             id="subject"
+            styleClass='w-full'
             value="#{lessonBB.lesson.teacherteachessubject.idTeacherTeachesSubject}"
             required="true"
             requiredMessage="#{textValidation.subject_is_required}"
@@ -59,10 +65,12 @@
               itemValue="#{t.idTeacherTeachesSubject}"
             />
           </p:selectOneMenu>
-
+          </div>
+		  <div class="field">
           <p:outputLabel for="day-of-the-week">#{textMain.day_of_the_week}</p:outputLabel>
           <p:selectOneMenu
             id="day-of-the-week"
+            styleClass='w-full'
             value="#{lessonBB.lesson.day}"
             required="true"
             requiredMessage="#{textValidation.day_is_required}"
@@ -76,10 +84,12 @@
             <f:selectItem itemLabel="#{textMain.saturday}" itemValue="Sobota" />
             <f:selectItem itemLabel="#{textMain.sunday}" itemValue="Niedziela" />
           </p:selectOneMenu>
-
+          </div>
+		  <div class="field">
           <p:outputLabel for="start" value="#{textMain.start_time}" />
           <p:datePicker
             id="start"
+            styleClass='w-full'
             value="#{lessonBB.start}"
             timeOnly="true"
             pattern="HH:mm"
@@ -87,10 +97,12 @@
             converterMessage="#{textValidation.invalid_start_time_format}"
             requiredMessage="#{textValidation.start_time_is_required}"
           />
-
+          </div>
+		  <div class="field">
           <p:outputLabel for="end" value="#{textMain.end_time}" />
           <p:datePicker
             id="end"
+            styleClass='w-full'
             value="#{lessonBB.end}"
             timeOnly="true"
             pattern="HH:mm"
@@ -98,7 +110,8 @@
             converterMessage="#{textValidation.invalid_end_time_format}"
             requiredMessage="#{textValidation.end_time_is_required}"
           />
-        </p:panelGrid>
+          </div>
+        </div>
 
         <p:commandButton
           styleClass="m-1"
@@ -112,7 +125,7 @@
           value="#{textMain.go_back}"
         />
 
-        <p:messages id="messages" />
+        <p:messages styleClass="max-w-30rem" id="messages" />
       </h:form>
     </p:panel>
   </ui:define>

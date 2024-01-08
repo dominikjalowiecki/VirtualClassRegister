@@ -12,31 +12,35 @@
 		<p:panel id="timetable-panel">
 			<h:form>
 			
-				<p:panelGrid columns="2" layout="grid">
-			        
-			        <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
-	                <p:selectOneMenu id="semester" value="#{timetableBB.searchIdSemester}" required="true" requiredMessage="#{textValidation.semester_is_required}">
-	                    <f:selectItem itemLabel="#{textMain.select_semester}" itemValue=""/>
-                    	<f:selectItems value="#{semesterBB.list}" var="s" itemLabel="#{s.name} #{s.startDate} - #{s.endDate}" itemValue="#{s.idSemester}"/>
-	                </p:selectOneMenu>
+		        <div class="sm:w-14rem">
+		        	<div class="field">
+				        <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
+		                <p:selectOneMenu id="semester" styleClass='w-full' value="#{timetableBB.searchIdSemester}" required="true" requiredMessage="#{textValidation.semester_is_required}">
+		                    <f:selectItem itemLabel="#{textMain.select_semester}" itemValue=""/>
+		                   	<f:selectItems value="#{semesterBB.list}" var="s" itemLabel="#{s.name}" itemValue="#{s.idSemester}"/>
+		                </p:selectOneMenu>
+	                </div>
 	                
-	                <p:outputLabel for="class">#{textMain.class}</p:outputLabel>
-	                <p:selectOneMenu id="class" value="#{timetableBB.searchIdClass}">
-	                    <f:selectItem itemLabel="#{textMain.select_class}" itemValue=""/>
-                    	<f:selectItems value="#{classBB.list}" var="c" itemLabel="#{c.name}" itemValue="#{c.idClass}"/>
-	                </p:selectOneMenu>
+	                <div class="field">
+		                <p:outputLabel for="class">#{textMain.class}</p:outputLabel>
+		                <p:selectOneMenu id="class" styleClass='w-full' value="#{timetableBB.searchIdClass}">
+		                    <f:selectItem itemLabel="#{textMain.select_class}" itemValue=""/>
+		                   	<f:selectItems value="#{classBB.list}" var="c" itemLabel="#{c.name}" itemValue="#{c.idClass}"/>
+		                </p:selectOneMenu>
+	                </div>
 	                
-	                <p:outputLabel for="teacher">#{textMain.teacher}</p:outputLabel>
-	                <p:selectOneMenu id="teacher" value="#{timetableBB.searchIdTeacher}">
-	                    <f:selectItem itemLabel="#{textMain.select_teacher}" itemValue=""/>
-                    	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname}" itemValue="#{t.idUser}"/>
-	                </p:selectOneMenu>
-			        
-			    </p:panelGrid>
+	                <div class="field">
+		                <p:outputLabel for="teacher">#{textMain.teacher}</p:outputLabel>
+		                <p:selectOneMenu id="teacher" styleClass='w-full' value="#{timetableBB.searchIdTeacher}">
+		                    <f:selectItem itemLabel="#{textMain.select_teacher}" itemValue=""/>
+		                   	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname}" itemValue="#{t.idUser}"/>
+		                </p:selectOneMenu>
+	                </div>
+		        </div>
 			    
    		     	<p:commandButton styleClass="m-1" value="#{textMain.search}" action="#{timetableBB.search()}" update="@form timetable"/>
    		     	
-   		     	<p:messages id="messages"/>
+   		     	<p:messages styleClass="max-w-30rem" id="messages"/>
    		     	
 			</h:form>
 			

@@ -1,5 +1,41 @@
-@media screen and (max-width: 992px) {
-	html {
-		font-size: .85rem;
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Open Sans', sans-serif;
+}
+
+body {
+	height: 100vh;
+}
+
+#header,
+#footer {
+	background-color: #1f2d40;
+}
+
+#navigation {
+	background-color: #182230;
+}
+
+#header {
+    border-bottom: 1px solid #304562;
+}
+
+#footer {
+    border-top: 1px solid #304562;
+}
+
+body .ui-panel .ui-panel-content,
+body .ui-panel .ui-panel-titlebar {
+	border-radius: 0 !important;
+}
+
+@media screen and (max-width: 991px) {
+	html,
+	body {
+		font-size: .9rem;
 	}
 }
