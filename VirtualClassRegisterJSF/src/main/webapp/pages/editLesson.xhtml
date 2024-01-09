@@ -10,88 +10,113 @@
     <f:viewAction action="#{editLessonBB.onLoad()}" />
   </f:metadata>
 
-  <ui:define name="title">Virtual Class Register - #{textMain.edit_lesson}</ui:define>
+  <ui:define name="title"
+    >Virtual Class Register - #{textMain.edit_lesson}</ui:define
+  >
 
   <ui:define name="content">
     <p:panel>
       <h:form id="form">
-        <div class="sm:w-14rem">
-        <div class="field">
-          <p:outputLabel>#{textMain.semester}</p:outputLabel>
-          <p:inputText
-            styleClass='w-full'
-            value="#{editLessonBB.lesson.semester.name}"
-            disabled="true"
-          />
-		</div>
-		<div class="field">
-          <p:outputLabel>#{textMain.class}</p:outputLabel>
-			<p:inputText
-            styleClass='w-full'
-            value="#{editLessonBB.lesson.clazz.name}"
-            disabled="true"
-          />
-		</div>
-		<div class="field">
-          <p:outputLabel>#{textMain.subject}</p:outputLabel>
-          <p:inputText
-            styleClass='w-full'
-            value="#{editLessonBB.lesson.teacherteachessubject.subject.name}"
-            disabled="true"
-          />
-		</div>
-		<div class="field">
-          <p:outputLabel>#{textMain.teacher}</p:outputLabel>
-          <p:inputText
-            styleClass='w-full'
-            value="#{editLessonBB.lesson.teacherteachessubject.user.forename} #{editLessonBB.lesson.teacherteachessubject.user.surname}"
-            disabled="true"
-          />
-		</div>
-		<div class="field">
-          <p:outputLabel for="day-of-the-week">#{textMain.day_of_the_week}</p:outputLabel>
-          <p:selectOneMenu
-            id="day-of-the-week"
-            styleClass='w-full'
-            value="#{editLessonBB.lesson.day}"
-            required="true"
-            requiredMessage="#{textValidation.day_is_required}"
-          >
-            <f:selectItem itemLabel="#{textMain.select_day_of_the_week}" itemValue="" />
-            <f:selectItem itemLabel="#{textMain.monday}" itemValue="Poniedziałek" />
-            <f:selectItem itemLabel="#{textMain.tuesday}" itemValue="Wtorek" />
-            <f:selectItem itemLabel="#{textMain.wednesday}" itemValue="Środa" />
-            <f:selectItem itemLabel="#{textMain.thursday}" itemValue="Czwartek" />
-            <f:selectItem itemLabel="#{textMain.friday}" itemValue="Piątek" />
-            <f:selectItem itemLabel="#{textMain.saturday}" itemValue="Sobota" />
-            <f:selectItem itemLabel="#{textMain.sunday}" itemValue="Niedziela" />
-          </p:selectOneMenu>
+        <div class="sm:w-16rem">
+          <div class="field">
+            <p:outputLabel>#{textMain.semester}</p:outputLabel>
+            <p:inputText
+              styleClass="w-full"
+              value="#{editLessonBB.lesson.semester.name}"
+              disabled="true"
+            />
           </div>
-			<div class="field">
-          <p:outputLabel for="start" value="#{textMain.start_time}" />
-          <p:datePicker
-            id="start"
-            styleClass='w-full'
-            value="#{editLessonBB.start}"
-            timeOnly="true"
-            pattern="HH:mm"
-            required="true"
-            converterMessage="#{textValidation.invalid_start_time_format}"
-            requiredMessage="#{textValidation.start_time_is_required}"
-          />
-			</div>
-			<div class="field">
-          <p:outputLabel for="end" value="#{textMain.end_time}" />
-          <p:datePicker
-            id="end"
-            styleClass='w-full'
-            value="#{editLessonBB.end}"
-            timeOnly="true"
-            pattern="HH:mm"
-            required="true"
-            converterMessage="#{textValidation.invalid_end_time_format}"
-            requiredMessage="#{textValidation.end_time_is_required}"
-          />
+          <div class="field">
+            <p:outputLabel>#{textMain.class}</p:outputLabel>
+            <p:inputText
+              styleClass="w-full"
+              value="#{editLessonBB.lesson.clazz.name}"
+              disabled="true"
+            />
+          </div>
+          <div class="field">
+            <p:outputLabel>#{textMain.subject}</p:outputLabel>
+            <p:inputText
+              styleClass="w-full"
+              value="#{editLessonBB.lesson.teacherteachessubject.subject.name}"
+              disabled="true"
+            />
+          </div>
+          <div class="field">
+            <p:outputLabel>#{textMain.teacher}</p:outputLabel>
+            <p:inputText
+              styleClass="w-full"
+              value="#{editLessonBB.lesson.teacherteachessubject.user.forename} #{editLessonBB.lesson.teacherteachessubject.user.surname}"
+              disabled="true"
+            />
+          </div>
+          <div class="field">
+            <p:outputLabel for="day-of-the-week"
+              >#{textMain.day_of_the_week}</p:outputLabel
+            >
+            <p:selectOneMenu
+              id="day-of-the-week"
+              styleClass="w-full"
+              value="#{editLessonBB.lesson.day}"
+              required="true"
+              requiredMessage="#{textValidation.day_is_required}"
+            >
+              <f:selectItem
+                itemLabel="#{textMain.select_day_of_the_week}"
+                itemValue=""
+              />
+              <f:selectItem
+                itemLabel="#{textMain.monday}"
+                itemValue="Poniedziałek"
+              />
+              <f:selectItem
+                itemLabel="#{textMain.tuesday}"
+                itemValue="Wtorek"
+              />
+              <f:selectItem
+                itemLabel="#{textMain.wednesday}"
+                itemValue="Środa"
+              />
+              <f:selectItem
+                itemLabel="#{textMain.thursday}"
+                itemValue="Czwartek"
+              />
+              <f:selectItem itemLabel="#{textMain.friday}" itemValue="Piątek" />
+              <f:selectItem
+                itemLabel="#{textMain.saturday}"
+                itemValue="Sobota"
+              />
+              <f:selectItem
+                itemLabel="#{textMain.sunday}"
+                itemValue="Niedziela"
+              />
+            </p:selectOneMenu>
+          </div>
+          <div class="field">
+            <p:outputLabel for="start" value="#{textMain.start_time}" />
+            <p:datePicker
+              id="start"
+              styleClass="w-full"
+              value="#{editLessonBB.start}"
+              timeOnly="true"
+              pattern="HH:mm"
+              required="true"
+              converterMessage="#{textValidation.invalid_start_time_format}"
+              requiredMessage="#{textValidation.start_time_is_required}"
+            />
+          </div>
+          <div class="field">
+            <p:outputLabel for="end" value="#{textMain.end_time}" />
+            <p:datePicker
+              id="end"
+              styleClass="w-full"
+              value="#{editLessonBB.end}"
+              timeOnly="true"
+              pattern="HH:mm"
+              required="true"
+              converterMessage="#{textValidation.invalid_end_time_format}"
+              requiredMessage="#{textValidation.end_time_is_required}"
+            />
           </div>
         </div>
 

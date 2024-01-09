@@ -103,7 +103,9 @@ public class EditUserBB implements Serializable {
 		userDAO.merge(user);
 		
 		loaded = new User(user);
-		user.setClazz(new Class());
+		if(user.getClazz() == null) {
+			user.setClazz(new Class());
+		}
 		
 		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, textMessage.getString("successfully_updated_user"), null));
 	}

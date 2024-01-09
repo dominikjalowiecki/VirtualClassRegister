@@ -10,43 +10,45 @@
     <f:viewAction action="#{editClassBB.onLoad()}" />
   </f:metadata>
 
-  <ui:define name="title">Virtual Class Register - #{textMain.edit_class}</ui:define>
+  <ui:define name="title"
+    >Virtual Class Register - #{textMain.edit_class}</ui:define
+  >
 
   <ui:define name="content">
     <p:panel styleClass="mb-4">
       <h:form id="form">
-        <div class="sm:w-14rem">
+        <div class="sm:w-16rem">
           <div class="field">
-          <p:outputLabel for="name">#{textMain.name}</p:outputLabel>
-          <p:inputText
-            id="name"
-            styleClass='w-full'
-            value="#{editClassBB.clazz.name}"
-            required="true"
-            requiredMessage="#{textValidation.name_is_required}"
-            maxlength="65"
-            validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}"
-          >
-            <f:validateLength minimum="2" maximum="65" />
-          </p:inputText>
-		  </div>
-		  <div class="field">
-          <p:outputLabel for="tutor">#{textMain.tutor}</p:outputLabel>
-          <p:selectOneMenu
-            id="tutor"
-            styleClass='w-full'
-            value="#{editClassBB.clazz.user.idUser}"
-            required="true"
-            requiredMessage="#{textValidation.tutor_is_required}"
-          >
-            <f:selectItem itemLabel="#{textMain.select_tutor}" itemValue="" />
-            <f:selectItems
-              value="#{userBB.tutors}"
-              var="t"
-              itemLabel="#{t.forename} #{t.surname}"
-              itemValue="#{t.idUser}"
-            />
-          </p:selectOneMenu>
+            <p:outputLabel for="name">#{textMain.name}</p:outputLabel>
+            <p:inputText
+              id="name"
+              styleClass="w-full"
+              value="#{editClassBB.clazz.name}"
+              required="true"
+              requiredMessage="#{textValidation.name_is_required}"
+              maxlength="65"
+              validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}"
+            >
+              <f:validateLength minimum="2" maximum="65" />
+            </p:inputText>
+          </div>
+          <div class="field">
+            <p:outputLabel for="tutor">#{textMain.tutor}</p:outputLabel>
+            <p:selectOneMenu
+              id="tutor"
+              styleClass="w-full"
+              value="#{editClassBB.clazz.user.idUser}"
+              required="true"
+              requiredMessage="#{textValidation.tutor_is_required}"
+            >
+              <f:selectItem itemLabel="#{textMain.select_tutor}" itemValue="" />
+              <f:selectItems
+                value="#{userBB.tutors}"
+                var="t"
+                itemLabel="#{t.forename} #{t.surname}"
+                itemValue="#{t.idUser}"
+              />
+            </p:selectOneMenu>
           </div>
         </div>
 
@@ -56,7 +58,11 @@
           action="#{editClassBB.editClass()}"
           update="@form"
         />
-        <p:button styleClass="m-1" value="#{textMain.go_back}" outcome="class" />
+        <p:button
+          styleClass="m-1"
+          value="#{textMain.go_back}"
+          outcome="class"
+        />
       </h:form>
     </p:panel>
 
@@ -78,7 +84,7 @@
 
         <p:dataTable
           id="lessons"
-          styleClass='mt-4'
+          styleClass="mt-4"
           value="#{editClassBB.clazz.lessons}"
           var="l"
           paginator="true"
@@ -150,7 +156,7 @@
 
         <p:dataTable
           id="students"
-          styleClass='mt-4'
+          styleClass="mt-4"
           value="#{editClassBB.clazz.users}"
           var="s"
           paginator="true"

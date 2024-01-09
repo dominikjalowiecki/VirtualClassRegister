@@ -1,58 +1,107 @@
-<ui:composition template="/templates/page-template.xhtml"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="jakarta.faces.facelets"
-	xmlns:h="jakarta.faces.html"
-	xmlns:f="jakarta.faces.core"
-	xmlns:p="http://primefaces.org/ui">
-	
-	<ui:define name="title">Virtual Class Register - #{textMain.timetable}</ui:define>
-	
-	<ui:define name="content">
-		
-		<p:panel id="timetable-panel">
-			<h:form>
-			
-		        <div class="sm:w-14rem">
-		        	<div class="field">
-				        <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
-		                <p:selectOneMenu id="semester" styleClass='w-full' value="#{timetableBB.searchIdSemester}" required="true" requiredMessage="#{textValidation.semester_is_required}">
-		                    <f:selectItem itemLabel="#{textMain.select_semester}" itemValue=""/>
-		                   	<f:selectItems value="#{semesterBB.list}" var="s" itemLabel="#{s.name}" itemValue="#{s.idSemester}"/>
-		                </p:selectOneMenu>
-	                </div>
-	                
-	                <div class="field">
-		                <p:outputLabel for="class">#{textMain.class}</p:outputLabel>
-		                <p:selectOneMenu id="class" styleClass='w-full' value="#{timetableBB.searchIdClass}">
-		                    <f:selectItem itemLabel="#{textMain.select_class}" itemValue=""/>
-		                   	<f:selectItems value="#{classBB.list}" var="c" itemLabel="#{c.name}" itemValue="#{c.idClass}"/>
-		                </p:selectOneMenu>
-	                </div>
-	                
-	                <div class="field">
-		                <p:outputLabel for="teacher">#{textMain.teacher}</p:outputLabel>
-		                <p:selectOneMenu id="teacher" styleClass='w-full' value="#{timetableBB.searchIdTeacher}">
-		                    <f:selectItem itemLabel="#{textMain.select_teacher}" itemValue=""/>
-		                   	<f:selectItems value="#{userBB.tutors}" var="t" itemLabel="#{t.forename} #{t.surname}" itemValue="#{t.idUser}"/>
-		                </p:selectOneMenu>
-	                </div>
-		        </div>
-			    
-   		     	<p:commandButton styleClass="m-1" value="#{textMain.search}" action="#{timetableBB.search()}" update="@form timetable"/>
-   		     	
-   		     	<p:messages styleClass="max-w-30rem" id="messages"/>
-   		     	
-			</h:form>
-			
-			<div class="grid">
-               	<div class="col-12 lg:col-8">
-               	 	<p:schedule id="timetable" value="#{timetableBB.eventModel}" widgetVar="timetable" tooltip="true" locale="en_GB"
-               	 		leftHeaderTemplate="" rightHeaderTemplate="" allDaySlot="false" height="600px"
-               	 		view="timeGridWeek" columnHeaderFormat="timeGridWeek: {weekday: 'short'}" centerHeaderTemplate=""/>
-               	</div>
-			</div>
-		</p:panel>
-		
-	</ui:define>
-	
+<ui:composition
+  template="/templates/page-template.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="jakarta.faces.facelets"
+  xmlns:h="jakarta.faces.html"
+  xmlns:f="jakarta.faces.core"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <ui:define name="title"
+    >Virtual Class Register - #{textMain.timetable}</ui:define
+  >
+
+  <ui:define name="content">
+    <p:panel id="timetable-panel">
+      <h:form>
+        <div class="sm:w-16rem">
+          <div class="field">
+            <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
+            <p:selectOneMenu
+              id="semester"
+              styleClass="w-full"
+              value="#{timetableBB.searchIdSemester}"
+              required="true"
+              requiredMessage="#{textValidation.semester_is_required}"
+            >
+              <f:selectItem
+                itemLabel="#{textMain.select_semester}"
+                itemValue=""
+              />
+              <f:selectItems
+                value="#{semesterBB.list}"
+                var="s"
+                itemLabel="#{s.name}"
+                itemValue="#{s.idSemester}"
+              />
+            </p:selectOneMenu>
+          </div>
+
+          <div class="field">
+            <p:outputLabel for="class">#{textMain.class}</p:outputLabel>
+            <p:selectOneMenu
+              id="class"
+              styleClass="w-full"
+              value="#{timetableBB.searchIdClass}"
+            >
+              <f:selectItem itemLabel="#{textMain.select_class}" itemValue="" />
+              <f:selectItems
+                value="#{classBB.list}"
+                var="c"
+                itemLabel="#{c.name}"
+                itemValue="#{c.idClass}"
+              />
+            </p:selectOneMenu>
+          </div>
+
+          <div class="field">
+            <p:outputLabel for="teacher">#{textMain.teacher}</p:outputLabel>
+            <p:selectOneMenu
+              id="teacher"
+              styleClass="w-full"
+              value="#{timetableBB.searchIdTeacher}"
+            >
+              <f:selectItem
+                itemLabel="#{textMain.select_teacher}"
+                itemValue=""
+              />
+              <f:selectItems
+                value="#{userBB.tutors}"
+                var="t"
+                itemLabel="#{t.forename} #{t.surname}"
+                itemValue="#{t.idUser}"
+              />
+            </p:selectOneMenu>
+          </div>
+        </div>
+
+        <p:commandButton
+          styleClass="m-1"
+          value="#{textMain.search}"
+          action="#{timetableBB.search()}"
+          update="@form timetable"
+        />
+
+        <p:messages styleClass="max-w-30rem" id="messages" />
+      </h:form>
+
+      <div class="grid">
+        <div class="col-12 lg:col-8">
+          <p:schedule
+            id="timetable"
+            value="#{timetableBB.eventModel}"
+            widgetVar="timetable"
+            tooltip="true"
+            locale="en_GB"
+            leftHeaderTemplate=""
+            rightHeaderTemplate=""
+            allDaySlot="false"
+            height="600px"
+            view="timeGridWeek"
+            columnHeaderFormat="timeGridWeek: {weekday: 'short'}"
+            centerHeaderTemplate=""
+          />
+        </div>
+      </div>
+    </p:panel>
+  </ui:define>
 </ui:composition>

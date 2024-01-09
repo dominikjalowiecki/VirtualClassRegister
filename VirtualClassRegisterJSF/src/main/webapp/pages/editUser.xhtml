@@ -1,67 +1,102 @@
-<ui:composition template="/templates/page-template.xhtml"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="jakarta.faces.facelets"
-	xmlns:h="jakarta.faces.html"
-	xmlns:f="jakarta.faces.core"
-	xmlns:p="http://primefaces.org/ui">
-	
-	<f:metadata>
-	    <f:viewAction action="#{editUserBB.onLoad()}" />
-	</f:metadata>
-	
-	<ui:define name="title">Virtual Class Register - #{textMain.edit_user}</ui:define>
-	
-	<ui:define name="content">
-	
-		<p:panel>
-			<p>#{textMain.name}: #{editUserBB.user.name}</p>
-			<p>#{textMain.role}: #{editUserBB.user.role}</p>
-			<p>#{textMain.created}: 
-				<h:outputText value="#{editUserBB.user.created}" >
-    				<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
-				</h:outputText>
-			</p>
-			<hr/>
-			<h:form id="form">
-				<div class="sm:w-14rem">
-					<div class="field">
-			        <p:outputLabel for="email">Email</p:outputLabel>
-			        <p:inputText id="email" styleClass='w-full' value="#{editUserBB.user.email}" required="true"
-			        	requiredMessage="#{textValidation.email_is_required}" maxlength="120" validatorMessage="#{textValidation.invalid_email_format}">
-			        	<f:validateRegex
-							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
-						<f:validateLength maximum="120"/>
-			        </p:inputText>
-			        </div>
-			        <div class="field">
-			        <p:outputLabel for="class">#{textMain.class}</p:outputLabel> 
-                	<p:selectOneMenu id="class" styleClass='w-full' value="#{editUserBB.user.clazz.idClass}">
-	                    <f:selectItem itemLabel="#{textMain.select_class}" itemValue=""/>
-                    	<f:selectItems value="#{editUserBB.classes}" var="c" itemLabel="#{c.name}" itemValue="#{c.idClass}"/>
-	                </p:selectOneMenu>
-			        </div>
-			        <div class="field">
-		        	<p:outputLabel for="password">#{textMain.password}</p:outputLabel>
-			        <p:password id="password" styleClass='w-full' value="#{editUserBB.newPassword}" match="repeatPassword" validatorMessage="#{textValidation.invalid_password_format}">
-				        <f:validateRegex
-								pattern="^$|^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"/>
-			        </p:password>
-		        	<p class="text-sm m-0">#{textMain.password_hint}</p>
-			        </div>
-			        <div class="field">
-			        <p:outputLabel for="repeatPassword">#{textMain.repeat_password}</p:outputLabel>
-			        <p:password id="repeatPassword" styleClass='w-full' value="#{editUserBB.newPassword}"/>
-					</div>
-				</div>			        
-			    
-		     	<p:commandButton styleClass="m-1"  value="#{textMain.edit_user}" action="#{editUserBB.editUser()}" update="@form"/>
-		     	<p:button styleClass="m-1" value="#{textMain.go_back}" outcome="user"/>
-		     	
-			    <p:messages styleClass="max-w-30rem" id="messages"/>
-		     	
-		    </h:form>
-		</p:panel>
-		
-	</ui:define>
-	
+<ui:composition
+  template="/templates/page-template.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="jakarta.faces.facelets"
+  xmlns:h="jakarta.faces.html"
+  xmlns:f="jakarta.faces.core"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <f:metadata>
+    <f:viewAction action="#{editUserBB.onLoad()}" />
+  </f:metadata>
+
+  <ui:define name="title"
+    >Virtual Class Register - #{textMain.edit_user}</ui:define
+  >
+
+  <ui:define name="content">
+    <p:panel>
+      <p>#{textMain.name}: #{editUserBB.user.name}</p>
+      <p>#{textMain.role}: #{editUserBB.user.role}</p>
+      <p>
+        #{textMain.created}:
+        <h:outputText value="#{editUserBB.user.created}">
+          <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+        </h:outputText>
+      </p>
+      <hr />
+      <h:form id="form">
+        <div class="sm:w-16rem">
+          <div class="field">
+            <p:outputLabel for="email">Email</p:outputLabel>
+            <p:inputText
+              id="email"
+              styleClass="w-full"
+              value="#{editUserBB.user.email}"
+              required="true"
+              requiredMessage="#{textValidation.email_is_required}"
+              maxlength="120"
+              validatorMessage="#{textValidation.invalid_email_format}"
+            >
+              <f:validateRegex
+                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"
+              />
+              <f:validateLength maximum="120" />
+            </p:inputText>
+          </div>
+          <div class="field">
+            <p:outputLabel for="class">#{textMain.class}</p:outputLabel>
+            <p:selectOneMenu
+              id="class"
+              styleClass="w-full"
+              value="#{editUserBB.user.clazz.idClass}"
+            >
+              <f:selectItem itemLabel="#{textMain.select_class}" itemValue="" />
+              <f:selectItems
+                value="#{editUserBB.classes}"
+                var="c"
+                itemLabel="#{c.name}"
+                itemValue="#{c.idClass}"
+              />
+            </p:selectOneMenu>
+          </div>
+          <div class="field">
+            <p:outputLabel for="password">#{textMain.password}</p:outputLabel>
+            <p:password
+              id="password"
+              styleClass="w-full"
+              value="#{editUserBB.newPassword}"
+              match="repeatPassword"
+              validatorMessage="#{textValidation.invalid_password_format}"
+            >
+              <f:validateRegex
+                pattern="^$|^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
+              />
+            </p:password>
+            <p class="text-sm m-0">#{textMain.password_hint}</p>
+          </div>
+          <div class="field">
+            <p:outputLabel for="repeatPassword"
+              >#{textMain.repeat_password}</p:outputLabel
+            >
+            <p:password
+              id="repeatPassword"
+              styleClass="w-full"
+              value="#{editUserBB.newPassword}"
+            />
+          </div>
+        </div>
+
+        <p:commandButton
+          styleClass="m-1"
+          value="#{textMain.edit_user}"
+          action="#{editUserBB.editUser()}"
+          update="@form"
+        />
+        <p:button styleClass="m-1" value="#{textMain.go_back}" outcome="user" />
+
+        <p:messages styleClass="max-w-30rem" id="messages" />
+      </h:form>
+    </p:panel>
+  </ui:define>
 </ui:composition>

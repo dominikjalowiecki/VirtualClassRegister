@@ -6,29 +6,34 @@
   xmlns:f="jakarta.faces.core"
   xmlns:p="http://primefaces.org/ui"
 >
-  <ui:define name="title">Virtual Class Register - #{textMain.teacher_panel}</ui:define>
+  <ui:define name="title"
+    >Virtual Class Register - #{textMain.teacher_panel}</ui:define
+  >
 
   <ui:define name="content">
     <p:panel id="teacher-panel">
       <h:form>
-        <div class="sm:w-14rem">
-        	<div class="field">
-          <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
-          <p:selectOneMenu
-            id="semester"
-            styleClass='w-full'
-            value="#{teacherPanelBB.searchIdSemester}"
-            required="true"
-            requiredMessage="#{textValidation.semester_is_required}"
-          >
-            <f:selectItem itemLabel="#{textMain.select_semester}" itemValue="" />
-            <f:selectItems
-              value="#{semesterBB.list}"
-              var="s"
-              itemLabel="#{s.name}"
-              itemValue="#{s.idSemester}"
-            />
-          </p:selectOneMenu>
+        <div class="sm:w-16rem">
+          <div class="field">
+            <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
+            <p:selectOneMenu
+              id="semester"
+              styleClass="w-full"
+              value="#{teacherPanelBB.searchIdSemester}"
+              required="true"
+              requiredMessage="#{textValidation.semester_is_required}"
+            >
+              <f:selectItem
+                itemLabel="#{textMain.select_semester}"
+                itemValue=""
+              />
+              <f:selectItems
+                value="#{semesterBB.list}"
+                var="s"
+                itemLabel="#{s.name}"
+                itemValue="#{s.idSemester}"
+              />
+            </p:selectOneMenu>
           </div>
         </div>
 
@@ -42,12 +47,12 @@
         <p:commandButton value="CSV" styleClass="m-1">
           <p:dataExporter type="csv" target="lessons" fileName="lessons" />
         </p:commandButton>
-        
+
         <p:messages styleClass="max-w-30rem" id="messages" />
 
         <p:dataTable
           id="lessons"
-          styleClass='mt-4'
+          styleClass="mt-4"
           value="#{teacherPanelBB.lessons}"
           var="l"
           paginator="true"

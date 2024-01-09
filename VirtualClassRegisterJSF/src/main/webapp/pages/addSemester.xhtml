@@ -1,42 +1,66 @@
-<ui:composition template="/templates/page-template.xhtml"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="jakarta.faces.facelets"
-	xmlns:h="jakarta.faces.html"
-	xmlns:f="jakarta.faces.core"
-	xmlns:p="http://primefaces.org/ui">
-	
-	<ui:define name="title">Virtual Class Register - #{textMain.add_semester}</ui:define>
-	
-	<ui:define name="content">
-			
-		<p:panel>
-			<h:form id="form">
-			
-				<div class="sm:w-14rem">
-			        
-			        <div class="field">
-			        <p:outputLabel for="name">#{textMain.name}</p:outputLabel>
-			        <p:inputText id="name" styleClass='w-full' value="#{semesterBB.semester.name}" required="true"
-			        	requiredMessage="#{textValidation.name_is_required}" maxlength="65" validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}">
-			        	<f:validateLength minimum="2" maximum="65"/>
-			        </p:inputText>
-			        </div>
-			        
-			        <div class="field">
-			        <p:outputLabel for="range" value="#{textMain.date_range_selection}" />
-					<p:datePicker id="range" styleClass='w-full' selectionMode="range" value="#{semesterBB.range}" readonlyInput="true" mindate="#{semesterBB.currentDate}" required="true"
-						requiredMessage="#{textValidation.date_range_is_required}" />
-					</div>
-			        
-			    </div>
-			    
-		     	<p:commandButton styleClass="m-1" value="#{textMain.add_semester}" action="#{semesterBB.addSemester()}" update="@form"/>
-   				<p:linkButton styleClass="m-1" outcome="administrationPanel" value="#{textMain.go_back}" />
-		     	
-			    <p:messages styleClass="max-w-30rem" id="messages"/>
-		    </h:form>
-		</p:panel>
-		
-	</ui:define>
-	
+<ui:composition
+  template="/templates/page-template.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="jakarta.faces.facelets"
+  xmlns:h="jakarta.faces.html"
+  xmlns:f="jakarta.faces.core"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <ui:define name="title"
+    >Virtual Class Register - #{textMain.add_semester}</ui:define
+  >
+
+  <ui:define name="content">
+    <p:panel>
+      <h:form id="form">
+        <div class="sm:w-16rem">
+          <div class="field">
+            <p:outputLabel for="name">#{textMain.name}</p:outputLabel>
+            <p:inputText
+              id="name"
+              styleClass="w-full"
+              value="#{semesterBB.semester.name}"
+              required="true"
+              requiredMessage="#{textValidation.name_is_required}"
+              maxlength="65"
+              validatorMessage="#{textValidation.name_has_to_be_between_2_to_65_characters}"
+            >
+              <f:validateLength minimum="2" maximum="65" />
+            </p:inputText>
+          </div>
+
+          <div class="field">
+            <p:outputLabel
+              for="range"
+              value="#{textMain.date_range_selection}"
+            />
+            <p:datePicker
+              id="range"
+              styleClass="w-full"
+              selectionMode="range"
+              value="#{semesterBB.range}"
+              readonlyInput="true"
+              mindate="#{semesterBB.currentDate}"
+              required="true"
+              requiredMessage="#{textValidation.date_range_is_required}"
+            />
+          </div>
+        </div>
+
+        <p:commandButton
+          styleClass="m-1"
+          value="#{textMain.add_semester}"
+          action="#{semesterBB.addSemester()}"
+          update="@form"
+        />
+        <p:linkButton
+          styleClass="m-1"
+          outcome="administrationPanel"
+          value="#{textMain.go_back}"
+        />
+
+        <p:messages styleClass="max-w-30rem" id="messages" />
+      </h:form>
+    </p:panel>
+  </ui:define>
 </ui:composition>

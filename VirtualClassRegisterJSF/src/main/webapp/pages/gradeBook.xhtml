@@ -11,7 +11,9 @@
     <f:viewAction action="#{gradeBookBB.onLoad()}" />
   </f:metadata>
 
-  <ui:define name="title">Virtual Class Register - #{textMain.grade_book}</ui:define>
+  <ui:define name="title"
+    >Virtual Class Register - #{textMain.grade_book}</ui:define
+  >
 
   <ui:define name="content">
     <p:panel id="studentDetails">
@@ -23,24 +25,27 @@
       </h:panelGroup>
       <hr />
       <h:form>
-        <div class="sm:w-14rem">
-        	<div class="field">
-          <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
-          <p:selectOneMenu
-            id="semester"
-            styleClass='w-full'
-            value="#{gradeBookBB.searchIdSemester}"
-            required="true"
-            requiredMessage="#{textValidation.semester_is_required}"
-          >
-            <f:selectItem itemLabel="#{textMain.select_semester}" itemValue="" />
-            <f:selectItems
-              value="#{semesterBB.list}"
-              var="s"
-              itemLabel="#{s.name}"
-              itemValue="#{s.idSemester}"
-            />
-          </p:selectOneMenu>
+        <div class="sm:w-16rem">
+          <div class="field">
+            <p:outputLabel for="semester">#{textMain.semester}</p:outputLabel>
+            <p:selectOneMenu
+              id="semester"
+              styleClass="w-full"
+              value="#{gradeBookBB.searchIdSemester}"
+              required="true"
+              requiredMessage="#{textValidation.semester_is_required}"
+            >
+              <f:selectItem
+                itemLabel="#{textMain.select_semester}"
+                itemValue=""
+              />
+              <f:selectItems
+                value="#{semesterBB.list}"
+                var="s"
+                itemLabel="#{s.name}"
+                itemValue="#{s.idSemester}"
+              />
+            </p:selectOneMenu>
           </div>
         </div>
 
@@ -147,7 +152,10 @@
         <p>#{textMain.class}: #{gradeBookBB.selectedGrade.lesson.clazz.name}</p>
         <p>#{textMain.value}: #{gradeBookBB.selectedGrade.value}</p>
         <p>#{textMain.type}: #{gradeBookBB.selectedGrade.gradetype.name}</p>
-        <p>#{textMain.weightage}: #{gradeBookBB.selectedGrade.gradetype.weightage}</p>
+        <p>
+          #{textMain.weightage}:
+          #{gradeBookBB.selectedGrade.gradetype.weightage}
+        </p>
         <p>#{textMain.note}: #{gradeBookBB.selectedGrade.note}</p>
         <p>#{textMain.created}: #{gradeBookBB.selectedGrade.createdDatetime}</p>
       </p:panel>
@@ -164,10 +172,15 @@
       dynamic="true"
     >
       <p:panel id="behaviourPointDetailsContent">
-        <p>#{textMain.class}: #{gradeBookBB.selectedBehaviourPoint.clazz.name}</p>
+        <p>
+          #{textMain.class}: #{gradeBookBB.selectedBehaviourPoint.clazz.name}
+        </p>
         <p>#{textMain.value}: #{gradeBookBB.selectedBehaviourPoint.value}</p>
         <p>#{textMain.note}: #{gradeBookBB.selectedBehaviourPoint.note}</p>
-        <p>#{textMain.created}: #{gradeBookBB.selectedBehaviourPoint.createdDatetime}</p>
+        <p>
+          #{textMain.created}:
+          #{gradeBookBB.selectedBehaviourPoint.createdDatetime}
+        </p>
       </p:panel>
     </p:dialog>
   </ui:define>
